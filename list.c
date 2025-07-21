@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:18:44 by arina             #+#    #+#             */
-/*   Updated: 2025/07/19 19:49:10 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:25:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_back(t_stack *node, t_stack **a)
+void	add_back(t_token *node, t_token **a)
 {
-	t_stack	*tmp;
+	t_token	*tmp;
 
 	if (*a == NULL)
 	{
@@ -27,11 +27,11 @@ void	add_back(t_stack *node, t_stack **a)
 	tmp->next = node;
 }
 
-t_stack	*create_node(char *res)
+t_token	*create_node(char *res)
 {
-	t_stack	*new_node;
+	t_token	*new_node;
 
-	new_node = malloc(sizeof(t_stack));
+	new_node = malloc(sizeof(t_token));
 	new_node->string = res;
 	new_node->next = NULL;
 	// printf("res = %s\n", res);
