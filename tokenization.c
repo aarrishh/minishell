@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/07/22 16:40:30 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/22 19:44:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void	check_type_append(char *str, t_token **stack)
 
 void	init_tokens_type(t_token **stack)
 {
-	t_token *tmp;
+	t_token	*tmp;
+	t_token	*mzz;
 
 	tmp = *stack;
 	while (tmp)
@@ -86,10 +87,10 @@ void	init_tokens_type(t_token **stack)
 		// printf("che%s\n", tmp->string);
 		tmp = tmp->next;
 	}
-	t_token *mzz = *stack;
+	mzz = *stack;
 	while (mzz)
 	{
-		printf("listy exac->  %s, tipy->  %d\n", (mzz)->string, mzz->type);
+		printf("list %s, type->  %d\n", (mzz)->string, mzz->type);
 		(mzz) = (mzz)->next;
 	}
 }
@@ -114,12 +115,12 @@ int	check_string(char *str)
 
 void	validation(char **line, t_token **stack)
 {
-	t_token *node;
-	int cur_ind;
-	// int fix_ind;
-	int	i;
-	int	j;
+	t_token	*node;
+	int		cur_ind;
+	int		i;
+	int		j;
 
+	// int fix_ind;
 	i = 0;
 	cur_ind = 0;
 	// fix_ind = 0;
@@ -131,9 +132,10 @@ void	validation(char **line, t_token **stack)
 			cur_ind = check_string(line[i] + j);
 			if (cur_ind == -1)
 			{
-				node = create_node((ft_substr(line[i], j, ft_strlen(line[i]) - cur_ind)));
+				node = create_node((ft_substr(line[i], j, ft_strlen(line[i])
+								- cur_ind)));
 				add_back(node, stack);
-				break;
+				break ;
 			}
 			if (cur_ind == -2)
 				cur_ind = 2;

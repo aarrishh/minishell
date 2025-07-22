@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/07/22 16:35:40 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/07/22 19:15:59 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lreadline
 
-SRCS = main.c split.c list.c functions.c tokenization.c
+SRCS = main.c split.c list.c functions.c tokenization.c quotes.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
