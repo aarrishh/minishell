@@ -6,7 +6,7 @@
 #    By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/07/19 18:29:38 by arimanuk         ###   ########.fr        #
+#    Updated: 2025/07/21 18:00:54 by arimanuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lreadline
 
-SRCS = main.c split.c list.c functions.c
+SRCS = main.c split.c list.c functions.c tokenization.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

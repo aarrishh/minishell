@@ -6,72 +6,11 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/07/21 13:51:28 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:08:20 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_string(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[0] == '>' && str[1] == '>')
-			return (-2);
-		if (str[i] == '<' && str[i + 1] == '<')
-			return (-2);
-		if (str[i] == '>' || str[i] == '<' || str[i] == '|' || str[i] == '&')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-
-
-void	validation(char **line, t_stack **stack)
-{
-	t_stack *node;
-	int cur_ind;
-	int fix_ind;
-	int	i;
-	int	j;
-
-	i = 0;
-	cur_ind = 0;
-	fix_ind = 0;
-	while (line[i])
-	{
-		j = 0;
-		while (line[i][j])
-		{
-			cur_ind = check_string(line[i] + j);
-			if (cur_ind == -1)
-			{
-				node = create_node((ft_substr(line[i], j, ft_strlen(line[i]) - cur_ind)));
-				add_back(node, stack);
-				break;
-			}
-			if (cur_ind == -2)
-				cur_ind = 2;
-			else if (cur_ind == 0)
-				cur_ind = 1;
-			node = create_node((ft_substr(line[i], j, cur_ind)));
-			add_back(node, stack);
-			j += cur_ind;
-		}
-		i++;
-	}
-	t_stack *tmp = *stack;
-	while (tmp)
-	{
-		printf("listy exac->  %s\n", (tmp)->string);
-		(tmp) = (tmp)->next;
-	}
-}
 
 void	print_matrix(char **str)
 {
@@ -80,10 +19,10 @@ void	print_matrix(char **str)
 		printf("str->%s\n", str[i++]);
 }
 
-void	quotes_check(t_stack *stack, t_info *info)
+void	quotes_check(t_token *stack, t_info *info)
 {
 	int		i;
-	t_stack	*tmp;
+	t_token	*tmp;
 
 	tmp = stack;
 	while (tmp)
@@ -115,9 +54,9 @@ void	init_info(t_info *info)
 	info->single_quotes = 0;
 }
 
-void	free_stack(t_stack **stack)
+void	free_stack(t_token **stack)
 {
-	t_stack *tmp;
+	t_token *tmp;
 
 	tmp = *stack;
 	while (tmp)
@@ -132,7 +71,7 @@ int main(void)
 {
 	char	*line;
 	char	**split;
-	t_stack	*stack;
+	t_token	*stack;
 	t_info	info;
 
 	stack = NULL;
@@ -142,6 +81,8 @@ int main(void)
 			add_history(line);
 		split = ft_split(line);
 		validation(split, &stack);
+		init_tokens_type(&stack);
+		printf("hasavv?\n");
 		init_info(&info);
 		quotes_check(stack, &info);
 		// prinit_matrix(split);
