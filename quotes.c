@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/22 19:47:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/22 20:29:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,22 @@ t_quote_state	quote_state(t_quote_state quote, char c)
 	return (quote);
 }
 
+void	check_var(t_quote_state state, char *line)
+{
+	// int	i;
+
+	// i = 1;
+	if (state == IN_SINGLE)
+		printf("Ստեղ չենք բացում, ոնց կա գրում ենք %s\n", line);
+	// if (line[i] == '_' || (line[i] >= 'A' && line[i] <= 'Z'))
+	// {
+	// 	while (line[i] >= 'A')
+	// 	{
+	// 		if (line[i] == '$')
+	// 	}
+	// }
+}
+
 void	start_quotes(char *line)
 {
 	int				i;
@@ -39,6 +55,8 @@ void	start_quotes(char *line)
 	{
 		state = quote_state(state, line[i]);
 		i++;
+		if (line[i] == '$')
+			check_var(state, line + i);
 	}
 	if (state != NO_QUOTE)
 		printf("Ստեղ բացում ենք QUOTE ԵՐԵՎԻ\n");
