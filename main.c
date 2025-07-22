@@ -16,9 +16,6 @@
 
 #include "minishell.h"
 
-<<<<<<< HEAD
-int	main(void)
-=======
 void	print_matrix(char **str)
 {
 	int i = 0;
@@ -75,7 +72,6 @@ void	free_stack(t_token **stack)
 }
 
 int main(void)
->>>>>>> origin/arish
 {
 	char	*line;
 	char	**split;

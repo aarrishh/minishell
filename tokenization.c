@@ -3,24 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/21 17:19:01 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/21 17:19:46 by mabaghda         ###   ########.fr       */
-=======
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/07/21 20:12:17 by arimanuk         ###   ########.fr       */
->>>>>>> origin/arish
+/*   Updated: 2025/07/22 16:26:05 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-<<<<<<< HEAD
-=======
 void	check_type_pipe(char *str, t_token **stack)
 {
 	int	i;
@@ -103,7 +94,6 @@ void	init_tokens_type(t_token **stack)
 	}
 }
 
->>>>>>> origin/arish
 int	check_string(char *str)
 {
 	int	i;
@@ -124,20 +114,11 @@ int	check_string(char *str)
 
 void	validation(char **line, t_token **stack)
 {
-<<<<<<< HEAD
-	t_token	*node;
-	int		cur_ind;
-	int		fix_ind;
-	int		i;
-	int		j;
-	t_token	*tmp;
-=======
 	t_token *node;
 	int cur_ind;
 	int fix_ind;
 	int	i;
 	int	j;
->>>>>>> origin/arish
 
 	i = 0;
 	cur_ind = 0;
@@ -150,16 +131,9 @@ void	validation(char **line, t_token **stack)
 			cur_ind = check_string(line[i] + j);
 			if (cur_ind == -1)
 			{
-<<<<<<< HEAD
-				node = create_node((ft_substr(line[i], j, ft_strlen(line[i])
-								- cur_ind)));
-				add_back(node, stack);
-				break ;
-=======
 				node = create_node((ft_substr(line[i], j, ft_strlen(line[i]) - cur_ind)));
 				add_back(node, stack);
 				break;
->>>>>>> origin/arish
 			}
 			if (cur_ind == -2)
 				cur_ind = 2;
@@ -171,71 +145,4 @@ void	validation(char **line, t_token **stack)
 		}
 		i++;
 	}
-<<<<<<< HEAD
-	tmp = *stack;
-	while (tmp)
-	{
-		printf("listy exac->  %s\n", (tmp)->string);
-		(tmp) = (tmp)->next;
-	}
 }
-
-void	print_matrix(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		printf("str->%s\n", str[i++]);
-}
-
-void	quotes_check(t_token *stack, t_info *info)
-{
-	int		i;
-	t_token	*tmp;
-
-	tmp = stack;
-	while (tmp)
-	{
-		i = 0;
-		while (tmp->string[i])
-		{
-			if (tmp->string[i] == '\"')
-				info->double_quotes++;
-			else if (tmp->string[i] == '\'')
-				info->single_quotes++;
-			else if (tmp->string[i] == '`')
-				info->back_quotes++;
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	if (info->back_quotes % 2 != 0 || info->double_quotes % 2 != 0
-		|| info->single_quotes % 2 != 0)
-	{
-		printf("Error\n");
-	}
-}
-
-void	init_info(t_info *info)
-{
-	info->back_quotes = 0;
-	info->double_quotes = 0;
-	info->single_quotes = 0;
-}
-
-void	free_stack(t_token **stack)
-{
-	t_token *tmp;
-
-	tmp = *stack;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		free(*stack);
-		*stack = tmp;
-	}
-}
-=======
-}
->>>>>>> origin/arish
