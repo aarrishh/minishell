@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/07/22 16:26:05 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:40:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,13 @@ void	validation(char **line, t_token **stack)
 {
 	t_token *node;
 	int cur_ind;
-	int fix_ind;
+	// int fix_ind;
 	int	i;
 	int	j;
 
 	i = 0;
 	cur_ind = 0;
-	fix_ind = 0;
+	// fix_ind = 0;
 	while (line[i])
 	{
 		j = 0;
