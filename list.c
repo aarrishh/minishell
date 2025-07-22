@@ -6,7 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:18:44 by arina             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/07/21 17:25:30 by mabaghda         ###   ########.fr       */
+=======
+/*   Updated: 2025/07/21 20:17:24 by arimanuk         ###   ########.fr       */
+>>>>>>> origin/arish
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +37,7 @@ t_token	*create_node(char *res)
 
 	new_node = malloc(sizeof(t_token));
 	new_node->string = res;
+	new_node->type = 0;
 	new_node->next = NULL;
 	// printf("res = %s\n", res);
 	return (new_node);
