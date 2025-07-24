@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/24 14:26:32 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/24 19:47:01 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	start_quotes(char *line, char ***split)
 {
 	int				i;
 	t_quote_state	state;
-	char *quote_line;
+	char			*quote_line;
 
 	i = 0;
 	state = NO_QUOTE;
@@ -60,9 +60,9 @@ void	start_quotes(char *line, char ***split)
 	}
 	if (state != NO_QUOTE)
 	{
-		// printf("Ստեղ բացում ենք QUOTE ԵՐԵՎԻ\n");
 		quote_line = open_dquote(state, line);
-		printf("%s\n", quote_line);
+		if (quote_line)
+			printf("%s\n", quote_line);
 	}
 	if (state == NO_QUOTE)
 		*split = ft_split(line, ' ');
@@ -71,15 +71,18 @@ void	start_quotes(char *line, char ***split)
 char	*open_dquote(t_quote_state state, char *line)
 {
 	char			*next;
+	char			*without_quote_line;
 	char			*tmp;
 	char			*prompt;
 	t_quote_state	new_state;
+	t_quote_state	petqa;
 	int				i;
 
 	if (state == IN_SINGLE)
 		prompt = "QUOTE> ";
 	else if (state == IN_DOUBLE)
 		prompt = "DQUOTE> ";
+	petqa = state;
 	while (1)
 	{
 		next = readline(prompt);
@@ -104,25 +107,50 @@ char	*open_dquote(t_quote_state state, char *line)
 		if (new_state == NO_QUOTE)
 			break ;
 	}
-	return (line);
+	without_quote_line = cut_quotes(line, petqa);
+	return (without_quote_line);
 }
 
-// if (line[i] == '\'' || line[i] == '"' || line[i] == '`')
-// {
-// 	if (line[i] == '\'' && quotes->single_quotes != 1)
-// 	{
-// 		quotes->single_quotes = 1;
-// 		i++;
-// 	}
-// 	else if (line[i] == '"' && quotes->double_quotes != 1)
-// 	{
-// 		quotes->double_quotes = 1;
-// 		i++;
-// 	}
-// 	else if(line[i] == '`' && quotes->back_quotes != 1)
-// 	{
-// 		quotes->back_quotes = 1;
-// 		i++;
-// 	}
-// 	if (line[i] == '\'' && quotes->single_quotes == 1)
-// }
+int	len_without_quote(char *line)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (line[i])
+	{
+		if (line[i] != '\'' && line[i] != '"')
+			len++;
+		i++;
+	}
+	return (len);
+}
+
+char	*cut_quotes(char *line, t_quote_state state)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*new_line;
+
+	i = 0;
+	j = 0;
+	len = len_without_quote(line);
+	new_line = (char *)malloc(sizeof(char) * (len + 1));
+	while (line[i])
+	{
+		if (line[i] == '\'' && state == IN_SINGLE)
+			i++;
+		else if (line[i] == '"' && state == IN_DOUBLE)
+			i++;
+		else
+		{
+			new_line[j] = line[i];
+			i++;
+			j++;
+		}
+	}
+	new_line[j] = '\0';
+	return (new_line);
+}

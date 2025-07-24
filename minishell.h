@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/24 13:46:52 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:51:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,7 @@ void				init_tokens_type(t_token **stack);
 void				start_quotes(char *line, char ***split);
 void				check_var(t_quote_state state, char *line);
 char				*open_dquote(t_quote_state state, char *line);
+char				*cut_quotes(char *line, t_quote_state state);
+int					len_without_quote(char *line);
 
 #endif
