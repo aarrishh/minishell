@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/22 20:29:30 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:17:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_quote_state	quote_state(t_quote_state quote, char c)
 void	check_var(t_quote_state state, char *line)
 {
 	// int	i;
-
 	// i = 1;
 	if (state == IN_SINGLE)
 		printf("Ստեղ չենք բացում, ոնց կա գրում ենք %s\n", line);
@@ -44,7 +43,7 @@ void	check_var(t_quote_state state, char *line)
 	// }
 }
 
-void	start_quotes(char *line)
+void	start_quotes(char *line, char ***split)
 {
 	int				i;
 	t_quote_state	state;
@@ -55,11 +54,55 @@ void	start_quotes(char *line)
 	{
 		state = quote_state(state, line[i]);
 		i++;
-		if (line[i] == '$')
+		if (line[i] == '$' && line[i + 1])
 			check_var(state, line + i);
 	}
 	if (state != NO_QUOTE)
+	{
 		printf("Ստեղ բացում ենք QUOTE ԵՐԵՎԻ\n");
+		open_dquote(state, line);
+	}
+	if (state == NO_QUOTE)
+		*split = ft_split(line, ' ');
+}
+
+char	*open_dquote(t_quote_state state, char *line)
+{
+	char			*next;
+	char			*tmp;
+	char			*prompt;
+	t_quote_state	new_state;
+	int				i;
+
+	if (state == IN_SINGLE)
+		prompt = "QUOTE> ";
+	else if (state == IN_DOUBLE)
+		prompt = "DQUOTE> ";
+	while (1)
+	{
+		next = readline(prompt);
+		if (!next)
+		{
+			printf("wrong EOF, close matching quote\n");
+			free(line);
+			return (NULL);
+		}
+		tmp = ft_strjoin(line, "\n");
+		free(line);
+		line = ft_strjoin(tmp, next);
+		free(tmp);
+		free(next);
+		new_state = NO_QUOTE;
+		i = 0;
+		while (line[i])
+		{
+			new_state = quote_state(new_state, line[i]);
+			i++;
+		}
+		if (new_state == NO_QUOTE)
+			break ;
+	}
+	return (line);
 }
 
 // if (line[i] == '\'' || line[i] == '"' || line[i] == '`')

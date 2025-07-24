@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/07/22 19:52:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/24 12:40:20 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	init_tokens_type(t_token **stack)
 	mzz = *stack;
 	while (mzz)
 	{
-		printf("listy-> %s, type-> %d\n", (mzz)->string, mzz->type);
+		printf("%s -> %d\n", (mzz)->string, mzz->type);
 		(mzz) = (mzz)->next;
 	}
 }
