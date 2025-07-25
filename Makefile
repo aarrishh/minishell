@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/07/24 19:50:22 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/07/25 11:19:32 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,13 +34,13 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@echo "$(BLUE)[LINKING]$(RESET) Building $(GREEN) $(NAME) $(RESET)..."
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS) $(LIBFT)
-	@echo "$(IDK)     MINISHELL IS READY!$(RESET)"
+	@echo "$(IDK)      MINISHELL IS READY!$(RESET)"
 
 
 $(LIBFT):
 	@echo "$(BLUE)COMPILING LIBFT...$(RESET)"
 	@make --no-print-directory -C $(LIBFT_DIR)
-	@echo "$(GREEN) [OK]$(RESET) LIBFT DONE."
+	@echo "$(GREEN) [OK]$(RESET) libft done."
 
 %.o: %.c $(LIBFT) minishell.h
 	@$(CC) $(CFLAGS) -c $< -o $@

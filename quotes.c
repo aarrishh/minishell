@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/24 19:47:01 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:41:01 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ void	start_quotes(char *line, char ***split)
 	{
 		state = quote_state(state, line[i]);
 		i++;
-		if (line[i] == '$' && line[i + 1])
-			check_var(state, line + i);
+		// if (line[i] == '$' && line[i + 1])
+		// 	check_var(state, line + i);
 	}
 	if (state != NO_QUOTE)
 	{
 		quote_line = open_dquote(state, line);
 		if (quote_line)
-			printf("%s\n", quote_line);
+			printf("%s%s\n", quote_line, ": command not found");
 	}
 	if (state == NO_QUOTE)
 		*split = ft_split(line, ' ');
@@ -111,7 +111,7 @@ char	*open_dquote(t_quote_state state, char *line)
 	return (without_quote_line);
 }
 
-int	len_without_quote(char *line)
+int	len_without_quote(char *line, t_quote_state state)
 {
 	int	i;
 	int	len;
@@ -120,9 +120,15 @@ int	len_without_quote(char *line)
 	len = 0;
 	while (line[i])
 	{
-		if (line[i] != '\'' && line[i] != '"')
+		if (state == IN_SINGLE && line[i] == '\'')
+			i++;
+		else if (state == IN_DOUBLE && line[i] == '"')
+			i++;
+		else
+		{
 			len++;
-		i++;
+			i++;
+		}
 	}
 	return (len);
 }
@@ -136,8 +142,10 @@ char	*cut_quotes(char *line, t_quote_state state)
 
 	i = 0;
 	j = 0;
-	len = len_without_quote(line);
+	len = len_without_quote(line, state);
 	new_line = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new_line)
+		return (NULL);
 	while (line[i])
 	{
 		if (line[i] == '\'' && state == IN_SINGLE)
