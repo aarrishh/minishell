@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/07/24 14:31:05 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:52:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@ int	main(void)
 
 	stack = NULL;
 	split = NULL;
-	while ((line = readline("minishell$ ")) != NULL)
+	while (1)
 	{
+		line = readline("minishell$ ");
 		if (*line)
 			add_history(line);
 		start_quotes(line, &split);
 		if (split)
 			validation(split, &stack);
 		init_tokens_type(&stack);
-		// quotes_check(stack, &info);
 		free_stack(&stack);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/25 11:41:01 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:56:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	start_quotes(char *line, char ***split)
 	{
 		state = quote_state(state, line[i]);
 		i++;
-		// if (line[i] == '$' && line[i + 1])
-		// 	check_var(state, line + i);
+		if (line[i] == '$' && line[i + 1])
+			check_var(state, line + i);
 	}
 	if (state != NO_QUOTE)
 	{
@@ -75,14 +75,12 @@ char	*open_dquote(t_quote_state state, char *line)
 	char			*tmp;
 	char			*prompt;
 	t_quote_state	new_state;
-	t_quote_state	petqa;
 	int				i;
 
 	if (state == IN_SINGLE)
 		prompt = "QUOTE> ";
 	else if (state == IN_DOUBLE)
 		prompt = "DQUOTE> ";
-	petqa = state;
 	while (1)
 	{
 		next = readline(prompt);
@@ -107,7 +105,7 @@ char	*open_dquote(t_quote_state state, char *line)
 		if (new_state == NO_QUOTE)
 			break ;
 	}
-	without_quote_line = cut_quotes(line, petqa);
+	without_quote_line = cut_quotes(line, state);
 	return (without_quote_line);
 }
 

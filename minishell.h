@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/25 11:23:27 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:55:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 typedef enum e_token_type
 {
-	WORD,      // normal word 0
+	WORD,      // 0
 	PIPE,      // | 1
 	REDIR_IN,  // < 2
 	REDIR_OUT, // > 3
