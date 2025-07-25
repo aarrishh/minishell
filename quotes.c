@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/25 11:56:22 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/25 19:48:29 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,83 @@ void	start_quotes(char *line, char ***split)
 		if (quote_line)
 			printf("%s%s\n", quote_line, ": command not found");
 	}
+	expand_quotes(line);
 	if (state == NO_QUOTE)
 		*split = ft_split(line, ' ');
+}
+
+void	expand_quotes(char *line)
+{
+	int				i;
+	int				len;
+	t_quote_state	state;
+
+	// t_quote_state	state2;
+	// char			*new;
+	i = 0;
+	state = NO_QUOTE;
+	len = urish_len(line);
+	printf("%d\n", len);
+	// new = malloc();
+	// while (line[i])
+	// {
+	// 	state = quote_state(state, line[i]);
+	// 	if (state == IN_SINGLE)
+	// 	{
+	// 		while (state != NO_QUOTE)
+	// 		{
+	// 			new[i] = line[j];
+	// 			i++;
+	// 			continue ;
+	// 		}
+	// 	}
+	// 	i++;
+	// }
+}
+
+int	urish_len(char *line)
+{
+	int				i;
+	int				len;
+	t_quote_state	state;
+
+	i = 0;
+	len = 0;
+	state = NO_QUOTE;
+	while (line[i])
+	{
+		state = quote_state(state, line[i]);
+		if (state == IN_SINGLE)
+		{
+			i++;
+			while (line[i] && line[i] != '\'')
+			{
+				len++;
+				i++;
+			}
+			if (line[i] == '\'')
+				i++;
+			state = NO_QUOTE;
+		}
+		else if (state == IN_DOUBLE)
+		{
+			i++;
+			while (line[i] && line[i] != '"')
+			{
+				len++;
+				i++;
+			}
+			if (line[i] == '"')
+				i++;
+			state = NO_QUOTE;
+		}
+		else
+		{
+			len++;
+			i++;
+		}
+	}
+	return (len);
 }
 
 char	*open_dquote(t_quote_state state, char *line)
@@ -78,9 +153,9 @@ char	*open_dquote(t_quote_state state, char *line)
 	int				i;
 
 	if (state == IN_SINGLE)
-		prompt = "QUOTE> ";
+		prompt = "quote> ";
 	else if (state == IN_DOUBLE)
-		prompt = "DQUOTE> ";
+		prompt = "dquote> ";
 	while (1)
 	{
 		next = readline(prompt);
