@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:30:54 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/02/03 12:03:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:39:16 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	ft_atoi(const char *str)
 	}
 	return (integer * sign);
 }
-/*#include <stdio.h>
+// #include <stdio.h>
 
-int	main(void)
-{
-	printf("%d\n", ft_atoi("+-54"));
-}*/
+// int	main(void)
+// {
+// 	printf("%d\n", ft_atoi("aaaa"));
+// }
