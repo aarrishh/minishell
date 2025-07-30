@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/07/25 16:52:23 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/30 15:30:16 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	main(void)
 		if (split)
 			validation(split, &stack);
 		init_tokens_type(&stack);
-		built_in_functions(&stack);
+		if (built_in_functions(&stack) == 1)
+			return (1);
 		free_stack(&stack);
 	}
 	return (0);

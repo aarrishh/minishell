@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 14:33:44 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/30 15:59:52 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	*echo_command(t_token **stack)
 	return ("");
 }
 
-void	exit_command(t_token **stack)
+int	exit_command(t_token **stack)
 {
 	t_token		*tmp;
 	long long	num;
@@ -78,21 +78,17 @@ void	exit_command(t_token **stack)
 		tmp = tmp->next;
 		flag = ft_atol(tmp->string, &num);
 		if (flag == -1)
-		{
-			printf("exit\nbash: exit: %s: numeric argument required\n", tmp->string);
-			exit(2);
-		}
+			printf("exit\nbash: exit: %s: numeric argument required\n", \
+			tmp->string), exit(2);
 	}
 	if (tmp->next)
-		printf("exit: too many arguments\n");
+		return (printf("exit\nbash: exit: too many arguments\n"), 1);
 	else
-	{
-		printf("exit\n");
-		exit(num % 256);
-	}
+		printf("exit\n"), exit(num % 256);
+	return (0);
 }
 
-void	built_in_functions(t_token **stack)
+int	built_in_functions(t_token **stack)
 {
 	if (ft_strcmp((*stack)->string, "echo") == 0)
 		echo_command(stack);
@@ -100,4 +96,5 @@ void	built_in_functions(t_token **stack)
 		exit_command(stack);
 	else
 		printf("%s: command not found\n", ((*stack)->string));
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/29 15:29:47 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/30 15:30:32 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char				*cut_quotes(char *line, t_quote_state state);
 int					len_without_quote(char *line, t_quote_state state);
 int 				ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
-void				built_in_functions(t_token **stack);
+int					built_in_functions(t_token **stack);
 int					ft_atol(const char *str, long long *result);
 
 #endif
