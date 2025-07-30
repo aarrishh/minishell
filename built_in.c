@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/07/28 20:04:00 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/30 14:33:44 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	*echo_command(t_token **stack)
 		else
 			tmp = tmp->next;
 	}
-	// printf("flag->%d\n", flag);
 	while (tmp && tmp->next)
 	{
 		printf("%s ", tmp->string);
@@ -67,17 +66,22 @@ void	*echo_command(t_token **stack)
 
 void	exit_command(t_token **stack)
 {
-	t_token	*tmp;
-	int	num;
-	
+	t_token		*tmp;
+	long long	num;
+	int			flag;
+
 	num = 0;
+	flag = 0;
 	tmp = (*stack);
 	if (tmp->next)
 	{
 		tmp = tmp->next;
-		num = ft_atoi(tmp->string);
-		if (num == 0)
-		printf("error\n");
+		flag = ft_atol(tmp->string, &num);
+		if (flag == -1)
+		{
+			printf("exit\nbash: exit: %s: numeric argument required\n", tmp->string);
+			exit(2);
+		}
 	}
 	if (tmp->next)
 		printf("exit: too many arguments\n");

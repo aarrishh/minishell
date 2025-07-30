@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/28 13:49:00 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/29 15:29:47 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdlib.h>
+# include <limits.h>
 
 typedef struct s_env
 {
@@ -64,5 +65,6 @@ int					len_without_quote(char *line, t_quote_state state);
 int 				ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
 void				built_in_functions(t_token **stack);
+int					ft_atol(const char *str, long long *result);
 
 #endif

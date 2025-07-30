@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:21:25 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/02/03 16:26:12 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/29 15:28:30 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_list
 }					t_list;
 
 int					ft_isalpha(int a);
-int					ft_isdigit(int a);
+int					ft_isdigit(char c);
 int					ft_isalnum(char a);
 int					ft_isascii(int a);
 int					ft_isprint(int a);

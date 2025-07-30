@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 18:28:46 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/07/28 13:09:18 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/29 15:26:06 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,72 @@ int ft_strcmp(char *s1, char *s2)
 		else
 			return (s1[i] - s2[i]);
 	}
+	return (0);
+}
+
+// long long	ft_atol(const char *str)
+// {
+// 	int			i;
+// 	int			sign;
+// 	long long	res;
+
+// 	i = 0;
+// 	sign = 1;
+// 	res = 0;
+// 	while (str[i] && ((str[i] >= 9 && str[i] <= 13) || str[i] == 32))
+// 		i++;
+// 	if (str[i] == '-' || str[i] == '+')
+// 	{
+// 		if (str[i] == '-')
+// 			sign = -1;
+// 		i++;
+// 	}
+// 	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
+// 	{
+// 		res = (res * 10) + (str[i] - 48);
+// 		i++;
+// 	}
+// 	if (str[i])
+// 		return (-1);
+// 	return (sign * res);
+// }
+
+int	check_long_number(long long *res, int sign, char c)
+{
+	int	digit;
+
+	digit = c - '0';
+	if (sign == 1 && (*res) > (LLONG_MAX - digit) / 10)
+		return (-1);
+	if (sign == -1 && -(*res) < (LLONG_MIN + digit) / 10)
+		return (-1);
+	(*res) = (*res) * 10 + digit;
+	return (0);
+}
+
+int	ft_atol(const char *str, long long *result)
+{
+	int			i = 0;
+	int			sign = 1;
+	long long	res = 0;
+
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	if (!ft_isdigit(str[i]))
+		return (-1);
+	while (ft_isdigit(str[i]))
+	{
+		if (check_long_number(&res, sign, str[i++]) == -1)
+			return (-1);
+	}
+	if (str[i] != '\0')
+		return (-1);
+	*result = res * sign;
 	return (0);
 }

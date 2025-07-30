@@ -79,3 +79,53 @@ echo "world" >> file.txt
 ✅ Creates file.txt (if not existing)
 ✅ Adds "world" at the end of the existing content
 ✅ Preserves existing data
+
+
+-------------------------------------------------------------------------------------------------------------
+✅ All cases work ->
+
+exit            # should exit with the last return status (e.g., $? value)
+exit 0          # should exit with code 0
+exit 42         # should exit with code 42
+exit 256        # should exit with code 0 (256 % 256)
+exit -1         # should exit with code 255 (-1 % 256)
+exit 9223372036854775807   # LLONG_MAX, valid should exit with code 255
+exit -9223372036854775808  # LLONG_MIN, valid should exit eith code 0
+
+
+❌ Doesn't work
+
+exit abc
+# minishell: exit: abc: numeric argument required
+# exit code = 255
+
+exit 1 2
+# minishell: exit: too many arguments
+# do NOT exit, return 1
+
+exit 9223372036854775808
+# minishell: exit: 9223372036854775808: numeric argument required
+# exit code = 255
+
+exit -9223372036854775809
+# minishell: exit: -9223372036854775809: numeric argument required
+# exit code = 255
+
+exit --
+# minishell: exit: --: numeric argument required
+# exit code = 255
+
+exit -abc
+# minishell: exit: -abc: numeric argument required
+# exit code = 255
+
+exit '42a'
+# minishell: exit: 42a: numeric argument required
+# exit code = 255
+
+exit '   55'
+# Valid in bash, if you trim spaces. Should be 55.
+
+exit ''
+# minishell: exit: : numeric argument required
+# exit code = 255
