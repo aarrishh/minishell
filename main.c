@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 17:35:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/30 19:06:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ int	main(int argc, char **argv, char **env)
 	split = NULL;
 	(void)argc;
 	(void)argv;
-	(void)env;
-	// check_env(env);
+	print_env(env);
 	while (1)
 	{
 		line = readline("minishell$ ");
