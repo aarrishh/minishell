@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/30 14:22:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/30 16:46:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,14 @@ t_quote_state	quote_state(t_quote_state quote, char c)
 	return (quote);
 }
 
-void	check_var(t_quote_state state, char *line)
-{
-	// int	i;
-	// i = 1;
-	(void)line;
-	if (state == IN_SINGLE)
-		printf("Ստեղ չենք բացում, ոնց կա գրում ենք\n");
-	// if (line[i] == '_' || (line[i] >= 'A' && line[i] <= 'Z'))
-	// {
-	// 	while (line[i] >= 'A')
-	// 	{
-	// 		if (line[i] == '$')
-	// 	}
-	// }
-}
+// void	check_var(char *line)
+// {
+// 	int	i;
+
+// 	i = 1;
+// 	if (line[i] == '\'')
+// 		printf("Ստեղ չենք բացում, ոնց կա գրում ենք %s\n", line);
+// }
 
 void	start_quotes(char *line, char ***split)
 {
@@ -57,8 +50,6 @@ void	start_quotes(char *line, char ***split)
 	{
 		state = quote_state(state, line[i]);
 		i++;
-		if (line[i] == '$' && line[i + 1])
-			check_var(state, line + i);
 	}
 	if (state != NO_QUOTE)
 	{
@@ -67,7 +58,15 @@ void	start_quotes(char *line, char ***split)
 			exit(printf("%s%s\n", quote_line, ": command not found") && 0);
 	}
 	if (state == NO_QUOTE)
+	{
+		// while (line[i])
+		// {
+		// 	if (line[i] == '$' && line[i + 1])
+		// 		check_var(line + i);
+		// 	i++;
+		// }
 		expanded = expand_quotes(line);
+	}
 	*split = ft_split(expanded, ' ');
 }
 
