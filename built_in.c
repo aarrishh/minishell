@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 15:59:52 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/30 17:35:42 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,3 +98,4 @@ int	built_in_functions(t_token **stack)
 		printf("%s: command not found\n", ((*stack)->string));
 	return (0);
 }
+// piti ban avelacnem
