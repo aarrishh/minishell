@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/07/30 13:51:13 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/07/30 16:59:48 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c tokenization.c quotes.c
+SRCS = main.c list.c functions.c tokenization.c quotes.c built_in.c
 OBJS = $(SRCS:.c=.o)
 
 GREEN = \033[1;28;5;32m
-BLUE = \033[0;34m
+BLUE = \033[1;34m
 YELLOW = \033[0;33m
 BABY_PINK := \033[38;2;244;194;194m
 LIGHT_PINK  := \033[38;2;255;182;193m

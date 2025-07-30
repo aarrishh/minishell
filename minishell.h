@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 15:21:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:00:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdlib.h>
+# include <limits.h>
+
+typedef struct s_env
+{
+    char			*key;
+    char			*value;
+    struct s_env	*next;
+}	t_env;
 
 typedef enum e_token_type
 {
@@ -27,27 +35,26 @@ typedef enum e_token_type
 	HEREDOC,   // << 4
 	APPEND,    // >> 5
 	LIM        // 6
-}					t_token_type;
+}	t_token_type;
 
 typedef struct s_token
 {
 	char			*string;
 	t_token_type	type;
 	struct s_token	*next;
-}					t_token;
+}	t_token;
 
 typedef enum e_quote_state
 {
 	NO_QUOTE,
 	IN_SINGLE,
 	IN_DOUBLE,
-}					t_quote_state;
+}	t_quote_state;
 
 t_token				*create_node(char *res);
-void				add_back(t_token *node, t_token **a);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
-int					ft_strlen(const char *str);
 char				*ft_strstr(char *str, char *to_find);
+void				add_back(t_token *node, t_token **a);
 void				validation(char **line, t_token **stack);
 void				init_tokens_type(t_token **stack);
 void				start_quotes(char *line, char ***split);
@@ -57,5 +64,9 @@ char				*cut_quotes(char *line, t_quote_state state);
 int					len_without_quote(char *line, t_quote_state state);
 char				*expand_quotes(char *line);
 int					urish_len(char *line);
+int 				ft_strcmp(char *s1, char *s2);
+int					ft_strlen(const char *str);
+int					built_in_functions(t_token **stack);
+int					ft_atol(const char *str, long long *result);
 
 #endif

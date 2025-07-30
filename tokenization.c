@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/07/24 12:40:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:12:22 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	check_type_append(char *str, t_token **stack)
 void	init_tokens_type(t_token **stack)
 {
 	t_token	*tmp;
-	t_token	*mzz;
+	// t_token	*mzz;
 
 	tmp = *stack;
 	while (tmp)
@@ -87,12 +87,12 @@ void	init_tokens_type(t_token **stack)
 		// printf("che%s\n", tmp->string);
 		tmp = tmp->next;
 	}
-	mzz = *stack;
-	while (mzz)
-	{
-		printf("%s -> %d\n", (mzz)->string, mzz->type);
-		(mzz) = (mzz)->next;
-	}
+	// mzz = *stack;
+	// while (mzz)
+	// {
+	// 	printf("%s -> %d\n", (mzz)->string, mzz->type);
+	// 	(mzz) = (mzz)->next;
+	// }
 }
 
 int	check_string(char *str)
