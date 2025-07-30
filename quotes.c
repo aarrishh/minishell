@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/25 19:48:29 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:22:26 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	check_var(t_quote_state state, char *line)
 {
 	// int	i;
 	// i = 1;
+	(void)line;
 	if (state == IN_SINGLE)
-		printf("Ստեղ չենք բացում, ոնց կա գրում ենք %s\n", line);
+		printf("Ստեղ չենք բացում, ոնց կա գրում ենք\n");
 	// if (line[i] == '_' || (line[i] >= 'A' && line[i] <= 'Z'))
 	// {
 	// 	while (line[i] >= 'A')
@@ -47,6 +48,7 @@ void	start_quotes(char *line, char ***split)
 {
 	int				i;
 	t_quote_state	state;
+	char			*expanded;
 	char			*quote_line;
 
 	i = 0;
@@ -62,40 +64,68 @@ void	start_quotes(char *line, char ***split)
 	{
 		quote_line = open_dquote(state, line);
 		if (quote_line)
-			printf("%s%s\n", quote_line, ": command not found");
+			exit(printf("%s%s\n", quote_line, ": command not found") && 0);
 	}
-	expand_quotes(line);
 	if (state == NO_QUOTE)
-		*split = ft_split(line, ' ');
+		expanded = expand_quotes(line);
+	*split = ft_split(expanded, ' ');
 }
 
-void	expand_quotes(char *line)
+char	*expand_quotes(char *line)
 {
 	int				i;
+	int				j;
 	int				len;
+	char			*new;
 	t_quote_state	state;
 
-	// t_quote_state	state2;
-	// char			*new;
 	i = 0;
+	j = 0;
 	state = NO_QUOTE;
 	len = urish_len(line);
-	printf("%d\n", len);
-	// new = malloc();
-	// while (line[i])
-	// {
-	// 	state = quote_state(state, line[i]);
-	// 	if (state == IN_SINGLE)
-	// 	{
-	// 		while (state != NO_QUOTE)
-	// 		{
-	// 			new[i] = line[j];
-	// 			i++;
-	// 			continue ;
-	// 		}
-	// 	}
-	// 	i++;
-	// }
+	new = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new)
+		return (NULL);
+	while (line[i])
+	{
+		state = quote_state(state, line[i]);
+		if (state == IN_SINGLE)
+		{
+			i++;
+			while (line[i] && line[i] != '\'')
+			{
+				new[j] = line[i];
+				i++;
+				j++;
+			}
+			if (line[i] == '\'')
+				i++;
+			state = NO_QUOTE;
+			continue ;
+		}
+		if (state == IN_DOUBLE)
+		{
+			i++;
+			while (line[i] && line[i] != '"')
+			{
+				new[j] = line[i];
+				i++;
+				j++;
+			}
+			if (line[i] == '"')
+				i++;
+			state = NO_QUOTE;
+			continue ;
+		}
+		else
+		{
+			new[j] = line[i];
+			i++;
+			j++;
+		}
+	}
+	new[j] = '\0';
+	return (new);
 }
 
 int	urish_len(char *line)
