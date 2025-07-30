@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 15:30:16 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/30 17:35:41 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_stack(t_token **stack)
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	char	*line;
 	char	**split;
@@ -33,6 +33,10 @@ int	main(void)
 
 	stack = NULL;
 	split = NULL;
+	(void)argc;
+	(void)argv;
+	(void)env;
+	// check_env(env);
 	while (1)
 	{
 		line = readline("minishell$ ");
