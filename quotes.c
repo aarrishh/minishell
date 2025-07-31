@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/31 17:57:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 18:45:15 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	start_quotes(char *line, char ***split, t_env **env_struct)
 		if (quote_line)
 			exit(printf("%s%s\n", quote_line, ": command not found") && 0);
 	}
-	else if (state == NO_QUOTE)
+	if (state == NO_QUOTE)
 	{
 		// i = 0;
 		// while (line[i])
@@ -109,13 +109,26 @@ char	*expand_quotes(char *line)
 		return (NULL);
 	while (line[i])
 	{
-		i++;
-		// state = quote_state(state, line[i]);
+		state = quote_state(state, line[i]);
 		// if (state == IN_SINGLE)
 		// 	expanding_helper_loop(line, new, i, j);
 		// state = NO_QUOTE;
 		// continue ;
-		if (state == IN_DOUBLE)
+		if (state == IN_SINGLE)
+		{
+			i++;
+			while (line[i] && line[i] != '\'')
+			{
+				new[j] = line[i];
+				i++;
+				j++;
+			}
+			if (line[i] == '\'')
+				i++;
+			state = NO_QUOTE;
+			continue ;
+		}
+		else if (state == IN_DOUBLE)
 		{
 			i++;
 			while (line[i] && line[i] != '"')
