@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 18:09:07 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/31 18:27:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 18:36:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	chgitem_env(char **env, t_env **env_struct)
 	int		i;
 	int		j;
 	char	**new_env;
-	t_env	*tmp;
+	// t_env	*tmp;
 
 	i = 0;
 	j = 0;
@@ -121,11 +121,11 @@ void	chgitem_env(char **env, t_env **env_struct)
 		separate_key_and_value(new_env[i], env_struct);
 		i++;
 	}
-	tmp = *env_struct;
-	while (tmp->next)
-	{
-		printf("key-%s\n", tmp->key);
-		printf("value-%s\n", tmp->value);
-		tmp = tmp->next;
-	}
+	// tmp = *env_struct;
+	// while (tmp->next)
+	// {
+	// 	printf("key-%s\n", tmp->key);
+	// 	printf("value-%s\n", tmp->value);
+	// 	tmp = tmp->next;
+	// }
 }
