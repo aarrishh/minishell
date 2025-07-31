@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 18:50:24 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 12:59:42 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ int					ft_strlen(const char *str);
 int					built_in_functions(t_token **stack);
 int					ft_atol(const char *str, long long *result);
 char				**copy_env(char **env);
-void				print_env(char **env);
+void				chgitem_env(char **env);
 
 #endif
