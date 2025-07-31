@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/31 18:45:15 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 19:12:35 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,32 @@ void	start_quotes(char *line, char ***split, t_env **env_struct)
 	*split = ft_split(expanded, ' ');
 }
 
-// void	expanding_helper_loop(char *line, char *new, int i, int j)
-// {
-// 	*i++;
-// 	while (line[*i] && line[*i] != '\'')
-// 	{
-// 		new[*j] = line[*i];
-// 		*i++;
-// 		*j++;
-// 	}
-// 	if (line[*i] == '\'')
-// 		*i++;
-// }
+void	exp_help_loop(t_quote_state state, char *str, char *new, int *i, int *j)
+{
+	(*i)++;
+	if (state == IN_SINGLE)
+	{
+		while (str[*i] && str[*i] != '\'')
+		{
+			new[*j] = str[*i];
+			(*i)++;
+			(*j)++;
+		}
+		if (str[*i] == '\'')
+			(*i)++;
+	}
+	else if (state == IN_DOUBLE)
+	{
+		while (str[*i] && str[*i] != '"')
+		{
+			new[*j] = str[*i];
+			(*i)++;
+			(*j)++;
+		}
+		if (str[*i] == '"')
+			(*i)++;
+	}
+}
 
 char	*expand_quotes(char *line)
 {
@@ -110,35 +124,9 @@ char	*expand_quotes(char *line)
 	while (line[i])
 	{
 		state = quote_state(state, line[i]);
-		// if (state == IN_SINGLE)
-		// 	expanding_helper_loop(line, new, i, j);
-		// state = NO_QUOTE;
-		// continue ;
-		if (state == IN_SINGLE)
+		if (state != NO_QUOTE)
 		{
-			i++;
-			while (line[i] && line[i] != '\'')
-			{
-				new[j] = line[i];
-				i++;
-				j++;
-			}
-			if (line[i] == '\'')
-				i++;
-			state = NO_QUOTE;
-			continue ;
-		}
-		else if (state == IN_DOUBLE)
-		{
-			i++;
-			while (line[i] && line[i] != '"')
-			{
-				new[j] = line[i];
-				i++;
-				j++;
-			}
-			if (line[i] == '"')
-				i++;
+			exp_help_loop(state, line, new, &i, &j);
 			state = NO_QUOTE;
 			continue ;
 		}

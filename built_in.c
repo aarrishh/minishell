@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 15:59:52 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/31 19:08:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,20 @@ int	n_check(char *str)
 	return (0);
 }
 
-
 void	*echo_command(t_token **stack)
 {
-	t_token *tmp;
-	int	flag;
+	t_token	*tmp;
+	int		flag;
 
 	flag = 0;
 	if (!(*stack)->next)
-		return(printf("\n"), "");
+		return (printf("\n"), "");
 	tmp = (*stack)->next;
 	while (tmp && ft_strncmp(tmp->string, "-n", 2) == 0)
 	{
 		flag = 1;
 		if (n_check(tmp->string) == -1)
-		{	
+		{
 			flag = 0;
 			break ;
 		}
@@ -78,8 +77,8 @@ int	exit_command(t_token **stack)
 		tmp = tmp->next;
 		flag = ft_atol(tmp->string, &num);
 		if (flag == -1)
-			printf("exit\nbash: exit: %s: numeric argument required\n", \
-			tmp->string), exit(2);
+			printf("exit\nbash: exit: %s: numeric argument required\n",
+				tmp->string), exit(2);
 	}
 	if (tmp->next)
 		return (printf("exit\nbash: exit: too many arguments\n"), 1);
