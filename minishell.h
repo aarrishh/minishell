@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/31 12:59:42 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:45:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ char				*ft_strstr(char *str, char *to_find);
 void				add_back(t_token *node, t_token **a);
 void				validation(char **line, t_token **stack);
 void				init_tokens_type(t_token **stack);
-void				start_quotes(char *line, char ***split);
-void				check_var(char *line);
+void				start_quotes(char *line, char ***split, t_env **env_struct);
 char				*open_dquote(t_quote_state state, char *line);
 char				*cut_quotes(char *line, t_quote_state state);
 int					len_without_quote(char *line, t_quote_state state);
@@ -69,6 +68,6 @@ int					ft_strlen(const char *str);
 int					built_in_functions(t_token **stack);
 int					ft_atol(const char *str, long long *result);
 char				**copy_env(char **env);
-void				chgitem_env(char **env);
+void				chgitem_env(char **env, t_env **env_struct);
 
 #endif

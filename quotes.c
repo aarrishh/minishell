@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/30 16:46:53 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 17:57:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,23 @@ t_quote_state	quote_state(t_quote_state quote, char c)
 	return (quote);
 }
 
-// void	check_var(char *line)
-// {
-// 	int	i;
+void	check_var(char *line, t_env **env_struct)
+{
+	(void)env_struct;
+	if (line[0] == '\'')
+		printf("չենք բացում\n");
+	else if (line[0] == '"')
+		printf("բացում ենք\n");
+	else if (line[1] == '\'')
+		printf("չենք բացում\n");
+	else if (line[1] == '"')
+		printf("բացում ենք\n");
+	else if ((line[1] >= 'A' && line[1] <= 'Z') || (line[1] >= 'a'
+			&& line[1] <= 'z') || line[1] == ' ')
+		printf("բացում ենք\n");
+}
 
-// 	i = 1;
-// 	if (line[i] == '\'')
-// 		printf("Ստեղ չենք բացում, ոնց կա գրում ենք %s\n", line);
-// }
-
-void	start_quotes(char *line, char ***split)
+void	start_quotes(char *line, char ***split, t_env **env_struct)
 {
 	int				i;
 	t_quote_state	state;
@@ -45,6 +52,7 @@ void	start_quotes(char *line, char ***split)
 	char			*quote_line;
 
 	i = 0;
+	(void)env_struct;
 	state = NO_QUOTE;
 	while (line[i])
 	{
@@ -57,18 +65,32 @@ void	start_quotes(char *line, char ***split)
 		if (quote_line)
 			exit(printf("%s%s\n", quote_line, ": command not found") && 0);
 	}
-	if (state == NO_QUOTE)
+	else if (state == NO_QUOTE)
 	{
+		// i = 0;
 		// while (line[i])
 		// {
 		// 	if (line[i] == '$' && line[i + 1])
-		// 		check_var(line + i);
+		// 		check_var(line + i - 2, env_struct);
 		// 	i++;
 		// }
 		expanded = expand_quotes(line);
 	}
 	*split = ft_split(expanded, ' ');
 }
+
+// void	expanding_helper_loop(char *line, char *new, int i, int j)
+// {
+// 	*i++;
+// 	while (line[*i] && line[*i] != '\'')
+// 	{
+// 		new[*j] = line[*i];
+// 		*i++;
+// 		*j++;
+// 	}
+// 	if (line[*i] == '\'')
+// 		*i++;
+// }
 
 char	*expand_quotes(char *line)
 {
@@ -87,21 +109,12 @@ char	*expand_quotes(char *line)
 		return (NULL);
 	while (line[i])
 	{
-		state = quote_state(state, line[i]);
-		if (state == IN_SINGLE)
-		{
-			i++;
-			while (line[i] && line[i] != '\'')
-			{
-				new[j] = line[i];
-				i++;
-				j++;
-			}
-			if (line[i] == '\'')
-				i++;
-			state = NO_QUOTE;
-			continue ;
-		}
+		i++;
+		// state = quote_state(state, line[i]);
+		// if (state == IN_SINGLE)
+		// 	expanding_helper_loop(line, new, i, j);
+		// state = NO_QUOTE;
+		// continue ;
 		if (state == IN_DOUBLE)
 		{
 			i++;

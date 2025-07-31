@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 18:09:07 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/31 13:21:52 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 18:27:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,36 @@ void	add_env_node(t_env **env_list, t_env *new)
 		last->next = new;
 }
 
-t_env	*new_env_node(void *key, void *value)
+t_env	*new_env_node(void *key, char **value)
 {
 	t_env	*new;
+	int		i;
+	char	*tmp;
 
+	i = 1;
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
 	new->key = key;
-	new->value = value;
+	new->value = ft_strdup("");
+	while (value[i])
+	{
+		tmp = ft_strjoin(new->value, value[i]);
+		free(new->value);
+		new->value = tmp;
+		if (value[i + 1])
+		{
+			tmp = ft_strjoin(new->value, "=");
+			free(new->value);
+			new->value = tmp;
+		}
+		i++;
+	}
 	new->next = NULL;
 	return (new);
 }
 
-void	separate_key_and_value(char *env_var, t_env **env)
+void	separate_key_and_value(char *env_var, t_env **env_struct)
 {
 	char	**splitted_var;
 	t_env	*new;
@@ -84,34 +100,32 @@ void	separate_key_and_value(char *env_var, t_env **env)
 	splitted_var = ft_split(env_var, '=');
 	if (!splitted_var)
 		return ;
-	new = new_env_node(splitted_var[0], splitted_var[1]);
+	new = new_env_node(splitted_var[0], splitted_var);
 	if (!new)
 		return ;
-	add_env_node(env, new);
+	add_env_node(env_struct, new);
 }
 
-void	chgitem_env(char **env)
+void	chgitem_env(char **env, t_env **env_struct)
 {
-	int i;
-	int j;
-	t_env *env_struct;
-	t_env tmp;
-	char **new_env;
+	int		i;
+	int		j;
+	char	**new_env;
+	t_env	*tmp;
 
 	i = 0;
 	j = 0;
-	env_struct = NULL;
 	new_env = copy_env(env);
 	while (env[i])
 	{
-		separate_key_and_value(new_env[i], &env_struct);
+		separate_key_and_value(new_env[i], env_struct);
 		i++;
 	}
 	tmp = *env_struct;
-	while (tmp.next)
+	while (tmp->next)
 	{
-		printf("key-%s\n", tmp.key);
-		printf("value-%s\n", tmp.value);
-		tmp = *tmp.next;
+		printf("key-%s\n", tmp->key);
+		printf("value-%s\n", tmp->value);
+		tmp = tmp->next;
 	}
 }

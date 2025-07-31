@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/07/31 12:59:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:43:23 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,20 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 	char	**split;
 	t_token	*stack;
+	t_env	*env_struct;
 
 	stack = NULL;
 	split = NULL;
+	env_struct = NULL;
 	(void)argc;
 	(void)argv;
-	chgitem_env(env);
+	chgitem_env(env, &env_struct);
 	while (1)
 	{
 		line = readline("minishell$ ");
 		if (*line)
 			add_history(line);
-		start_quotes(line, &split);
+		start_quotes(line, &split, &env_struct);
 		if (split)
 			validation(split, &stack);
 		init_tokens_type(&stack);
