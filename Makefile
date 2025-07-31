@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: arina <arina@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/07/30 16:59:48 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/07/30 18:47:05 by arina            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 LDFLAGS = -lreadline
 
 SRCS = main.c list.c functions.c tokenization.c quotes.c built_in.c
@@ -53,7 +53,7 @@ $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@echo "$(FOREST_GREEN) [OK]$(RESET) libft done."
 
-%.o: %.c $(LIBFT) minishell.h
+%.o: %.c $(LIBFT) minishell.h Makefile
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

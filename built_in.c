@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 17:35:42 by arina            ###   ########.fr       */
+/*   Updated: 2025/07/30 18:46:16 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,26 @@ int	exit_command(t_token **stack)
 	return (0);
 }
 
+void	pwd_command(void)
+{
+	char *dest;
+
+	dest = getcwd(NULL, 0);
+	if (!dest)
+		return ;
+	printf("%s\n", dest);
+	free (dest);
+}
+
 int	built_in_functions(t_token **stack)
 {
 	if (ft_strcmp((*stack)->string, "echo") == 0)
 		echo_command(stack);
 	else if (ft_strcmp((*stack)->string, "exit") == 0)
 		exit_command(stack);
+	else if (ft_strcmp((*stack)->string, "pwd") == 0)
+		pwd_command();
 	else
 		printf("%s: command not found\n", ((*stack)->string));
 	return (0);
 }
-// piti ban avelacnem
