@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/07/31 13:43:23 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/07/31 19:42:15 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	main(int argc, char **argv, char **env)
 		line = readline("minishell$ ");
 		if (*line)
 			add_history(line);
+		if (line[0] == '\0')
+			continue;
 		start_quotes(line, &split, &env_struct);
 		if (split)
 			validation(split, &stack);
