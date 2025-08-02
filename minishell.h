@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/31 13:45:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:56:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,14 @@ void				start_quotes(char *line, char ***split, t_env **env_struct);
 char				*open_dquote(t_quote_state state, char *line);
 char				*cut_quotes(char *line, t_quote_state state);
 int					len_without_quote(char *line, t_quote_state state);
-char				*expand_quotes(char *line);
-int					urish_len(char *line);
+char				*expand_quotes(char *line, t_env **env_struct);
+int					urish_len(char *line, t_env **env);
 int					ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
 int					built_in_functions(t_token **stack);
 int					ft_atol(const char *str, long long *result);
 char				**copy_env(char **env);
 void				chgitem_env(char **env, t_env **env_struct);
+char				*find_var_value(char *str, t_env **env, int *key_len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/07/31 19:12:35 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:13:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,21 @@ void	start_quotes(char *line, char ***split, t_env **env_struct)
 		// 		check_var(line + i - 2, env_struct);
 		// 	i++;
 		// }
-		expanded = expand_quotes(line);
+		expanded = expand_quotes(line, env_struct);
 	}
 	*split = ft_split(expanded, ' ');
 }
 
-void	exp_help_loop(t_quote_state state, char *str, char *new, int *i, int *j)
+void	exp_help_loop(t_quote_state state, char *str, char *new, int *i, int *j,
+		t_env **env)
 {
+	char	*value;
+	int		a;
+	int		key_len;
+
 	(*i)++;
+	a = 0;
+	key_len = 0;
 	if (state == IN_SINGLE)
 	{
 		while (str[*i] && str[*i] != '\'')
@@ -97,16 +104,61 @@ void	exp_help_loop(t_quote_state state, char *str, char *new, int *i, int *j)
 	{
 		while (str[*i] && str[*i] != '"')
 		{
-			new[*j] = str[*i];
-			(*i)++;
-			(*j)++;
+			if (str[*i] == '$')
+			{
+				value = find_var_value(str + *i, env, &key_len);
+				if (value)
+				{
+					while (value[a])
+					{
+						new[*j] = value[a];
+						a++;
+						(*j)++;
+					}
+					(*i) += key_len;
+				}
+				else
+				{
+					new[*j] = str[*i];
+					(*i)++;
+					(*j)++;
+				}
+			}
+			else
+			{
+				new[*j] = str[*i];
+				(*i)++;
+				(*j)++;
+			}
 		}
 		if (str[*i] == '"')
 			(*i)++;
 	}
 }
 
-char	*expand_quotes(char *line)
+char	*find_var_value(char *str, t_env **env, int *key_len)
+{
+	t_env	*tmp;
+	int		len;
+
+	tmp = *env;
+	// if (str[0] != '$')
+	// 	return (NULL);
+	str++;
+	while (tmp)
+	{
+		len = ft_strlen(tmp->key);
+		if (ft_strncmp(str, tmp->key, len) == 0)
+		{
+			*key_len = len + 1;
+			return (tmp->value);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+char	*expand_quotes(char *line, t_env **env_struct)
 {
 	int				i;
 	int				j;
@@ -117,7 +169,7 @@ char	*expand_quotes(char *line)
 	i = 0;
 	j = 0;
 	state = NO_QUOTE;
-	len = urish_len(line);
+	len = urish_len(line, env_struct);
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
@@ -126,7 +178,7 @@ char	*expand_quotes(char *line)
 		state = quote_state(state, line[i]);
 		if (state != NO_QUOTE)
 		{
-			exp_help_loop(state, line, new, &i, &j);
+			exp_help_loop(state, line, new, &i, &j, env_struct);
 			state = NO_QUOTE;
 			continue ;
 		}
@@ -141,10 +193,12 @@ char	*expand_quotes(char *line)
 	return (new);
 }
 
-int	urish_len(char *line)
+int	urish_len(char *line, t_env **env)
 {
+	char			*value;
 	int				i;
 	int				len;
+	int				key_len;
 	t_quote_state	state;
 
 	i = 0;
@@ -170,8 +224,22 @@ int	urish_len(char *line)
 			i++;
 			while (line[i] && line[i] != '"')
 			{
-				len++;
-				i++;
+				if (line[i] == '$')
+				{
+					value = find_var_value(line + i, env, &key_len);
+					if (value)
+					{
+						len += ft_strlen(value);
+						i += key_len;
+					}
+					else
+						len++;
+				}
+				else
+				{
+					len++;
+					i++;
+				}
 			}
 			if (line[i] == '"')
 				i++;
