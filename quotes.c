@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/02 17:13:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/02 18:25:33 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,6 @@ t_quote_state	quote_state(t_quote_state quote, char c)
 	else if (quote == IN_DOUBLE && c == '"')
 		return (NO_QUOTE);
 	return (quote);
-}
-
-void	check_var(char *line, t_env **env_struct)
-{
-	(void)env_struct;
-	if (line[0] == '\'')
-		printf("չենք բացում\n");
-	else if (line[0] == '"')
-		printf("բացում ենք\n");
-	else if (line[1] == '\'')
-		printf("չենք բացում\n");
-	else if (line[1] == '"')
-		printf("բացում ենք\n");
-	else if ((line[1] >= 'A' && line[1] <= 'Z') || (line[1] >= 'a'
-			&& line[1] <= 'z') || line[1] == ' ')
-		printf("բացում ենք\n");
 }
 
 void	start_quotes(char *line, char ***split, t_env **env_struct)
@@ -65,17 +49,8 @@ void	start_quotes(char *line, char ***split, t_env **env_struct)
 		if (quote_line)
 			exit(printf("%s%s\n", quote_line, ": command not found") && 0);
 	}
-	if (state == NO_QUOTE)
-	{
-		// i = 0;
-		// while (line[i])
-		// {
-		// 	if (line[i] == '$' && line[i + 1])
-		// 		check_var(line + i - 2, env_struct);
-		// 	i++;
-		// }
+	else if (state == NO_QUOTE)
 		expanded = expand_quotes(line, env_struct);
-	}
 	*split = ft_split(expanded, ' ');
 }
 
@@ -142,9 +117,11 @@ char	*find_var_value(char *str, t_env **env, int *key_len)
 	int		len;
 
 	tmp = *env;
-	// if (str[0] != '$')
-	// 	return (NULL);
 	str++;
+	// if (*str)
+	// {
+	// 	;
+	// }
 	while (tmp)
 	{
 		len = ft_strlen(tmp->key);
@@ -162,12 +139,16 @@ char	*expand_quotes(char *line, t_env **env_struct)
 {
 	int				i;
 	int				j;
+	int				a;
 	int				len;
+	int				key_len;
+	char			*value;
 	char			*new;
 	t_quote_state	state;
 
 	i = 0;
 	j = 0;
+	a = 0;
 	state = NO_QUOTE;
 	len = urish_len(line, env_struct);
 	new = (char *)malloc(sizeof(char) * (len + 1));
@@ -184,9 +165,32 @@ char	*expand_quotes(char *line, t_env **env_struct)
 		}
 		else
 		{
-			new[j] = line[i];
-			i++;
-			j++;
+			if (line[i] == '$')
+			{
+				value = find_var_value(line + i, env_struct, &key_len);
+				if (value)
+				{
+					while (value[a])
+					{
+						new[j] = value[a];
+						a++;
+						j++;
+					}
+					i += key_len;
+				}
+				else
+				{
+					new[j] = line[i];
+					i++;
+					j++;
+				}
+			}
+			else
+			{
+				new[j] = line[i];
+				i++;
+				j++;
+			}
 		}
 	}
 	new[j] = '\0';
@@ -233,7 +237,10 @@ int	urish_len(char *line, t_env **env)
 						i += key_len;
 					}
 					else
+					{
 						len++;
+						i++;
+					}
 				}
 				else
 				{
@@ -247,8 +254,25 @@ int	urish_len(char *line, t_env **env)
 		}
 		else
 		{
-			len++;
-			i++;
+			if (line[i] == '$')
+			{
+				value = find_var_value(line + i, env, &key_len);
+				if (value)
+				{
+					len += ft_strlen(value);
+					i += key_len;
+				}
+				else
+				{
+					len++;
+					i++;
+				}
+			}
+			else
+			{
+				len++;
+				i++;
+			}
 		}
 	}
 	return (len);
