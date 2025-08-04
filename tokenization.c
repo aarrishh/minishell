@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/07/25 17:12:22 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/04 15:59:33 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	check_type_append(char *str, t_token **stack)
 void	init_tokens_type(t_token **stack)
 {
 	t_token	*tmp;
-	// t_token	*mzz;
 
 	tmp = *stack;
 	while (tmp)
@@ -84,15 +83,8 @@ void	init_tokens_type(t_token **stack)
 		check_type_red_out(tmp->string, &tmp);
 		check_type_heredoc(tmp->string, &tmp);
 		check_type_append(tmp->string, &tmp);
-		// printf("che%s\n", tmp->string);
 		tmp = tmp->next;
 	}
-	// mzz = *stack;
-	// while (mzz)
-	// {
-	// 	printf("%s -> %d\n", (mzz)->string, mzz->type);
-	// 	(mzz) = (mzz)->next;
-	// }
 }
 
 int	check_string(char *str)
@@ -120,10 +112,8 @@ void	validation(char **line, t_token **stack)
 	int		i;
 	int		j;
 
-	// int fix_ind;
 	i = 0;
 	cur_ind = 0;
-	// fix_ind = 0;
 	while (line[i])
 	{
 		j = 0;
@@ -147,4 +137,9 @@ void	validation(char **line, t_token **stack)
 		}
 		i++;
 	}
+	// while (*stack)
+	// {
+	// 	printf("str-> %s\n", (*stack)->string);
+	// 	(*stack) = (*stack)->next;
+	// }
 }

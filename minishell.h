@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/07/30 17:00:00 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:26:31 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 
 typedef struct s_env
 {
-    char			*key;
-    char			*value;
-    struct s_env	*next;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
 }	t_env;
 
 typedef enum e_token_type
@@ -66,7 +66,8 @@ char				*expand_quotes(char *line);
 int					urish_len(char *line);
 int 				ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
-int					built_in_functions(t_token **stack);
+void				built_in_functions(t_token **stack, t_env **env);
 int					ft_atol(const char *str, long long *result);
+t_env				*add_env_to_list(char **envp);
 
 #endif
