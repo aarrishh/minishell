@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/04 16:25:16 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:31:38 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ t_env	*add_env_to_list(char **envp)
 		env_add_back(cur_node, &env);
 		i++;
 	}
-	// while(env)
-	// {
-	// 	printf("key = %s\nvalue = %s\n", env->key, env->value);
-	// 	env = env->next;
-	// }
 	return (env);
 }
 
