@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/08/04 16:12:26 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:53:25 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,33 +102,10 @@ void	env_command(t_env *env)
 {
 	while (env)
 	{
-		printf("%s = %s\n", env->key, env->value);
+		printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
 }
-
-// char	*remove_last_dest(char *str)
-// {
-// 	int		i;
-// 	int		start;
-// 	char	*copy;
-
-// 	i = 0;
-// 	start = 0;
-// 	while (str[i])
-// 		i++;
-// 	while (str[i] != '/')
-// 		i--;
-// 	copy = (char *)malloc((i + 1) * sizeof(char));
-// 	while (start < i)
-// 	{
-// 		copy[start] = str[start];
-// 		start++;
-// 	}
-// 	copy[start] = '\0';
-// 	printf("-----------------------%s\n", copy);
-// 	return(copy);
-// }
 
 char	*get_env_value(t_env *env, char *key)
 {
@@ -156,13 +133,65 @@ void	cd_command(t_token *stack, t_env **env)
 	if (chdir(path) == -1)
 		perror("cd");
 	cur_dir = getcwd(NULL, 0);
-	if (cur_dir)
+	// if (cur_dir)
+	// {
+	// 	printf("cd -> %s\n", cur_dir);
+	// 	free(cur_dir);
+	// }
+}
+
+void	sort_env(t_env **env)
+{
+	t_env	*tmp;
+	t_env	*idk;
+	char	*temp;
+
+	tmp = *env;
+	while (tmp && tmp->next)
 	{
-		printf("cd -> %s\n", cur_dir);
-		free(cur_dir);
+		idk = tmp->next;
+		while (idk)
+		{
+			if (ft_strcmp(tmp->key, idk->key) > 0)
+			{
+				temp = tmp->key;
+				tmp->key = idk->key;
+				idk->key = temp;
+				temp = tmp->value;
+				tmp->value = idk->value;
+				idk->value = temp;
+			}
+			idk = idk->next;
+		}
+		tmp = tmp->next;
 	}
 }
 
+void	export_command(t_token *stack, t_env **env)
+{
+	t_env	*tmp_env;
+	t_env	*node;
+
+	tmp_env = *env;
+
+	while (stack->next)
+	{
+		stack = stack->next;
+		if (find_equal(stack->string) != -1)
+			node = new_node(ft_substr(stack->string, 0, find_equal(stack->string)), ft_strdup(ft_strchr(stack->string, '=') + 1));
+		else
+			node = new_node(stack->string, "");
+		env_add_back(node, env);
+	}
+	sort_env(env);
+	tmp_env = *env;
+	while (tmp_env)
+	{
+		printf("declare -x %s=\"%s\"\n", tmp_env->key, tmp_env->value);
+		tmp_env = tmp_env->next;
+	}
+	printf("-------------------------------------------------------------------------------------------\n");
+}
 
 void	built_in_functions(t_token **stack, t_env **env)
 {
@@ -176,6 +205,8 @@ void	built_in_functions(t_token **stack, t_env **env)
 		env_command(*env);
 	else if (ft_strcmp((*stack)->string, "cd") == 0)
 		cd_command(*stack, env);
+	else if (ft_strcmp((*stack)->string, "export") == 0)
+		export_command(*stack, env);
 	else
 		printf("%s: command not found\n", ((*stack)->string));
 }

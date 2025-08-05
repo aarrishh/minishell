@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/01 13:53:14 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:34:32 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char **argv, char **env)
 
 	stack = NULL;
 	split = NULL;
+	list_env = add_env_to_list(env);
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -47,7 +48,6 @@ int	main(int argc, char **argv, char **env)
 		start_quotes(line, &split);
 		if (split)
 			validation(split, &stack);
-		list_env = add_env_to_list(env);
 		init_tokens_type(&stack);
 		built_in_functions(&stack, &list_env);
 		free_stack(&stack);
