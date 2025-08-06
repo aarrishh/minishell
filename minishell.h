@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/02 16:56:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:21:24 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char				*ft_strstr(char *str, char *to_find);
 void				add_back(t_token *node, t_token **a);
 void				validation(char **line, t_token **stack);
 void				init_tokens_type(t_token **stack);
-void				start_quotes(char *line, char ***split, t_env **env_struct);
+int					start_quotes(char *line, char ***split, t_env **env_struct);
 char				*open_dquote(t_quote_state state, char *line);
 char				*cut_quotes(char *line, t_quote_state state);
 int					len_without_quote(char *line, t_quote_state state);
@@ -65,10 +65,7 @@ char				*expand_quotes(char *line, t_env **env_struct);
 int					urish_len(char *line, t_env **env);
 int					ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
-int					built_in_functions(t_token **stack);
+void				built_in_functions(t_token **stack, t_env **env);
 int					ft_atol(const char *str, long long *result);
-char				**copy_env(char **env);
-void				chgitem_env(char **env, t_env **env_struct);
-char				*find_var_value(char *str, t_env **env, int *key_len);
 
 #endif

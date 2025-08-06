@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/02 16:36:00 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/06 11:08:46 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@echo "$(FOREST_GREEN) [OK]$(RESET) libft done."
 
-%.o: %.c $(LIBFT) minishell.h
+%.o: %.c $(LIBFT) minishell.h Makefile
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

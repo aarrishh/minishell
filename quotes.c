@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:01:57 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/02 18:27:52 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:19:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_quote_state	quote_state(t_quote_state quote, char c)
 	return (quote);
 }
 
-void	start_quotes(char *line, char ***split, t_env **env_struct)
+int	start_quotes(char *line, char ***split, t_env **env_struct)
 {
 	int				i;
 	t_quote_state	state;
@@ -47,11 +47,15 @@ void	start_quotes(char *line, char ***split, t_env **env_struct)
 	{
 		quote_line = open_dquote(state, line);
 		if (quote_line)
-			exit(printf("%s%s\n", quote_line, ": command not found") && 0);
+		{
+			printf("%s%s\n", quote_line, ": command not found");
+			return (0);
+		}
 	}
 	else if (state == NO_QUOTE)
 		expanded = expand_quotes(line, env_struct);
 	*split = ft_split(expanded, ' ');
+	return (1);
 }
 
 void	exp_help_loop(t_quote_state state, char *str, char *new, int *i, int *j,

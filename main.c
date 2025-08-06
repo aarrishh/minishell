@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/02 16:00:44 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:20:56 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int argc, char **argv, char **env)
 	t_token	*stack;
 	t_env	*env_struct;
 
+	(void)argc, (void)argv;
 	stack = NULL;
 	split = NULL;
 	env_struct = NULL;
@@ -44,13 +45,14 @@ int	main(int argc, char **argv, char **env)
 		if (*line)
 			add_history(line);
 		if (line[0] == '\0')
-			continue;
-		start_quotes(line, &split, &env_struct);
+			continue ;
+		if (!start_quotes(line, &split, env_struct))
+			continue ;
 		if (split)
 			validation(split, &stack);
+		env_struct = add_env_to_list(env);
 		init_tokens_type(&stack);
-		if (built_in_functions(&stack) == 1)
-			return (1);
+		built_in_functions(&stack, &env_struct);
 		free_stack(&stack);
 	}
 	return (0);

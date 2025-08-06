@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/07/31 19:08:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:07:27 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	*echo_command(t_token **stack)
 	return ("");
 }
 
+
 int	exit_command(t_token **stack)
 {
 	t_token		*tmp;
@@ -87,13 +88,95 @@ int	exit_command(t_token **stack)
 	return (0);
 }
 
-int	built_in_functions(t_token **stack)
+void	pwd_command(void)
+{
+	char *dest;
+
+	dest = getcwd(NULL, 0);
+	if (!dest)
+		return ;
+	printf("%s\n", dest);
+	free (dest);
+}
+
+void	env_command(t_env *env)
+{
+	while (env)
+	{
+		printf("%s = %s\n", env->key, env->value);
+		env = env->next;
+	}
+}
+
+// char	*remove_last_dest(char *str)
+// {
+// 	int		i;
+// 	int		start;
+// 	char	*copy;
+
+// 	i = 0;
+// 	start = 0;
+// 	while (str[i])
+// 		i++;
+// 	while (str[i] != '/')
+// 		i--;
+// 	copy = (char *)malloc((i + 1) * sizeof(char));
+// 	while (start < i)
+// 	{
+// 		copy[start] = str[start];
+// 		start++;
+// 	}
+// 	copy[start] = '\0';
+// 	printf("-----------------------%s\n", copy);
+// 	return(copy);
+// }
+
+char	*get_env_value(t_env *env, char *key)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+
+void	cd_command(t_token *stack, t_env **env)
+{
+	char	*path;
+	char	*cur_dir;
+
+	cur_dir = NULL;
+	path = NULL;
+	stack = stack->next;
+	if (stack == NULL || stack->string == NULL)
+		path = get_env_value(*env, "HOME");
+	else
+		path = stack->string;
+	if (chdir(path) == -1)
+		perror("cd");
+	cur_dir = getcwd(NULL, 0);
+	if (cur_dir)
+	{
+		printf("cd -> %s\n", cur_dir);
+		free(cur_dir);
+	}
+}
+
+
+void	built_in_functions(t_token **stack, t_env **env)
 {
 	if (ft_strcmp((*stack)->string, "echo") == 0)
 		echo_command(stack);
 	else if (ft_strcmp((*stack)->string, "exit") == 0)
 		exit_command(stack);
+	else if (ft_strcmp((*stack)->string, "pwd") == 0)
+		pwd_command();
+	else if (ft_strcmp((*stack)->string, "env") == 0)
+		env_command(*env);
+	else if (ft_strcmp((*stack)->string, "cd") == 0)
+		cd_command(*stack, env);
 	else
 		printf("%s: command not found\n", ((*stack)->string));
-	return (0);
 }
