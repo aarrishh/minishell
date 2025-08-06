@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/08/05 17:53:25 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:45:20 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,11 @@ void	env_command(t_env *env)
 {
 	while (env)
 	{
-		printf("%s=%s\n", env->key, env->value);
+		if ((ft_strcmp(env->value, "") != 0) || (ft_strcmp(env->value, "") == 0 && env->flag == 1))
+			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
+	printf("--------------------------------------------------------------------\n");
 }
 
 char	*get_env_value(t_env *env, char *key)
@@ -133,11 +135,6 @@ void	cd_command(t_token *stack, t_env **env)
 	if (chdir(path) == -1)
 		perror("cd");
 	cur_dir = getcwd(NULL, 0);
-	// if (cur_dir)
-	// {
-	// 	printf("cd -> %s\n", cur_dir);
-	// 	free(cur_dir);
-	// }
 }
 
 void	sort_env(t_env **env)
@@ -145,6 +142,7 @@ void	sort_env(t_env **env)
 	t_env	*tmp;
 	t_env	*idk;
 	char	*temp;
+	int		flag_tmp;
 
 	tmp = *env;
 	while (tmp && tmp->next)
@@ -160,6 +158,10 @@ void	sort_env(t_env **env)
 				temp = tmp->value;
 				tmp->value = idk->value;
 				idk->value = temp;
+				flag_tmp = tmp->flag;
+				tmp->flag = idk->flag;
+				idk->flag = flag_tmp;
+				
 			}
 			idk = idk->next;
 		}
@@ -167,27 +169,130 @@ void	sort_env(t_env **env)
 	}
 }
 
+int	check_sameness(char *str, t_env *env)
+{
+	while (env)
+	{
+		if (ft_strcmp(ft_substr(str, 0, find_equal(str)), "_") == 0)
+			return (0);
+		if (ft_strcmp(ft_substr(str, 0, find_equal(str)), env->key) == 0)
+			return (1);
+		env = env->next;
+	}
+	return (0);
+}
+
+void	change_value(char *str, t_env **env)
+{
+	t_env *tmp;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (ft_strcmp(ft_substr(str, 0, find_equal(str)), tmp->key) == 0)
+		{
+			printf("ha vor=%d\n", tmp->flag);
+			free(tmp->value);
+			tmp->value = ft_strdup(ft_strchr(str, '=') + 1);
+			
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	check_i_have_value_after_equal_symbol(int index, char *str, t_env **node)
+{
+	if (ft_strcmp(ft_substr(str, 0, find_equal(str)), (*node)->key) == 0)
+	{
+		if (str[index + 1] == '\0')
+			(*node)->flag = 1;
+		return ;
+	}
+}
+
+void	check_i_have_value_after_equal_symbol_version_two(int index, char *str, t_env **env)
+{
+	t_env	*tmp;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (ft_strcmp(ft_substr(str, 0, find_equal(str)), tmp->key) == 0)
+		{
+			if (str[index + 1] == '\0')
+				tmp->flag = 1;
+			else
+				tmp->flag = 0;
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+int	check_key(char *key)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strcmp(key, "_") == 0)
+		return (-1);
+	if (!ft_isalpha(key[0]) && key[0] != '_')
+		return (-1);
+	while (key[i] && key[i] != '=')
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
 void	export_command(t_token *stack, t_env **env)
 {
 	t_env	*tmp_env;
 	t_env	*node;
 
-	tmp_env = *env;
-
+	node = NULL;
 	while (stack->next)
 	{
 		stack = stack->next;
 		if (find_equal(stack->string) != -1)
-			node = new_node(ft_substr(stack->string, 0, find_equal(stack->string)), ft_strdup(ft_strchr(stack->string, '=') + 1));
+		{
+			if (check_sameness(stack->string, *env) == 0)
+			{
+				if (check_key(ft_substr(stack->string, 0, find_equal(stack->string))) == -1)
+					node = NULL;
+				else
+				{
+					node = new_node(ft_substr(stack->string, 0, find_equal(stack->string)), ft_strdup(ft_strchr(stack->string, '=') + 1));
+					check_i_have_value_after_equal_symbol(find_equal(stack->string), stack->string, &node);
+				}
+			}
+			else
+			{
+				change_value(stack->string, env);
+				check_i_have_value_after_equal_symbol_version_two(find_equal(stack->string), stack->string, env);
+			}
+		}
 		else
-			node = new_node(stack->string, "");
-		env_add_back(node, env);
+		{
+			if (check_sameness(stack->string, *env) == 0)
+				node = new_node(stack->string, ft_strdup(""));
+			else
+				continue;
+		}
+		if (node)
+			env_add_back(node, env);
 	}
 	sort_env(env);
 	tmp_env = *env;
 	while (tmp_env)
 	{
-		printf("declare -x %s=\"%s\"\n", tmp_env->key, tmp_env->value);
+		if (ft_strcmp(tmp_env->value, "") == 0 && tmp_env->flag == 0)
+			printf("declare -x %s  %d\n", tmp_env->key, tmp_env->flag);
+		else
+			printf("declare -x %s=\"%s\"\n", tmp_env->key, tmp_env->value);
 		tmp_env = tmp_env->next;
 	}
 	printf("-------------------------------------------------------------------------------------------\n");

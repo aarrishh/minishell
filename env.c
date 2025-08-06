@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/05 14:41:54 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/05 21:30:21 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_env	*new_node(char *key, char *value)
 	new_node = malloc(sizeof(t_env));
 	new_node->key = key;
 	new_node->value = value;
+	new_node->flag = 0;
 	new_node->next = NULL;
 	return (new_node);
 }
