@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/06 11:21:24 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:26:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ int					ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
 void				built_in_functions(t_token **stack, t_env **env);
 int					ft_atol(const char *str, long long *result);
+t_env				*add_env_to_list(char **envp);
+char				*find_var_value(char *str, t_env **env, int *key_len);
 
 #endif
