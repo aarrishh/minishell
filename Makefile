@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/06 11:08:46 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/06 14:22:25 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c tokenization.c quotes.c built_in.c env.c
+SRCS = main.c list.c functions.c tokenization.c built_in.c env.c pipe.c quotes/quotes.c quotes/quotes_len.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c
 OBJS = $(SRCS:.c=.o)
 
 GREEN = \033[1;28;5;32m

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/06 11:26:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:34:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,11 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
+# include "quotes/quotes.h"
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdlib.h>
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
 
 typedef enum e_token_type
 {
@@ -44,30 +38,16 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef enum e_quote_state
-{
-	NO_QUOTE,
-	IN_SINGLE,
-	IN_DOUBLE,
-}					t_quote_state;
-
 t_token				*create_node(char *res);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strstr(char *str, char *to_find);
 void				add_back(t_token *node, t_token **a);
 void				validation(char **line, t_token **stack);
 void				init_tokens_type(t_token **stack);
-int					start_quotes(char *line, char ***split, t_env **env_struct);
-char				*open_dquote(t_quote_state state, char *line);
-char				*cut_quotes(char *line, t_quote_state state);
-int					len_without_quote(char *line, t_quote_state state);
-char				*expand_quotes(char *line, t_env **env_struct);
-int					urish_len(char *line, t_env **env);
 int					ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
 void				built_in_functions(t_token **stack, t_env **env);
 int					ft_atol(const char *str, long long *result);
 t_env				*add_env_to_list(char **envp);
-char				*find_var_value(char *str, t_env **env, int *key_len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/06 11:25:01 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/06 12:10:07 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int	main(int argc, char **argv, char **env)
 	stack = NULL;
 	split = NULL;
 	env_struct = NULL;
-	(void)argc;
-	(void)argv;
 	env_struct = add_env_to_list(env);
 	while (1)
 	{
