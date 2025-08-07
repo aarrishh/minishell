@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/06 12:10:07 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:45:20 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **env)
 	env_struct = add_env_to_list(env);
 	while (1)
 	{
-		line = readline("minishell$ ");
+		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");
 		if (*line)
 			add_history(line);
 		if (line[0] == '\0')
@@ -51,6 +51,7 @@ int	main(int argc, char **argv, char **env)
 		env_struct = add_env_to_list(env);
 		init_tokens_type(&stack);
 		built_in_functions(&stack, &env_struct);
+		// execute_pipe(&stack);
 		free_stack(&stack);
 	}
 	return (0);

@@ -6,14 +6,18 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/06 16:09:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:14:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef QUOTES_H
 # define QUOTES_H
 
-# include "../minishell.h"
+# include "../libft/libft.h"
+# include <limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdlib.h>
 
 typedef struct s_env
 {
