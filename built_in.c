@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/08/06 16:45:20 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:40:24 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	pwd_command(void)
 	if (!dest)
 		return ;
 	printf("%s\n", dest);
-	free (dest);
+	free (dest); // avelacnel vor env-i mej poxi PWD-value-n chisht dir-ov
 }
 
 void	env_command(t_env *env)
@@ -137,36 +137,49 @@ void	cd_command(t_token *stack, t_env **env)
 	cur_dir = getcwd(NULL, 0);
 }
 
-void	sort_env(t_env **env)
+t_env	*sort_env(t_env *env)
 {
-	t_env	*tmp;
 	t_env	*idk;
 	char	*temp;
 	int		flag_tmp;
 
-	tmp = *env;
-	while (tmp && tmp->next)
+	while (env && env->next)
 	{
-		idk = tmp->next;
+		idk = env->next;
 		while (idk)
 		{
-			if (ft_strcmp(tmp->key, idk->key) > 0)
+			if (ft_strcmp(env->key, idk->key) > 0)
 			{
-				temp = tmp->key;
-				tmp->key = idk->key;
+				temp = env->key;
+				env->key = idk->key;
 				idk->key = temp;
-				temp = tmp->value;
-				tmp->value = idk->value;
+				temp = env->value;
+				env->value = idk->value;
 				idk->value = temp;
-				flag_tmp = tmp->flag;
-				tmp->flag = idk->flag;
+				flag_tmp = env->flag;
+				env->flag = idk->flag;
 				idk->flag = flag_tmp;
 				
 			}
 			idk = idk->next;
 		}
-		tmp = tmp->next;
+		env = env->next;
 	}
+	return (env);
+}
+
+int	find_plus(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '+')
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 int	check_sameness(char *str, t_env *env)
@@ -175,8 +188,13 @@ int	check_sameness(char *str, t_env *env)
 	{
 		if (ft_strcmp(ft_substr(str, 0, find_equal(str)), "_") == 0)
 			return (0);
-		if (ft_strcmp(ft_substr(str, 0, find_equal(str)), env->key) == 0)
+		else if (ft_strcmp(ft_substr(str, 0, find_equal(str)), env->key) == 0)
 			return (1);
+		else if ((find_equal_for_export(str) == -2) && ft_strcmp(ft_substr(str, 0, find_plus(str)), env->key) == 0)
+			return (2);
+		// else if ((ft_strcmp(ft_substr(str, 0, find_equal(str)), env->key) == 0) && \
+		// 	ft_strcmp(ft_substr(str, find_equal(str), 2), "+=") == 0)
+		// 	return (2);
 		env = env->next;
 	}
 	return (0);
@@ -230,6 +248,36 @@ void	check_i_have_value_after_equal_symbol_version_two(int index, char *str, t_e
 	}
 }
 
+int	find_plus_equal(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] && str[i + 1])
+	{
+		if (str[i] == '+' && str[i + 1] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	find_equal_for_export(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (find_plus_equal(str) != -1)
+		return (-2);
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int	check_key(char *key)
 {
 	int	i;
@@ -248,21 +296,65 @@ int	check_key(char *key)
 	return (0);
 }
 
+void	change_value_for_plus_equal_case(char *str, t_env **env)
+{
+	t_env	*tmp;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (ft_strcmp(ft_substr(str, 0, find_plus(str)), tmp->key) == 0)
+			tmp->value = ft_strjoin(tmp->value, ft_strdup(ft_strchr(str, '=') + 1));
+		tmp = tmp->next;
+	}
+}
+
+void	print_error_export(char *str)
+{
+	printf("bash: export: `%s': not a valid identifier\n", str);
+}
+
+void	print_export(t_env *env)
+{
+	// t_env *tmp_env;
+
+	// tmp_env = copy_env_list(env);
+	env = sort_env(env);
+	while (env)
+	{
+		if (ft_strcmp(env->value, "") == 0 && env->flag == 0)
+			printf("declare -x %s\n", env->key);
+		else
+			printf("declare -x %s=\"%s\"\n", env->key, env->value);
+		env = env->next;
+	}
+}
+
 void	export_command(t_token *stack, t_env **env)
 {
-	t_env	*tmp_env;
 	t_env	*node;
+	// t_token *tmp;
 
+	// tmp = stack;
 	node = NULL;
+	if (stack->next == NULL)
+	{
+		print_export(*env);
+		return ;
+	}
 	while (stack->next)
 	{
 		stack = stack->next;
-		if (find_equal(stack->string) != -1)
+		if (find_equal_for_export(stack->string) >= 0) // = a gtel
 		{
 			if (check_sameness(stack->string, *env) == 0)
 			{
+				// printf("che stex mta\n");
 				if (check_key(ft_substr(stack->string, 0, find_equal(stack->string))) == -1)
+				{
 					node = NULL;
+					print_error_export(stack->string);
+				}
 				else
 				{
 					node = new_node(ft_substr(stack->string, 0, find_equal(stack->string)), ft_strdup(ft_strchr(stack->string, '=') + 1));
@@ -271,12 +363,22 @@ void	export_command(t_token *stack, t_env **env)
 			}
 			else
 			{
+				// printf("stex mta?\n");
 				change_value(stack->string, env);
 				check_i_have_value_after_equal_symbol_version_two(find_equal(stack->string), stack->string, env);
 			}
 		}
-		else
+		else if (find_equal_for_export(stack->string) == -2) // += a gtel
 		{
+			// printf("che che stex mta\n");
+			if (check_sameness(stack->string, *env) == 2) // u ka env-um
+				change_value_for_plus_equal_case(stack->string, env);
+			else
+				node = new_node(ft_substr(stack->string, 0, find_plus(stack->string)), ft_strdup(ft_strchr(stack->string, '=') + 1));
+		}
+		else // chka vochmiban
+		{
+			// printf("che che che stex mta\n");
 			if (check_sameness(stack->string, *env) == 0)
 				node = new_node(stack->string, ft_strdup(""));
 			else
@@ -285,17 +387,8 @@ void	export_command(t_token *stack, t_env **env)
 		if (node)
 			env_add_back(node, env);
 	}
-	sort_env(env);
-	tmp_env = *env;
-	while (tmp_env)
-	{
-		if (ft_strcmp(tmp_env->value, "") == 0 && tmp_env->flag == 0)
-			printf("declare -x %s  %d\n", tmp_env->key, tmp_env->flag);
-		else
-			printf("declare -x %s=\"%s\"\n", tmp_env->key, tmp_env->value);
-		tmp_env = tmp_env->next;
-	}
-	printf("-------------------------------------------------------------------------------------------\n");
+	// if (tmp->next == NULL)
+	// 	print_export(*env);
 }
 
 void	built_in_functions(t_token **stack, t_env **env)

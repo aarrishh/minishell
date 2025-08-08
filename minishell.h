@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/05 13:39:41 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:59:41 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 # include <readline/readline.h>
 # include <stdlib.h>
 # include <limits.h>
+
+# define ANSI(code) "\001" code "\002"
+# define P ANSI("\033[38;2;255;204;213m")		// pink
+# define PB ANSI("\033[1;38;2;255;204;213m")	// bold pink
+# define W ANSI("\033[38;2;255;255;255m")		// white
+# define R ANSI("\033[0m")						// reset
 
 typedef struct s_env
 {
@@ -76,10 +82,13 @@ char				*cut_quotes(char *line, t_quote_state state);
 int					len_without_quote(char *line, t_quote_state state);
 char				*expand_quotes(char *line);
 int					ft_atol(const char *str, long long *result);
+int					find_equal_for_export(char *str);
 int 				ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
+int					find_plus_equal(char *str);
 int					urish_len(char *line);
 int					find_equal(char *str);
+int					find_plus(char *str);
 void				built_in_functions(t_token **stack, t_env **env);
 void				env_add_back(t_env *node, t_env **head);
 t_env				*new_node(char *key, char *value);

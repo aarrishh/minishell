@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/05 17:34:32 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:58:09 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **env)
 	list_env = add_env_to_list(env);
 	while (1)
 	{
-		line = readline("minishell$ ");
+		line = readline(P "🌸 " PB "minishell" R " " W "✦" R " ");
 		if (*line)
 			add_history(line);
 		if (line[0] == '\0')
