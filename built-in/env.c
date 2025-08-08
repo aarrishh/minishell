@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/07 15:36:25 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/08 17:00:24 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	env_add_back(t_env *node, t_env **head)
 {
@@ -57,7 +57,6 @@ t_env	*add_env_to_list(char **envp)
 {
 	t_env	*env;
 	t_env	*cur_node;
-
 	char	*str;
 	int		i;
 
@@ -67,11 +66,21 @@ t_env	*add_env_to_list(char **envp)
 	while (envp[i])
 	{
 		str = ft_strdup(envp[i]);
-		cur_node = new_node(ft_substr(str, 0, find_equal(str)), ft_strdup(ft_strchr(str, '=') + 1));
+		cur_node = new_node(ft_substr(str, 0, find_equal(str)), \
+		ft_strdup(ft_strchr(str, '=') + 1));
 		env_add_back(cur_node, &env);
 		i++;
 	}
 	return (env);
 }
 
-
+void	env_command(t_env *env)
+{
+	while (env)
+	{
+		if ((ft_strcmp(env->value, "") != 0)
+			|| (ft_strcmp(env->value, "") == 0 && env->flag == 1))
+			printf("%s=%s\n", env->key, env->value);
+		env = env->next;
+	}
+}
