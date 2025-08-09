@@ -6,14 +6,14 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/06 16:23:37 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:26:25 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "quotes.h"
 
-int	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
+void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 {
 	char	*value;
 	int		key_len;
@@ -23,8 +23,15 @@ int	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 	value = find_var_value(line + ij->i, env, &key_len);
 	if (value)
 	{
-		if (check_after_key(line[ij->i + key_len]))
-			return (0);
+		if ((check_after_key(line[ij->i + key_len])))
+		{
+			ij->i += key_len;
+			while (line[ij->i] && ((line[ij->i] >= 'a' && line[ij->i] <= 'z')
+					|| (line[ij->i] >= 'A' && line[ij->i] <= 'Z')
+					|| (line[ij->i] >= '0' && line[ij->i] <= '9')))
+				ij->i++;
+			return ;
+		}
 		while (value[a])
 		{
 			new[ij->j] = value[a];
@@ -39,30 +46,39 @@ int	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 		(ij->i)++;
 		(ij->j)++;
 	}
-	return (1);
 }
 
-void	dquote_expansion(char *str, char *new, t_iter *ij, t_env **env)
+void	dquote_expansion(char *line, char *new, t_iter *ij, t_env **env)
 {
 	char	*value;
 	int		key_len;
 
-	if (str[ij->i] == '$')
+	if (line[ij->i] == '$')
 	{
-		value = find_var_value(str + ij->i, env, &key_len);
+		value = find_var_value(line + ij->i, env, &key_len);
 		if (value)
 		{
-			if (check_after_key(str[ij->i + key_len]))
-				return ;
-			keep_value(new, value, &ij->j);
-			ij->i += key_len;
+			if ((check_after_key(line[ij->i + key_len])))
+			{
+				ij->i += key_len;
+				while (line[ij->i] && ((line[ij->i] >= 'a'
+							&& line[ij->i] <= 'z') || (line[ij->i] >= 'A'
+							&& line[ij->i] <= 'Z') || (line[ij->i] >= '0'
+							&& line[ij->i] <= '9')))
+					ij->i++;
+			}
+			else
+			{
+				keep_value(new, value, &ij->j);
+				ij->i += key_len;
+			}
 		}
 		else
-			keep_char(str, new, ij);
+			keep_char(line, new, ij);
 	}
 	else
 	{
-		new[ij->j] = str[ij->i];
+		new[ij->j] = line[ij->i];
 		(ij->i)++;
 		(ij->j)++;
 	}

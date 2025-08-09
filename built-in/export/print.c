@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:34 by arina             #+#    #+#             */
-/*   Updated: 2025/08/09 07:10:33 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/09 18:59:14 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_env	*copy_env_for_print(t_env *env)
 	t_env	*tmp;
 	t_env	*cur_node;
 
+	tmp = NULL;
 	while (env)
 	{
 		cur_node = new_node_for_export(env->key, env->value, env->flag);

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/09 17:56:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:27:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_iter
 	int				j;
 }					t_iter;
 
-int					handle_dollar(char *line, char *new, t_iter *ij,
+void				handle_dollar(char *line, char *new, t_iter *ij,
 						t_env **env);
 void				keep_char(char *line, char *new, t_iter *ij);
 int					check_after_key(char chr);
@@ -58,7 +58,7 @@ int					len_without_quote(char *line, t_quote_state state);
 void				handle_len_dollar(char *line, int *i, int *len,
 						t_env **env);
 t_quote_state		handle_single_quote_len(char *line, int *i, int *len);
-int					urish_len(char *line, t_env **env);
+int					len_for_malloc(char *line, t_env **env);
 void				loop(char *line, char *new, t_quote_state state,
 						t_env **env_struct);
 char				*expand_quotes(char *line, t_env **env_struct);

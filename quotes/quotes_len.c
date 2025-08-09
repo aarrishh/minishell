@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/06 16:39:24 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:23:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,19 @@ void	handle_len_dollar(char *line, int *i, int *len, t_env **env)
 	value = find_var_value(line + *i, env, &key_len);
 	if (value)
 	{
-		if (check_after_key(line[*i + key_len]))
+		if ((check_after_key(line[*i + key_len])))
 		{
 			*i += key_len;
-			return ;
+			while (line[*i] && ((line[*i] >= 'a' && line[*i] <= 'z')
+					|| (line[*i] >= 'A' && line[*i] <= 'Z') || (line[*i] >= '0'
+						&& line[*i] <= '9')))
+				(*i)++;
 		}
-		*len += ft_strlen(value);
-		*i += key_len;
+		else
+		{
+			*len += ft_strlen(value);
+			*i += key_len;
+		}
 	}
 	else
 	{
@@ -90,7 +96,7 @@ t_quote_state	handle_single_quote_len(char *line, int *i, int *len)
 	return (NO_QUOTE);
 }
 
-int	urish_len(char *line, t_env **env)
+int	len_for_malloc(char *line, t_env **env)
 {
 	int				i;
 	int				len;

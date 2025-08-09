@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/06 15:58:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 19:27:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ void	loop(char *line, char *new, t_quote_state state, t_env **env_struct)
 		else
 		{
 			if (line[ij.i] == '$')
-			{
-				if (!handle_dollar(line, new, &ij, env_struct))
-					break ;
-			}
+				handle_dollar(line, new, &ij, env_struct);
 			else
 				keep_char(line, new, &ij);
 		}
@@ -49,7 +46,7 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	t_quote_state	state;
 
 	state = NO_QUOTE;
-	len = urish_len(line, env_struct);
+	len = len_for_malloc(line, env_struct);
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
