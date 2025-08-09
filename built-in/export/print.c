@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:34 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 20:08:49 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/09 07:10:33 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_error_export(char *str)
 {
-	printf("bash: export: `%s': not a valid identifier\n", str);
+	printf("minishell: export: `%s': not a valid identifier\n", str);
 }
 
 t_env	*new_node_for_export(char *key, char *value, int flag)
@@ -31,8 +31,8 @@ t_env	*new_node_for_export(char *key, char *value, int flag)
 
 t_env	*copy_env_for_print(t_env *env)
 {
-	t_env*	tmp;
-	t_env*	cur_node;
+	t_env	*tmp;
+	t_env	*cur_node;
 
 	while (env)
 	{
@@ -60,7 +60,7 @@ void	free_list(t_env **copy)
 
 void	print_export(t_env *env)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = copy_env_for_print(env);
 	sort_env(tmp);

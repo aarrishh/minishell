@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 18:38:18 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/09 07:55:29 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ int		ft_strlen(const char *str);
 // Tokenization functions
 void	validation(char **line, t_token **stack);
 void	init_tokens_type(t_token **stack);
+void	check_type_pipe(char *str, t_token **stack);
+void	check_type_red_in(char *str, t_token **stack);
+void	check_type_red_out(char *str, t_token **stack);
+void	check_type_heredoc(char *str, t_token **stack);
+void	check_type_append(char *str, t_token **stack);
 
 // Quote functions
 int		len_without_quote(char *line, t_quote_state state);
@@ -99,6 +104,7 @@ void	*echo_command(t_token **stack);
 void	export_command(t_token *stack, t_env **env);
 void	cd_command(t_token *stack, t_env **env);
 void	built_in_functions(t_token **stack, t_env **env);
+void    unset_command(t_token *stack, t_env **env);
 
 // Env functions
 void	env_add_back(t_env *node, t_env **head);

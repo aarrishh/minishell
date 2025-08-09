@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:33:37 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 15:45:15 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/08 20:38:42 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	find_equal_for_export(char *str)
 
 int	find_plus_equal(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] && str[i + 1])

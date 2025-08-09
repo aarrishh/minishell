@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 14:15:09 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/09 17:24:25 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	main(int argc, char **argv, char **env)
 	char	**split;
 	t_token	*stack;
 	t_env	*list_env;
-	// t_env	*list_expo/rt;
 
 	(void)argc,
 	(void)argv;
@@ -39,7 +38,6 @@ int	main(int argc, char **argv, char **env)
 	stack = NULL;
 	split = NULL;
 	list_env = add_env_to_list(env);
-	// list_export = 
 	while (1)
 	{
 		line = readline(P "🌸 " PB "minishell" R " " W "✦" R " ");

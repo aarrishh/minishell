@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 19:08:47 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/08 20:40:26 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	we_find_only_equal_in_string(char *str, t_env **env, t_env **node)
 	else
 	{
 		change_value(str, env);
-		check_i_have_value_after_equal_symbol_version_two(find_equal(str), str, env);
+		check_i_have_value_after_equal_symbol_version_two \
+		(find_equal(str), str, env);
 	}
 }
 

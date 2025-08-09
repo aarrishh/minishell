@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 18:37:23 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/09 07:55:47 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	built_in_functions(t_token **stack, t_env **env)
 		cd_command(*stack, env);
 	else if (ft_strcmp((*stack)->string, "export") == 0)
 		export_command(*stack, env);
+	else if (ft_strcmp((*stack)->string, "unset") == 0)
+		unset_command(*stack, env);
 	else
 		printf("%s: command not found\n", ((*stack)->string));
 }

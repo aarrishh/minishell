@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:30:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 17:11:10 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/08 20:43:04 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	check_sameness(char *str, t_env *env)
 	return (0);
 }
 
-void	check_i_have_value_after_equal_symbol(int index, char *str, t_env **node)
+void	check_i_have_value_after_equal_symbol(int index,
+			char *str, t_env **node)
 {
 	if (ft_strcmp(ft_substr(str, 0, find_equal(str)), (*node)->key) == 0)
 	{
@@ -38,7 +39,8 @@ void	check_i_have_value_after_equal_symbol(int index, char *str, t_env **node)
 	}
 }
 
-void	check_i_have_value_after_equal_symbol_version_two(int index, char *str, t_env **env)
+void	check_i_have_value_after_equal_symbol_version_two(int index,
+			char *str, t_env **env)
 {
 	t_env	*tmp;
 

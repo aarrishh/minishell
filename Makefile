@@ -6,7 +6,7 @@
 #    By: arina <arina@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/08 15:43:02 by arina            ###   ########.fr        #
+#    Updated: 2025/08/09 16:57:47 by arina            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
 LDFLAGS = -lreadline
 
 SRCS = $(shell find . -name "*.c" ! -path "./libft/*")

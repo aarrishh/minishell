@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/08 20:51:35 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/09 17:30:19 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	validation(char **line, t_token **stack)
 			cur_ind = check_string(line[i] + j);
 			if (cur_ind == -1)
 			{
-				node = create_node((ft_substr(line[i], j, ft_strlen(line[i])
-								- cur_ind)));
+				node = create_node((ft_substr(line[i], j, ft_strlen(line[i]) - cur_ind)));
 				add_back(node, stack);
 				break ;
 			}
@@ -75,7 +74,7 @@ void	validation(char **line, t_token **stack)
 			node = create_node((ft_substr(line[i], j, cur_ind)));
 			add_back(node, stack);
 			j += cur_ind;
-		}
+		} // free(line[i])
 		i++;
 	}
 }
