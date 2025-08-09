@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/09 17:42:04 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 18:02:42 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@ typedef enum e_token_type
 	LIM        // 6
 }					t_token_type;
 
+// typedef struct s_cmd
+// {
+// 	char			*command;
+// 	char			*infile;
+// 	char			*outfile;
+// 	char			*delimiter;  // for heredoc
+// 	int				append;      // 0 for >, 1 for >>
+// 	int				heredoc;     // 1 if <<
+// 	int				is_builtin;  // 1 if yes, 0 no
+// 	struct s_cmd	*next;       // for pipeline
+// }	t_cmd;
+
 typedef struct s_token
 {
 	char			*string;
@@ -44,22 +56,72 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-t_token				*create_node(char *res);
+// t_token				*create_node(char *res);
+// char				*ft_substr(char const *s, unsigned int start, size_t len);
+// char				*ft_strstr(char *str, char *to_find);
+// void				add_back(t_token *node, t_token **a);
+// void				validation(char **line, t_token **stack);
+// void				init_tokens_type(t_token **stack);
+// int					ft_strcmp(char *s1, char *s2);
+// int					ft_strlen(const char *str);
+// void				built_in_functions(t_token **stack, t_env **env);
+// int					ft_atol(const char *str, long long *result);
+// t_env				*add_env_to_list(char **envp);
+// void				execute_pipe(t_token **stack, t_env **env, char **envp);
+// char				**split_pipe(t_token **stack);
+// void				execute_else(t_token **stack, t_env **env, char *cmd,
+// 						char **envp);
+// int					is_builtin(t_token *stack);
+// char				*split_path(t_env **env, char *cmd);
+
+// Libft functions
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strstr(char *str, char *to_find);
 void				add_back(t_token *node, t_token **a);
-void				validation(char **line, t_token **stack);
-void				init_tokens_type(t_token **stack);
+int					ft_atol(const char *str, long long *result);
 int					ft_strcmp(char *s1, char *s2);
 int					ft_strlen(const char *str);
+
+// Tokenization functions
+void				validation(char **line, t_token **stack);
+void				init_tokens_type(t_token **stack);
+void				check_type_pipe(char *str, t_token **stack);
+void				check_type_red_in(char *str, t_token **stack);
+void				check_type_red_out(char *str, t_token **stack);
+void				check_type_heredoc(char *str, t_token **stack);
+void				check_type_append(char *str, t_token **stack);
+
+// Built-in functions
+int					exit_command(t_token **stack);
+int					find_equal(char *str);
+void				pwd_command(void);
+void				env_command(t_env *env);
+void				*echo_command(t_token **stack);
+void				export_command(t_token *stack, t_env **env);
+void				cd_command(t_token *stack, t_env **env);
 void				built_in_functions(t_token **stack, t_env **env);
-int					ft_atol(const char *str, long long *result);
+void				unset_command(t_token *stack, t_env **env);
+
+// Env functions
+void				env_add_back(t_env *node, t_env **head);
+t_env				*new_node(char *key, char *value);
 t_env				*add_env_to_list(char **envp);
-void				execute_pipe(t_token **stack, t_env **env, char **envp);
-char				**split_pipe(t_token **stack);
-void				execute_else(t_token **stack, t_env **env, char *cmd,
-						char **envp);
-int					is_builtin(t_token *stack);
-char				*split_path(t_env **env, char *cmd);
+t_token				*create_node(char *res);
+
+// Export functions
+t_env				*sort_env(t_env *env);
+int					find_plus(char *str);
+int					check_key(char *key);
+int					find_plus_equal(char *str);
+int					find_equal_for_export(char *str);
+int					check_sameness(char *str, t_env *env);
+void				check_i_have_value_after_equal_symbol_version_two(int index,
+						char *str, t_env **env);
+void				check_i_have_value_after_equal_symbol(int index, char *str,
+						t_env **node);
+void				change_value_for_plus_equal_case(char *str, t_env **env);
+void				change_value(char *str, t_env **env);
+void				print_error_export(char *str);
+void				print_export(t_env *env);
 
 #endif

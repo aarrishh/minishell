@@ -6,70 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/07 11:32:03 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:50:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	check_type_pipe(char *str, t_token **stack)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '|')
-			(*stack)->type = PIPE;
-		i++;
-	}
-}
-
-void	check_type_red_in(char *str, t_token **stack)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && !str[i + 1])
-		if (str[i++] == '<')
-			(*stack)->type = REDIR_IN;
-}
-
-void	check_type_red_out(char *str, t_token **stack)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && !str[i + 1])
-		if (str[i++] == '>')
-			(*stack)->type = REDIR_OUT;
-}
-
-void	check_type_heredoc(char *str, t_token **stack)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i + 1])
-	{
-		if (str[i] == '<' && str[i + 1] == '<')
-			(*stack)->type = HEREDOC;
-		i++;
-	}
-}
-
-void	check_type_append(char *str, t_token **stack)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i + 1])
-	{
-		if (str[i] == '>' && str[i + 1] == '>')
-			(*stack)->type = APPEND;
-		i++;
-	}
-}
+#include "../minishell.h"
 
 void	init_tokens_type(t_token **stack)
 {
@@ -122,8 +63,7 @@ void	validation(char **line, t_token **stack)
 			cur_ind = check_string(line[i] + j);
 			if (cur_ind == -1)
 			{
-				node = create_node((ft_substr(line[i], j, ft_strlen(line[i])
-								- cur_ind)));
+				node = create_node((ft_substr(line[i], j, ft_strlen(line[i]) - cur_ind)));
 				add_back(node, stack);
 				break ;
 			}
@@ -134,12 +74,7 @@ void	validation(char **line, t_token **stack)
 			node = create_node((ft_substr(line[i], j, cur_ind)));
 			add_back(node, stack);
 			j += cur_ind;
-		}
+		} // free(line[i])
 		i++;
 	}
-	// while (*stack)
-	// {
-	// 	printf("str-> %s\n", (*stack)->string);
-	// 	(*stack) = (*stack)->next;
-	// }
 }

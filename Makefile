@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/09 17:40:29 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/09 18:16:35 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,17 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c tokenization.c built_in.c env.c quotes/quotes.c quotes/quotes_len.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c path.c
+SRCS = main.c list.c functions.c path.c \
+		tokenization/tokenization.c \
+		tokenization/init_tokens_type.c \
+		quotes/quotes.c quotes/quotes_len.c \
+		quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
+		built-in/built_in.c built-in/exit.c built-in/cd.c built-in/pwd.c \
+		built-in/echo.c built-in/unset.c built-in/env.c \
+		built-in/export/check.c built-in/export/find_and_return.c \
+		built-in/export/export_utils.c built-in/export/export.c \
+		built-in/export/print.c
+# SRCS = $(shell find . -name "*.c" ! -path "./libft/*")
 OBJS = $(SRCS:.c=.o)
 
 GREEN = \033[1;28;5;32m
@@ -33,28 +43,25 @@ DEEP_PINK   := \033[1;38;2;255;20;147m
 IDK = \033[1;38;5;34m
 RESET = \033[0m
 
-
 MINT_GREEN     := \033[38;2;152;255;152m
 SAGE_GREEN     := \033[38;2;178;172;136m
 EMERALD_GREEN  := \033[1;38;2;80;200;120m
 FOREST_GREEN   := \033[1;38;2;34;139;34m
 OLIVE_GREEN    := \033[38;2;128;128;0m
 
-
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(LIBFT)
 	@echo "$(PB)[LINKING]$(RESET) Building $(EMERALD_GREEN) $(NAME) $(RESET)..."
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(LDFLAGS)
 	@echo "$(DEEP_PINK)      MINISHELL IS READY!$(RESET)"
-
 
 $(LIBFT):
 	@echo "$(PB)COMPILING LIBFT...$(RESET)"
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@echo "$(HOT_PINK) [OK]$(RESET) libft done."
 
-%.o: %.c $(LIBFT) minishell.h Makefile
+%.o: %.c minishell.h Makefile
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -68,7 +75,6 @@ fclean: clean
 	@make --no-print-directory -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
 	@echo "$(HOT_PINK) [OK]$(RESET) Full clean done."
-
 
 re: fclean all
 

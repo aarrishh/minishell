@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/07 15:14:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:56:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	int				flag;
 	struct s_env	*next;
 }					t_env;
 
