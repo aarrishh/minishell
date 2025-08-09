@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/07 18:45:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:42:32 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_stack(t_token **stack)
 	}
 }
 
-int	main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	char	**split;
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **env)
 	stack = NULL;
 	split = NULL;
 	env_struct = NULL;
-	env_struct = add_env_to_list(env);
+	env_struct = add_env_to_list(envp);
 	while (1)
 	{
 		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");
@@ -48,11 +48,11 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		if (split)
 			validation(split, &stack);
-		env_struct = add_env_to_list(env);
 		init_tokens_type(&stack);
 		built_in_functions(&stack, &env_struct);
-		// execute_pipe(&stack);
+		// execute_pipe(&stack, &env_struct, envp);
 		free_stack(&stack);
+		free(line);
 	}
 	return (0);
 }

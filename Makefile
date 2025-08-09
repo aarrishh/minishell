@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/07 17:19:08 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/09 17:40:29 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,10 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c tokenization.c built_in.c env.c pipe/pipe.c quotes/quotes.c quotes/quotes_len.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c
+SRCS = main.c list.c functions.c tokenization.c built_in.c env.c quotes/quotes.c quotes/quotes_len.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c path.c
 OBJS = $(SRCS:.c=.o)
 
 GREEN = \033[1;28;5;32m
