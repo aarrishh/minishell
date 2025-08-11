@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:20:52 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 17:02:07 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/11 14:08:38 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	*echo_command(t_token **stack)
 		else
 			tmp = tmp->next;
 	}
-	while (tmp && tmp->next)
+	while (tmp && tmp->next && tmp->next->type == WORD)
 	{
 		printf("%s ", tmp->string);
 		tmp = tmp->next;
