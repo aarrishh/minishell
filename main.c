@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/09 18:29:03 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/11 13:33:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,15 @@ int	main(int argc, char **argv, char **envp)
 		if (split)
 			validation(split, &stack);
 		init_tokens_type(&stack);
-		built_in_functions(&stack, &env_struct);
-		// execute_pipe(&stack, &env_struct, envp);
+		if (stack && has_pipe(stack))
+			execute_pipe(&stack, &env_struct, envp);
+		else if (stack)
+		{
+			if (is_builtin_cmd(stack->string))
+				built_in_functions(&stack, stack->string, &env_struct);
+			else
+				execute_else(&env_struct, split, envp);
+		}
 		free_stack(&stack);
 		free(line);
 	}

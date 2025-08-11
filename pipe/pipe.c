@@ -6,11 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/09 19:36:06 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/11 13:35:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	len_by_pipe(t_token **stack)
 {
@@ -65,10 +65,8 @@ char	**split_pipe(t_token **stack)
 	return (commands);
 }
 
-//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-void	child(int old, int *pfd, t_env **env, char **envp, char *cmd,
-		int last_cmd)
+void	child(t_token **stack, int old, int *pfd, t_env **env, char **envp,
+		char *cmd, int last_cmd)
 {
 	char	**main_cmd;
 	char	*path;
@@ -85,9 +83,20 @@ void	child(int old, int *pfd, t_env **env, char **envp, char *cmd,
 		close(pfd[1]);
 	}
 	main_cmd = ft_split(cmd, ' ');
-	path = split_path(env, main_cmd[0]);
-	execve(path, , envp);
-	exit(0);
+	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
+	{
+		built_in_functions(stack, main_cmd[0], env);
+		free_array(main_cmd);
+		exit(0);
+	}
+	else
+	{
+		path = split_path(env, main_cmd[0]);
+		execve(path, main_cmd, envp);
+		free_array(main_cmd);
+		free(path);
+		exit(1);
+	}
 }
 
 void	parent(int *old, int *pfd, int last_cmd)
@@ -122,7 +131,7 @@ void	execute_pipe(t_token **stack, t_env **env, char **envp)
 			pipe(pfd);
 		pid = fork();
 		if (pid == 0)
-			child(old, pfd, env, envp, commands[i], i == num_cmds - 1);
+			child(stack, old, pfd, env, envp, commands[i], i == num_cmds - 1);
 		else
 			parent(&old, pfd, i == num_cmds - 1);
 		i++;
@@ -130,55 +139,66 @@ void	execute_pipe(t_token **stack, t_env **env, char **envp)
 	i = 0;
 	while (i++ < num_cmds)
 		wait(NULL);
-	free_commands(commands);
+	free_array(commands);
 }
 
-// int has_pipe(t_token *stack)
-// {
-//  while (stack)
-//  {
-//   if (stack->type == PIPE)
-//    return (1);
-//   stack = stack->next;
-//  }
-//  return (0);
-// }
-
-void	execute_else(t_token **stack)
+int	has_pipe(t_token *stack)
+{
+	while (stack)
+	{
+		if (stack->type == PIPE)
+			return (1);
+		stack = stack->next;
+	}
+	return (0);
+}
+void	execute_else(t_env **env, char **cmd, char **envp)
 {
 	pid_t	pid;
-	char	**argv;
+	char	*path;
 
-	argv = ft_split((*stack)->string, ' ');
 	pid = fork();
 	if (pid == 0)
 	{
-		if (!is_builtin(*stack))
-			execve();
-		perror("execvp");
+		path = split_path(env, cmd[0]);
+		execve(path, cmd, envp);
 		exit(1);
 	}
 	else
 		wait(NULL);
 }
 
-int	is_builtin(t_token *stack)
+void	*free_array(char **array)
 {
-	if (!stack || !stack->string)
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+	return (NULL);
+}
+
+int	is_builtin_cmd(char *cmd)
+{
+	if (!cmd)
 		return (0);
-	if (!ft_strcmp(stack->string, "echo"))
+	if (!ft_strcmp(cmd, "echo"))
 		return (1);
-	if (!ft_strcmp(stack->string, "cd"))
+	if (!ft_strcmp(cmd, "cd"))
 		return (1);
-	if (!ft_strcmp(stack->string, "pwd"))
+	if (!ft_strcmp(cmd, "pwd"))
 		return (1);
-	if (!ft_strcmp(stack->string, "export"))
+	if (!ft_strcmp(cmd, "export"))
 		return (1);
-	if (!ft_strcmp(stack->string, "unset"))
+	if (!ft_strcmp(cmd, "unset"))
 		return (1);
-	if (!ft_strcmp(stack->string, "env"))
+	if (!ft_strcmp(cmd, "env"))
 		return (1);
-	if (!ft_strcmp(stack->string, "exit"))
+	if (!ft_strcmp(cmd, "exit"))
 		return (1);
 	return (0);
 }
