@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/11 14:02:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:08:02 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**split_pipe(t_token **stack)
 }
 
 void	child(t_token **stack, int old, int *pfd, t_env **env, char **envp,
-		char *cmd, int last_cmd)
+		char *cmd, int last_cmd, char **split)
 {
 	char	**main_cmd;
 	char	*path;
@@ -85,7 +85,7 @@ void	child(t_token **stack, int old, int *pfd, t_env **env, char **envp,
 	main_cmd = ft_split(cmd, ' ');
 	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
 	{
-		built_in_functions(stack, main_cmd[0], env);
+		built_in_functions(stack, main_cmd[0], env, split);
 		free_array(main_cmd);
 		exit(0);
 	}
@@ -110,7 +110,7 @@ void	parent(int *old, int *pfd, int last_cmd)
 	}
 }
 
-void	execute_pipe(t_token **stack, t_env **env, char **envp)
+void	execute_pipe(t_token **stack, t_env **env, char **envp, char **split)
 {
 	char	**commands;
 	int		num_cmds;
@@ -131,7 +131,7 @@ void	execute_pipe(t_token **stack, t_env **env, char **envp)
 			pipe(pfd);
 		pid = fork();
 		if (pid == 0)
-			child(stack, old, pfd, env, envp, commands[i], i == num_cmds - 1);
+			child(stack, old, pfd, env, envp, commands[i], i == num_cmds - 1, split);
 		else
 			parent(&old, pfd, i == num_cmds - 1);
 		i++;
@@ -161,8 +161,14 @@ void	execute_else(t_env **env, char **cmd, char **envp)
 	if (pid == 0)
 	{
 		path = split_path(env, cmd[0]);
+		if (!path)
+			return ;
 		execve(path, cmd, envp);
-		exit(1);
+		{
+			// perror(cmd[0]);
+			exit(1);
+		}
+		
 	}
 	else
 		wait(NULL);

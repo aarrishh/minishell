@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/09 19:27:00 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:33:26 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	start_quotes(char *line, char ***split, t_env **env_struct)
 	i = 0;
 	(void)env_struct;
 	state = NO_QUOTE;
+	expanded = NULL;
 	while (line[i])
 	{
 		state = quote_state(state, line[i]);
@@ -72,12 +73,19 @@ int	start_quotes(char *line, char ***split, t_env **env_struct)
 	if (state != NO_QUOTE)
 	{
 		quote_line = open_dquote(state, line);
-		if (quote_line != NULL)
-			return (printf("%s%s\n", quote_line, ": command not found"), 0);
+		if (!quote_line)
+			return (0);
+		printf("%s%s\n", quote_line, ": command not found");
+		free(line);
+		free(quote_line);
+		return (0);
 	}
 	else if (state == NO_QUOTE)
+	{
 		expanded = expand_quotes(line, env_struct);
-	*split = ft_split(expanded, ' ');
+		*split = ft_split(expanded, ' ');
+		free(expanded);
+	}
 	return (1);
 }
 

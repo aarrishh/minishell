@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/11 13:33:22 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:06:12 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,9 @@ typedef enum e_token_type
 	LIM        // 6
 }					t_token_type;
 
-// typedef struct s_cmd
-// {
-// 	char			*command;
-// 	char			*infile;
-// 	char			*outfile;
-// 	char			*delimiter;  // for heredoc
-// 	int				append;      // 0 for >, 1 for >>
-// 	int				heredoc;     // 1 if <<
-// 	int				is_builtin;  // 1 if yes, 0 no
-// 	struct s_cmd	*next;       // for pipeline
-// }	t_cmd;
+typedef struct s_minishell {
+	int exit_status;
+}	t_minishell;
 
 typedef struct s_token
 {
@@ -57,12 +49,11 @@ typedef struct s_token
 }					t_token;
 
 // Pipe functions
-void				execute_pipe(t_token **stack, t_env **env, char **envp);
+void				execute_pipe(t_token **stack, t_env **env, char **envp, char **split);
 char				**split_pipe(t_token **stack);
 void				execute_else(t_env **env, char **cmd, char **envp);
 char				*split_path(t_env **env, char *cmd);
 int					has_pipe(t_token *stack);
-void				*free_array(char **array);
 
 // Libft functions
 char				*ft_substr(char const *s, unsigned int start, size_t len);
@@ -82,24 +73,28 @@ void				check_type_heredoc(char *str, t_token **stack);
 void				check_type_append(char *str, t_token **stack);
 
 // Built-in functions
-int					exit_command(t_token **stack);
+int					exit_command(t_token **stack, t_env **env, char **split);
 int					find_equal(char *str);
 void				pwd_command(void);
 void				env_command(t_env *env);
 void				*echo_command(t_token **stack);
 void				export_command(t_token *stack, t_env **env);
 void				cd_command(t_token *stack, t_env **env);
-void				built_in_functions(t_token **stack, char *string,
-						t_env **env);
+void				built_in_functions(t_token **stack, char *string, t_env **env, char **split);
 void				unset_command(t_token *stack, t_env **env);
 int					is_builtin_cmd(char *cmd);
+
+// Free functions
+void				free_stack(t_token **stack);
+void				*free_array(char **array);
+void				free_env(t_env **env);
 
 // Env functions
 void				env_add_back(t_env *node, t_env **head);
 t_env				*new_node(char *key, char *value);
 t_env				*add_env_to_list(char **envp);
 t_token				*create_node(char *res);
-
+	
 // Export functions
 t_env				*sort_env(t_env *env);
 int					find_plus(char *str);

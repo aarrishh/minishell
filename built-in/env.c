@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/09 17:56:14 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/11 18:25:59 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_env	*add_env_to_list(char **envp)
 		str = ft_strdup(envp[i]);
 		cur_node = new_node(ft_substr(str, 0, find_equal(str)), \
 		ft_strdup(ft_strchr(str, '=') + 1));
+		free(str);
 		env_add_back(cur_node, &env);
 		i++;
 	}
