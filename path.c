@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 12:53:14 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 15:17:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ char	*split_path(t_env **env, char *cmd)
 		return (NULL);
 	splitted_path = ft_split(path->value, ':');
 	i = 0;
+	if (ft_strchr(cmd, '/'))
+	{
+		if (access(cmd, X_OK) == 0)
+			return (cmd);
+	}
 	while (splitted_path[i])
 	{
 		idk = ft_strjoin(splitted_path[i], "/");
@@ -60,8 +65,8 @@ char	*split_path(t_env **env, char *cmd)
 
 void	execute_else(t_env **env, char **cmd, char **envp)
 {
-	pid_t pid;
-	char *path;
+	pid_t	pid;
+	char	*path;
 
 	pid = fork();
 	if (pid == 0)
