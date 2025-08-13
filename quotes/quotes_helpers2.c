@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/09 19:26:25 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:05:26 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ void	dquote_expansion(char *line, char *new, t_iter *ij, t_env **env)
 	}
 }
 
-void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
-		t_env **env)
+void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij, t_env **env)
 {
 	(ij->i)++;
 	if (state == IN_SINGLE)
