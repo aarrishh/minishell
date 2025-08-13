@@ -6,15 +6,14 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/09 19:23:40 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:05:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "quotes.h"
 
-t_quote_state	handle_double_quote_len(char *line, int *i, int *len,
-		t_env **env)
+t_quote_state	handle_double_quote_len(char *line, int *i, int *len, t_env **env)
 {
 	(*i)++;
 	while (line[*i] && line[*i] != '"')

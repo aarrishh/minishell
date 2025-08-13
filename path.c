@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/11 17:33:34 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:53:14 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,25 @@ char	*split_path(t_env **env, char *cmd)
 	free_array(splitted_path);
 	printf("%s: command not found\n", cmd);
 	return (NULL);
+}
+
+void	execute_else(t_env **env, char **cmd, char **envp)
+{
+	pid_t pid;
+	char *path;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		path = split_path(env, cmd[0]);
+		if (!path)
+			return ;
+		execve(path, cmd, envp);
+		{
+			// perror(cmd[0]);
+			exit(1);
+		}
+	}
+	else
+		wait(NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 12:42:09 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:54:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ void	parent(t_pipe_fd *fds)
 	}
 }
 
+int	two_dim_len(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 void	execute_pipe(t_data *data)
 {
 	char		**commands;
@@ -65,9 +75,7 @@ void	execute_pipe(t_data *data)
 	t_pipe_fd	fds;
 
 	commands = split_pipe(&data->stack);
-	num_cmds = 0;
-	while (commands[num_cmds])
-		num_cmds++;
+	num_cmds = two_dim_len(commands);
 	i = 0;
 	while (i < num_cmds)
 	{
@@ -96,25 +104,4 @@ int	has_pipe(t_token *stack)
 		stack = stack->next;
 	}
 	return (0);
-}
-
-void	execute_else(t_env **env, char **cmd, char **envp)
-{
-	pid_t	pid;
-	char	*path;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		path = split_path(env, cmd[0]);
-		if (!path)
-			return ;
-		execve(path, cmd, envp);
-		{
-			// perror(cmd[0]);
-			exit(1);
-		}
-	}
-	else
-		wait(NULL);
 }
