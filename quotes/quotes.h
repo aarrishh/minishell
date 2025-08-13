@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/09 19:27:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:18:43 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,32 @@ typedef struct s_iter
 	int				j;
 }					t_iter;
 
+typedef enum e_token_type
+{
+	WORD,      // 0
+	PIPE,      // | 1
+	REDIR_IN,  // < 2
+	REDIR_OUT, // > 3
+	HEREDOC,   // << 4
+	APPEND,    // >> 5
+	LIM        // 6
+}					t_token_type;
+
+typedef struct s_token
+{
+	char			*string;
+	t_token_type	type;
+	struct s_token	*next;
+}					t_token;
+
+typedef struct s_data
+{
+	t_token			*stack;
+	t_env			*env;
+	char			**envp;
+	char			**split;
+}					t_data;
+
 void				handle_dollar(char *line, char *new, t_iter *ij,
 						t_env **env);
 void				keep_char(char *line, char *new, t_iter *ij);
@@ -62,7 +88,7 @@ int					len_for_malloc(char *line, t_env **env);
 void				loop(char *line, char *new, t_quote_state state,
 						t_env **env_struct);
 char				*expand_quotes(char *line, t_env **env_struct);
-int					start_quotes(char *line, char ***split, t_env **env_struct);
+int					start_quotes(char *line, t_data *data);
 char				*open_dquote(t_quote_state state, char *line);
 char				*cut_quotes(char *line, t_quote_state state);
 

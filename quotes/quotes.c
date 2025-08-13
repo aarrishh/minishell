@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/11 18:33:26 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:20:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	return (new);
 }
 
-int	start_quotes(char *line, char ***split, t_env **env_struct)
+int	start_quotes(char *line, t_data *data)
 {
 	int				i;
 	t_quote_state	state;
@@ -62,7 +62,6 @@ int	start_quotes(char *line, char ***split, t_env **env_struct)
 	char			*quote_line;
 
 	i = 0;
-	(void)env_struct;
 	state = NO_QUOTE;
 	expanded = NULL;
 	while (line[i])
@@ -82,8 +81,8 @@ int	start_quotes(char *line, char ***split, t_env **env_struct)
 	}
 	else if (state == NO_QUOTE)
 	{
-		expanded = expand_quotes(line, env_struct);
-		*split = ft_split(expanded, ' ');
+		expanded = expand_quotes(line, &data->env);
+		data->split = ft_split(expanded, ' ');
 		free(expanded);
 	}
 	return (1);

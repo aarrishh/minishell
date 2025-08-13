@@ -3,16 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/11 18:00:52 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:41:18 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	built_in_functions(t_token **stack, char *string, t_env **env, char **split)
+int	is_builtin_cmd(char *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (!ft_strcmp(cmd, "echo"))
+		return (1);
+	if (!ft_strcmp(cmd, "cd"))
+		return (1);
+	if (!ft_strcmp(cmd, "pwd"))
+		return (1);
+	if (!ft_strcmp(cmd, "export"))
+		return (1);
+	if (!ft_strcmp(cmd, "unset"))
+		return (1);
+	if (!ft_strcmp(cmd, "env"))
+		return (1);
+	if (!ft_strcmp(cmd, "exit"))
+		return (1);
+	return (0);
+}
+
+void	built_in_functions(t_token **stack, char *string, t_env **env,
+		char **split)
 {
 	if (ft_strcmp(string, "echo") == 0)
 		echo_command(stack);
