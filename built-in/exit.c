@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 16:59:35 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:18:38 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 int	exit_command_print_function(t_token *tmp, long long num)
 {
 	if (tmp->next)
+	{
+		g_exit_status = 1;
 		return (printf("exit\nminishell: exit: too many arguments\n"), 1);
+	}
 	else
 	{
 		printf("exit\n"),
+		g_exit_status = num % 256;
 		exit(num % 256);
 	}
 	return (0);
