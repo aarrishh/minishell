@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 12:38:06 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:20:13 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@
 # define W "\001\033[38;2;255;255;255m\002"    // white
 # define R "\001\033[0m\002"                   // reset
 
-typedef struct s_minishell
-{
-	int	exit_status;
-}		t_minishell;
+extern int g_exit_status;
 
 typedef struct s_pipe_fd
 {

@@ -6,12 +6,27 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 13:05:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:27:09 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "quotes.h"
+
+void	expand_exit_status(char *new, t_iter *ij)
+{
+	char	*status_str;
+	int		a;
+
+	status_str = ft_itoa(g_exit_status);
+	if (!status_str)
+		return;
+	a = 0;
+	while (status_str[a])
+		new[ij->j++] = status_str[a++];
+	free(status_str);
+	ij->i += 2;
+}
 
 void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 {
@@ -20,6 +35,11 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 	int		a;
 
 	a = 0;
+	if (line[ij->i] == '$' && line[ij->i + 1] == '?')
+	{
+		expand_exit_status(new, ij);
+		return ;
+	}
 	value = find_var_value(line + ij->i, env, &key_len);
 	if (value)
 	{

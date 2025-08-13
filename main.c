@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 12:37:18 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:52:05 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_exit_status = 0;
 
 void	init_data(t_data *data, char **envp)
 {
@@ -30,14 +32,10 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");
-		// if (!line)
-		// 	break ;
 		if (line)
 			add_history(line);
-		// if (!line[0])
-		// 	continue ;
 		if (!line)
-			continue ;
+			break ;
 		if (!start_quotes(line, &data))
 			continue ;
 		if (data.split)
