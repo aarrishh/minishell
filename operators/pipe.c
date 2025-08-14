@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/14 14:07:37 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:53:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	execute_pipe(t_data *data)
 	pid_t		pid;
 	t_pipe_fd	fds;
 
-	commands = split_operator(&data->stack, data->stack->type);
+	commands = split_operator(&data->stack, PIPE);
 	num_cmds = two_dim_len(commands);
 	i = 0;
 	while (i < num_cmds)
