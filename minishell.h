@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/14 12:40:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:08:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ typedef struct s_pipe_fd
 
 // Pipe functions
 void	execute_pipe(t_data *data);
-char	**split_pipe(t_token **stack);
+char	**split_operator(t_token **stack, t_token_type type);
 void	execute_else(t_env **env, char **cmd, char **envp);
 char	*split_path(t_env **env, char *cmd);
 int		has_operator(t_token *stack, t_token_type type);
 void	redir_function(t_data *data, int append);
+void	redirect_in(t_data *data, int append);
 
 // Libft functions
 char	*ft_substr(char const *s, unsigned int start, size_t len);

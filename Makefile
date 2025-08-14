@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/14 11:21:33 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/14 15:24:58 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,13 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 LDFLAGS = -lreadline
 
 SRCS = main.c list.c functions.c path.c \
 		tokenization/tokenization.c \
 		tokenization/init_tokens_type.c \
-		quotes/quotes.c quotes/quotes_len.c operators/pipe.c operators/pipe_split.c \
+		quotes/quotes.c quotes/quotes_len.c operators/pipe.c operators/split_op.c \
 		quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
 		built-in/built_in.c built-in/exit.c built-in/cd.c built-in/pwd.c \
 		built-in/echo.c built-in/unset.c built-in/env.c \

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/14 11:12:55 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:07:37 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 	else
 	{
 		path = split_path(&data->env, main_cmd[0]);
+		if (!path)
+			return ;
 		execve(path, main_cmd, data->envp);
 		free_array(main_cmd);
 		free(path);
@@ -74,7 +76,7 @@ void	execute_pipe(t_data *data)
 	pid_t		pid;
 	t_pipe_fd	fds;
 
-	commands = split_pipe(&data->stack);
+	commands = split_operator(&data->stack, data->stack->type);
 	num_cmds = two_dim_len(commands);
 	i = 0;
 	while (i < num_cmds)
