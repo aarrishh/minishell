@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 12:54:13 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:12:55 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,4 @@ void	execute_pipe(t_data *data)
 	while (i++ < num_cmds)
 		wait(NULL);
 	free_array(commands);
-}
-
-int	has_pipe(t_token *stack)
-{
-	while (stack)
-	{
-		if (stack->type == PIPE)
-			return (1);
-		stack = stack->next;
-	}
-	return (0);
 }

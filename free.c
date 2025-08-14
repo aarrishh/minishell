@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 12:36:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 12:37:14 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:23:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,14 @@ void	free_stack(t_token **stack)
 		free(*stack);
 		*stack = tmp;
 	}
+}
+
+void	free_all(t_env **env, t_token **stack, char **split)
+{
+	if (env)
+		free_env(env);
+	if (stack)
+		free_stack(stack);
+	if (split)
+		free(split);
 }

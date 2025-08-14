@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 17:12:50 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:40:50 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	init_data(t_data *data, char **envp)
 
 void	handle_cmds(t_data *data)
 {
-	if (data->stack && has_pipe(data->stack))
-		execute_pipe(&data);
-	else if (data->stack && has_redir)
-	{
-		;
-	}
+	if (data->stack && has_operator(data->stack, PIPE))
+		execute_pipe(data);
+	else if (data->stack && has_operator(data->stack, REDIR_OUT))
+		redir_function(data, 0);
+	else if (has_operator(data->stack, APPEND))
+		redir_function(data, 1);
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string))
@@ -58,9 +58,8 @@ int	main(int argc, char **argv, char **envp)
 			validation(data.split, &data.stack);
 		init_tokens_type(&data.stack);
 		handle_cmds(&data);
-		free_stack(&data.stack);
+		free_all(NULL, &data.stack, data.split);
 		free(line);
-		free_array(data.split);
 	}
 	return (0);
 }

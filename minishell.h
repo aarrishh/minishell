@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 12:38:06 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:40:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	execute_pipe(t_data *data);
 char	**split_pipe(t_token **stack);
 void	execute_else(t_env **env, char **cmd, char **envp);
 char	*split_path(t_env **env, char *cmd);
-int		has_pipe(t_token *stack);
+int		has_operator(t_token *stack, t_token_type type);
+void	redir_function(t_data *data, int append);
 
 // Libft functions
 char	*ft_substr(char const *s, unsigned int start, size_t len);
@@ -79,6 +80,7 @@ int		is_builtin_cmd(char *cmd);
 void	free_stack(t_token **stack);
 void	*free_array(char **array);
 void	free_env(t_env **env);
+void	free_all(t_env **env, t_token **stack, char **split);
 
 // Env functions
 void	env_add_back(t_env *node, t_env **head);
