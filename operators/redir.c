@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/14 15:10:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:06:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,6 @@ char	*find_filename(t_token *stack)
 	return (filename);
 }
 
-void	redir_function(t_data *data, int append)
-{
-	int		fd;
-	char	*filename;
-
-	filename = find_filename(data->stack);
-	if (append)
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-	{
-		perror("open");
-		exit(1);
-	}
-	if (dup2(fd, 1) == -1)
-	{
-		// perror("dup2");
-		close(fd);
-		exit(1);
-	}
-	else
-		redirect_in(data, append);
-	close(fd);
-}
-
 int	redir_file(t_token **stack, t_token_type type)
 {
 	t_token	*tmp;
@@ -72,59 +46,20 @@ int	redir_file(t_token **stack, t_token_type type)
 	tmp = *stack;
 	while (tmp)
 	{
-		if ((tmp->type == type) || tmp->next != NULL)
+		if ((tmp->type == type) && (tmp->next != NULL))
 			return (1);
 		tmp = tmp->next;
 	}
 	return (0);
 }
 
-// char	*split_till_op(t_token **stack, t_token_type type)
-// {
-// 	t_token	*tmp;
-// 	int		i;
-// 	char	**commands;
-// 	char	*to_free;
-// 	char	*joined;
-
-// 	tmp = *stack;
-// 	commands = malloc(sizeof(char *) * (len_by_pipe(stack) + 2));
-// 	if (!commands)
-// 		return (NULL);
-// 	i = 0;
-// 	commands[i] = ft_strdup("");
-// 	while (tmp)
-// 	{
-// 		if (tmp->type == PIPE)
-// 		{
-// 			i++;
-// 			commands[i] = ft_strdup("");
-// 		}
-// 		else
-// 		{
-// 			to_free = commands[i];
-// 			joined = ft_strjoin(tmp->string, " ");
-// 			commands[i] = ft_strjoin(commands[i], joined);
-// 			free(to_free);
-// 			free(joined);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	commands[i + 1] = NULL;
-// 	return (commands);
-// }
-
-void	redirect_in(t_data *data, int append)
+void	redirect_in(t_data *data, char *cmd, int append)
 {
-	char **split_op;
-	char **main_cmd;
-	char *path;
+	char	**main_cmd;
+	char	*path;
 
 	if (append)
 	{
-		split_op = split_operator(&data->stack, APPEND);
-		if (!split_op)
-			return ;
 		if (!redir_file(&data->stack, APPEND))
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
@@ -133,17 +68,13 @@ void	redirect_in(t_data *data, int append)
 	}
 	else
 	{
-		split_op = split_operator(&data->stack, REDIR_OUT);
-		if (!split_op)
-			return ;
 		if (!redir_file(&data->stack, REDIR_OUT))
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
 			return ;
 		}
 	}
-
-	main_cmd = ft_split(split_op[0], ' ');
+	main_cmd = ft_split(cmd, ' ');
 	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
 	{
 		built_in_functions(&data->stack, main_cmd[0], &data->env, data->split);
@@ -158,4 +89,56 @@ void	redirect_in(t_data *data, int append)
 		free_array(main_cmd);
 		free(path);
 	}
+}
+
+int	find_and_open(t_data **data, char **filename, int append)
+{
+	int	fd;
+
+	*filename = find_filename((*data)->stack);
+	if (append)
+		fd = open(*filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		fd = open(*filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror("open");
+		exit(1);
+	}
+	return (fd);
+}
+
+void	redir_function(t_data *data, int append)
+{
+	int		fd;
+	int		len;
+	int		i;
+	int		saved_stdout;
+	char	**split_redir;
+
+	i = 0;
+	saved_stdout = dup(STDOUT_FILENO);
+	if (append)
+		split_redir = split_operator(&data->stack, APPEND);
+	else
+		split_redir = split_operator(&data->stack, REDIR_OUT);
+	len = two_dim_len(split_redir);
+	while (i < len)
+	{
+		if (i != 0)
+		{
+			fd = find_and_open(&data, &split_redir[i], append);
+			if (dup2(fd, 1) == -1)
+			{
+				// do we need error check?
+				close(fd);
+				exit(1);
+			}
+		}
+		i++;
+	}
+	redirect_in(data, split_redir[0], append);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdout);
+	close(fd);
 }
