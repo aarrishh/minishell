@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/13 12:39:43 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/14 14:43:38 by arimanuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS = main.c list.c functions.c path.c \
 		built-in/echo.c built-in/unset.c built-in/env.c \
 		built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
-		built-in/export/print.c free.c
+		built-in/export/print.c free.c signal.c
 		
 # SRCS = $(shell find . -name "*.c" ! -path "./libft/*")
 OBJS = $(SRCS:.c=.o)

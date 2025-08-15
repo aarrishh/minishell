@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 16:20:13 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:25:21 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 # define PB "\001\033[1;38;2;255;204;213m\002" // bold pink
 # define W "\001\033[38;2;255;255;255m\002"    // white
@@ -98,5 +99,9 @@ void	change_value_for_plus_equal_case(char *str, t_env **env);
 void	change_value(char *str, t_env **env);
 void	print_error_export(char *str);
 void	print_export(t_env *env);
+
+// Signal functions
+void	handle_ctrl_d(void);
+void	setup_signals(void);
 
 #endif

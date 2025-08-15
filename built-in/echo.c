@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:20:52 by arina             #+#    #+#             */
-/*   Updated: 2025/08/11 14:08:38 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/14 14:56:04 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	*echo_command(t_token **stack)
 	int		flag;
 
 	flag = 0;
-	if (!(*stack)->next)
+	if (!(*stack)->next || (*stack)->next->type != WORD)
 		return (printf("\n"), "");
 	tmp = (*stack)->next;
 	while (tmp && ft_strncmp(tmp->string, "-n", 2) == 0)

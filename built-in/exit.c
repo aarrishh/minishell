@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 17:18:38 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:06:33 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	exit_command(t_token **stack, t_env **env, char **split)
 			printf("exit\nminishell: exit: %s: numeric argument required\n", \
 			tmp->string);
 			g_exit_status = 2;
-			// free_all(env, stack, split);
+			free_all(env, stack, split);
 			exit(2);
 		}
 	}
