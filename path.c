@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 12:53:14 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:05:11 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,21 @@ char	*split_path(t_env **env, char *cmd)
 
 void	execute_else(t_env **env, char **cmd, char **envp)
 {
-	pid_t pid;
-	char *path;
+	pid_t	pid;
+	char	*path;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		path = split_path(env, cmd[0]);
 		if (!path)
-			return ;
-		execve(path, cmd, envp);
-		{
-			// perror(cmd[0]);
-			exit(1);
-		}
+			exit(127);
+		if (execve(path, cmd, envp) == -1)
+			exit(126);
 	}
 	else
+	{
+		g_exit_status = 127;
 		wait(NULL);
+	}
 }

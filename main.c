@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/15 19:05:26 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:28:02 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	t_data	data;
 
-	(void)argc, (void)argv;
-	// rl_catch_signals = 0;
-	// rl_clear_history();
-	// setup_signals();
+	(void)argc;
+	(void)argv;
+	setup_signals();
 	init_data(&data, envp);
 	while (1)
 	{
@@ -38,10 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 			add_history(line);
 		if (!line)
-		{
-			// handle_ctrl_d();
-			break ;
-		}
+			handle_ctrl_d();
 		if (line[0] == '\0')
 		{
 			free(line);
@@ -66,5 +62,6 @@ int	main(int argc, char **argv, char **envp)
 		free(line);
 		free_array(data.split);
 	}
+	rl_clear_history();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/08/15 19:06:33 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/17 18:09:14 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	exit_command_print_function(t_token *tmp, long long num)
 	{
 		printf("exit\n"),
 		g_exit_status = num % 256;
+		rl_clear_history();
 		exit(num % 256);
 	}
 	return (0);
@@ -49,6 +50,7 @@ int	exit_command(t_token **stack, t_env **env, char **split)
 			tmp->string);
 			g_exit_status = 2;
 			free_all(env, stack, split);
+			rl_clear_history();
 			exit(2);
 		}
 	}
