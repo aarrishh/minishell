@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/08/17 18:09:14 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:25:41 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,4 @@ int	exit_command(t_token **stack, t_env **env, char **split)
 		return (1);
 	}
 	return (0);
-}
-
-void	free_all(t_env **env, t_token **stack, char **split)
-{
-	if (env)
-		free_env(env);
-	if (stack)
-		free_stack(stack);
-	if (split)
-		free(split);
 }

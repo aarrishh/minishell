@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/17 18:05:11 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:19:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ char	*split_path(t_env **env, char *cmd)
 		return (NULL);
 	splitted_path = ft_split(path->value, ':');
 	i = 0;
+	if (ft_strchr(cmd, '/'))
+	{
+		if (access(cmd, X_OK) == 0)
+			return (cmd);
+	}
 	while (splitted_path[i])
 	{
 		idk = ft_strjoin(splitted_path[i], "/");

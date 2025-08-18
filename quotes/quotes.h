@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 13:07:02 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:23:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define QUOTES_H
 
 # include "../libft/libft.h"
+# include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -46,8 +47,8 @@ typedef enum e_token_type
 	PIPE,      // | 1
 	REDIR_IN,  // < 2
 	REDIR_OUT, // > 3
-	HEREDOC,   // << 4
 	APPEND,    // >> 5
+	HEREDOC,   // << 4
 	LIM        // 6
 }					t_token_type;
 

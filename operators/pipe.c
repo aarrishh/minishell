@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/14 15:29:47 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:24:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 	else
 	{
 		path = split_path(&data->env, main_cmd[0]);
+		if (!path)
+			return ;
 		execve(path, main_cmd, data->envp);
 		free_array(main_cmd);
 		free(path);
@@ -76,7 +78,7 @@ void	execute_pipe(t_data *data)
 	pid_t		pid;
 	t_pipe_fd	fds;
 
-	commands = split_pipe(&data->stack);
+	commands = split_operator(&data->stack, PIPE);
 	num_cmds = two_dim_len(commands);
 	i = 0;
 	while (i < num_cmds)
@@ -95,15 +97,4 @@ void	execute_pipe(t_data *data)
 	while (i++ < num_cmds)
 		wait(NULL);
 	free_array(commands);
-}
-
-int	has_pipe(t_token *stack)
-{
-	while (stack)
-	{
-		if (stack->type == PIPE)
-			return (1);
-		stack = stack->next;
-	}
-	return (0);
 }
