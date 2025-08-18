@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/14 15:24:58 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/18 13:00:34 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS = main.c list.c functions.c path.c \
 		built-in/echo.c built-in/unset.c built-in/env.c \
 		built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
-		built-in/export/print.c free.c operators/redir.c
+		built-in/export/print.c free.c operators/redir_out.c operators/redir_in.c
 		
 # SRCS = $(shell find . -name "*.c" ! -path "./libft/*")
 OBJS = $(SRCS:.c=.o)

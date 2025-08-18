@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/14 16:52:38 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 13:04:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	handle_cmds(t_data *data)
 		redir_function(data, 0);
 	else if (has_operator(data->stack, APPEND))
 		redir_function(data, 1);
+	else if (has_operator(data->stack, REDIR_IN))
+		redir_in(data);
+	else if (has_operator(data->stack, HEREDOC))
+		printf("not done yet\n");
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string))

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/14 18:05:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 13:04:09 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ void	execute_else(t_env **env, char **cmd, char **envp);
 char	*split_path(t_env **env, char *cmd);
 int		has_operator(t_token *stack, t_token_type type);
 void	redir_function(t_data *data, int append);
-void	redirect_in(t_data *data, char *cmd, int append);
+void	redirect_cmd(t_data *data, char *cmd);
 int		two_dim_len(char **str);
+void	redir_in(t_data *data);
 
 // Libft functions
 char	*ft_substr(char const *s, unsigned int start, size_t len);
