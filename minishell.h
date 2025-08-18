@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/18 15:29:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:38:10 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void		check_type_append(char *str, t_token **stack);
 int			exit_command(t_token **stack, t_env **env, char **split);
 int			find_equal(char *str);
 void		pwd_command(void);
-void		env_command(t_env *env);
+void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
 void		export_command(t_token *stack, t_env **env);
 void		cd_command(t_token *stack, t_env **env);

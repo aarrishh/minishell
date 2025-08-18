@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 15:19:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:42:07 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	execute_else(t_env **env, char **cmd, char **envp)
 {
 	pid_t	pid;
 	char	*path;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
@@ -75,11 +76,17 @@ void	execute_else(t_env **env, char **cmd, char **envp)
 		if (!path)
 			exit(127);
 		if (execve(path, cmd, envp) == -1)
+		{
+			perror(cmd[0]);
 			exit(126);
+		}
 	}
 	else
 	{
-		g_exit_status = 127;
-		wait(NULL);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_exit_status = 128 + WTERMSIG(status);
 	}
 }
