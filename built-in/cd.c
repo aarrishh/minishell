@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 17:02:40 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/18 17:18:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	cd_command(t_token *stack, t_env **env)
 	char	*new_pwd;
 
 	old_pwd = get_env_value(*env, "PWD");
-	if (old_pwd)
-		update_env_value(env, "OLDPWD", old_pwd);
 	if (chdir(stack->next->string) != 0)
 	{
 		perror("minishell: cd");
 		return ;
 	}
+	if (old_pwd)
+		update_env_value(env, "OLDPWD", old_pwd);
 	new_pwd = getcwd(NULL, 0);
 	if (new_pwd)
 	{

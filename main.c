@@ -6,13 +6,13 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/18 15:21:39 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:36:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_status = 0;
+int		g_exit_status = 0;
 
 void	init_data(t_data *data, char **envp)
 {
@@ -28,11 +28,11 @@ void	handle_cmds(t_data *data)
 		execute_pipe(data);
 	else if (data->stack && has_operator(data->stack, REDIR_OUT))
 		redir_function(data, 0);
-	else if (has_operator(data->stack, APPEND))
+	else if (data->stack && has_operator(data->stack, APPEND))
 		redir_function(data, 1);
-	else if (has_operator(data->stack, REDIR_IN))
+	else if (data->stack && has_operator(data->stack, REDIR_IN))
 		redir_in(data);
-	else if (has_operator(data->stack, HEREDOC))
+	else if (data->stack && has_operator(data->stack, HEREDOC))
 		printf("not done yet\n");
 	else if (data->stack)
 	{
@@ -56,14 +56,14 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");
-		if (line)
+		if (line && line[0] != '\0' && !is_space(line))
 			add_history(line);
 		if (!line)
 			handle_ctrl_d();
 		if (line[0] == '\0')
 		{
 			free(line);
-			continue;
+			continue ;
 		}
 		if (!start_quotes(line, &data))
 			continue ;

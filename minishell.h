@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/18 15:29:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:39:32 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void		add_back(t_token *node, t_token **a);
 int			ft_atol(const char *str, long long *result);
 int			ft_strcmp(char *s1, char *s2);
 int			ft_strlen(const char *str);
+int			is_space(char *str);
 
 // Tokenization functions
 void		validation(char **line, t_token **stack);

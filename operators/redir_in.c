@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 13:11:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:54:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	open_rdirin(t_token *stack, int i)
 	if (fd == -1)
 	{
 		perror("open");
-		exit(1);
+		return (0);
 	}
 	return (fd);
 }
@@ -66,7 +66,7 @@ void	redir_in(t_data *data)
 
 	i = 0;
 	j = 0;
-	saved_stdout = dup(STDOUT_FILENO);
+	saved_stdout = dup(STDIN_FILENO);
 	split_rdrin = split_operator(&data->stack, REDIR_IN);
 	len = two_dim_len(split_rdrin);
 	while (i < len)
@@ -78,14 +78,14 @@ void	redir_in(t_data *data)
 		}
 		i++;
 	}
-	if (dup2(fd, 0) == -1)
+	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		// error check?
 		close(fd);
-		exit(1);
+		return ;
 	}
 	redirect_cmd(data, split_rdrin[0]);
-	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdout, STDIN_FILENO);
 	close(saved_stdout);
 	close(fd);
 }

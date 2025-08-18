@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 18:28:46 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/09 17:50:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:39:09 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ char	*ft_strstr(char *str, char *to_find)
 	return (0);
 }
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] != '\0' || s2[i] != '\0')
@@ -110,10 +110,13 @@ int	check_long_number(long long *res, int sign, char c)
 
 int	ft_atol(const char *str, long long *result)
 {
-	int			i = 0;
-	int			sign = 1;
-	long long	res = 0;
+	int			i;
+	int			sign;
+	long long	res;
 
+	i = 0;
+	sign = 1;
+	res = 0;
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '+' || str[i] == '-')
@@ -133,4 +136,18 @@ int	ft_atol(const char *str, long long *result)
 		return (-1);
 	*result = res * sign;
 	return (0);
+}
+
+int	is_space(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
 }

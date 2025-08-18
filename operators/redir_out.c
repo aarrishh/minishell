@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 12:57:43 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 19:07:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	redirect_cmd(t_data *data, char *cmd)
 {
 	char	**main_cmd;
 	char	*path;
+	pid_t	pid;
 
 	main_cmd = ft_split(cmd, ' ');
 	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
@@ -59,12 +60,22 @@ void	redirect_cmd(t_data *data, char *cmd)
 	}
 	else
 	{
-		path = split_path(&data->env, main_cmd[0]);
-		if (!path)
-			return ;
-		execve(path, main_cmd, data->envp);
-		free_array(main_cmd);
-		free(path);
+		pid = fork();
+		if (pid == 0)
+		{
+			path = split_path(&data->env, main_cmd[0]);
+			if (!path)
+				exit(127);
+			if (execve(path, main_cmd, data->envp))
+				exit(126);
+			free_array(main_cmd);
+			free(path);
+		}
+		else
+		{
+			g_exit_status = 127;
+			wait(NULL);
+		}
 	}
 }
 
@@ -86,7 +97,7 @@ int	find_and_open(t_data **data, int append, int i)
 	if (fd == -1)
 	{
 		perror("open");
-		exit(1);
+		return (0);
 	}
 	return (fd);
 }
@@ -119,11 +130,11 @@ void	redir_function(t_data *data, int append)
 		}
 		i++;
 	}
-	if (dup2(fd, 1) == -1)
+	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
 		// do we need error check?
 		close(fd);
-		exit(1);
+		return ;
 	}
 	redirect_cmd(data, split_redir[0]);
 	dup2(saved_stdout, STDOUT_FILENO);

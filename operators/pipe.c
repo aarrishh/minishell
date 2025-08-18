@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 15:24:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:08:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 	{
 		path = split_path(&data->env, main_cmd[0]);
 		if (!path)
-			return ;
+			exit(127);
 		execve(path, main_cmd, data->envp);
 		free_array(main_cmd);
 		free(path);
