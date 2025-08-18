@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_split.c                                       :+:      :+:    :+:   */
+/*   split_op.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 12:34:44 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 12:53:40 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:23:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	len_by_pipe(t_token **stack)
+static int	len_by_op(t_token **stack, t_token_type type)
 {
 	t_token	*tmp;
 	int		len;
@@ -21,14 +21,14 @@ int	len_by_pipe(t_token **stack)
 	tmp = *stack;
 	while (tmp)
 	{
-		if (tmp->type == PIPE)
+		if (tmp->type == type)
 			len++;
 		tmp = tmp->next;
 	}
 	return (len);
 }
 
-char	**split_pipe(t_token **stack)
+char	**split_operator(t_token **stack, t_token_type type)
 {
 	t_token	*tmp;
 	int		i;
@@ -37,14 +37,14 @@ char	**split_pipe(t_token **stack)
 	char	*joined;
 
 	tmp = *stack;
-	commands = malloc(sizeof(char *) * (len_by_pipe(stack) + 2));
+	commands = malloc(sizeof(char *) * (len_by_op(stack, type) + 2));
 	if (!commands)
 		return (NULL);
 	i = 0;
 	commands[i] = ft_strdup("");
 	while (tmp)
 	{
-		if (tmp->type == PIPE)
+		if (tmp->type == type)
 		{
 			i++;
 			commands[i] = ft_strdup("");

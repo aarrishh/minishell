@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 13:05:06 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:22:38 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,7 @@ void	handle_len_dollar(char *line, int *i, int *len, t_env **env)
 		if ((check_after_key(line[*i + key_len])))
 		{
 			*i += key_len;
-			while (line[*i] && ((line[*i] >= 'a' && line[*i] <= 'z')
-					|| (line[*i] >= 'A' && line[*i] <= 'Z') || (line[*i] >= '0'
-						&& line[*i] <= '9')))
+			while (line[*i] && check_after_key(line[*i]))
 				(*i)++;
 		}
 		else

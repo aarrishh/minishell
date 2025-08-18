@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 12:20:21 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:23:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	start_quotes(char *line, t_data *data)
 		if (!quote_line)
 			return (0);
 		printf("%s%s\n", quote_line, ": command not found");
+		g_exit_status = 127;
 		free(line);
 		free(quote_line);
 		return (0);
@@ -103,7 +104,10 @@ char	*open_dquote(t_quote_state state, char *line)
 	{
 		next = readline(prompt);
 		if (!next)
+		{
+			g_exit_status = 2;
 			return (printf("wrong EOF, close matching quote\n"), NULL);
+		}
 		tmp = ft_strjoin(line, "\n");
 		free(line);
 		line = ft_strjoin(tmp, next);

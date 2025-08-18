@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 16:52:05 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:21:39 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,36 @@ void	init_data(t_data *data, char **envp)
 	data->env = add_env_to_list(envp);
 }
 
+void	handle_cmds(t_data *data)
+{
+	if (data->stack && has_operator(data->stack, PIPE))
+		execute_pipe(data);
+	else if (data->stack && has_operator(data->stack, REDIR_OUT))
+		redir_function(data, 0);
+	else if (has_operator(data->stack, APPEND))
+		redir_function(data, 1);
+	else if (has_operator(data->stack, REDIR_IN))
+		redir_in(data);
+	else if (has_operator(data->stack, HEREDOC))
+		printf("not done yet\n");
+	else if (data->stack)
+	{
+		if (is_builtin_cmd((*data->stack).string))
+			built_in_functions(&data->stack, (*data->stack).string, &data->env,
+				data->split);
+		else
+			execute_else(&data->env, data->split, data->envp);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_data	data;
 
-	(void)argc, (void)argv;
+	(void)argc;
+	(void)argv;
+	setup_signals();
 	init_data(&data, envp);
 	while (1)
 	{
@@ -35,25 +59,21 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 			add_history(line);
 		if (!line)
-			break ;
+			handle_ctrl_d();
+		if (line[0] == '\0')
+		{
+			free(line);
+			continue;
+		}
 		if (!start_quotes(line, &data))
 			continue ;
 		if (data.split)
 			validation(data.split, &data.stack);
 		init_tokens_type(&data.stack);
-		if (data.stack && has_pipe(data.stack))
-			execute_pipe(&data);
-		else if (data.stack)
-		{
-			if (is_builtin_cmd((*data.stack).string))
-				built_in_functions(&data.stack, (*data.stack).string, &data.env,
-					data.split);
-			else
-				execute_else(&data.env, data.split, envp);
-		}
-		free_stack(&data.stack);
+		handle_cmds(&data);
+		free_all(NULL, &data.stack, data.split);
 		free(line);
-		free_array(data.split);
 	}
+	rl_clear_history();
 	return (0);
 }

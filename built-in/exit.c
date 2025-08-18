@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 17:18:38 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:25:41 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	exit_command_print_function(t_token *tmp, long long num)
 	{
 		printf("exit\n"),
 		g_exit_status = num % 256;
+		rl_clear_history();
 		exit(num % 256);
 	}
 	return (0);
@@ -48,7 +49,8 @@ int	exit_command(t_token **stack, t_env **env, char **split)
 			printf("exit\nminishell: exit: %s: numeric argument required\n", \
 			tmp->string);
 			g_exit_status = 2;
-			// free_all(env, stack, split);
+			free_all(env, stack, split);
+			rl_clear_history();
 			exit(2);
 		}
 	}
@@ -58,14 +60,4 @@ int	exit_command(t_token **stack, t_env **env, char **split)
 		return (1);
 	}
 	return (0);
-}
-
-void	free_all(t_env **env, t_token **stack, char **split)
-{
-	if (env)
-		free_env(env);
-	if (stack)
-		free_stack(stack);
-	if (split)
-		free(split);
 }

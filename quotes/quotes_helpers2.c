@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/13 17:27:09 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 15:41:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 		if ((check_after_key(line[ij->i + key_len])))
 		{
 			ij->i += key_len;
-			while (line[ij->i] && ((line[ij->i] >= 'a' && line[ij->i] <= 'z')
-					|| (line[ij->i] >= 'A' && line[ij->i] <= 'Z')
-					|| (line[ij->i] >= '0' && line[ij->i] <= '9')))
+			while (line[ij->i] && check_after_key(line[ij->i]))
 				ij->i++;
 			return ;
 		}
@@ -81,10 +79,7 @@ void	dquote_expansion(char *line, char *new, t_iter *ij, t_env **env)
 			if ((check_after_key(line[ij->i + key_len])))
 			{
 				ij->i += key_len;
-				while (line[ij->i] && ((line[ij->i] >= 'a'
-							&& line[ij->i] <= 'z') || (line[ij->i] >= 'A'
-							&& line[ij->i] <= 'Z') || (line[ij->i] >= '0'
-							&& line[ij->i] <= '9')))
+				while (line[ij->i] && check_after_key(line[ij->i]))
 					ij->i++;
 			}
 			else
@@ -145,5 +140,7 @@ char	*find_var_value(char *str, t_env **env, int *key_len)
 		}
 		tmp = tmp->next;
 	}
+	if (ft_strncmp(str, "EMPTY", 5) == 0)
+		return ("");
 	return (NULL);
 }
