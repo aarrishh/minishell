@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/11 18:25:59 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:41:12 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,14 @@ t_env	*add_env_to_list(char **envp)
 	return (env);
 }
 
-void	env_command(t_env *env)
+void	env_command(t_env *env, t_token *stack)
 {
+	if (stack->next)
+	{
+		printf("env: '%s': No such file or directory\n", stack->next->string);
+		g_exit_status = 127;
+		return ;
+	}
 	while (env)
 	{
 		if ((ft_strcmp(env->value, "") != 0)

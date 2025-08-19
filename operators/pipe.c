@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 17:08:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:01:19 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ void	execute_pipe(t_data *data)
 	int			i;
 	pid_t		pid;
 	t_pipe_fd	fds;
+	int			status;
 
+	// g_exit_status = 0;
 	commands = split_operator(&data->stack, PIPE);
 	num_cmds = two_dim_len(commands);
 	i = 0;
@@ -95,6 +97,12 @@ void	execute_pipe(t_data *data)
 	}
 	i = 0;
 	while (i++ < num_cmds)
-		wait(NULL);
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_exit_status = 128 + WTERMSIG(status);
+	}
 	free_array(commands);
 }

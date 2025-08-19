@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 12:41:18 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:40:30 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	built_in_functions(t_token **stack, char *string, t_env **env,
 	else if (ft_strcmp(string, "pwd") == 0)
 		pwd_command();
 	else if (ft_strcmp(string, "env") == 0)
-		env_command(*env);
+		env_command(*env, *stack);
 	else if (ft_strcmp(string, "cd") == 0)
 		cd_command(*stack, env);
 	else if (ft_strcmp(string, "export") == 0)

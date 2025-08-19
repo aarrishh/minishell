@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/08/18 17:18:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/19 17:59:16 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	cd_command(t_token *stack, t_env **env)
 	if (chdir(stack->next->string) != 0)
 	{
 		perror("minishell: cd");
+		g_exit_status = 1;
 		return ;
 	}
 	if (old_pwd)

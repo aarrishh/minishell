@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/18 17:39:32 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:12:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void		check_type_append(char *str, t_token **stack);
 int			exit_command(t_token **stack, t_env **env, char **split);
 int			find_equal(char *str);
 void		pwd_command(void);
-void		env_command(t_env *env);
+void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
 void		export_command(t_token *stack, t_env **env);
 void		cd_command(t_token *stack, t_env **env);
@@ -82,7 +82,6 @@ int			is_builtin_cmd(char *cmd);
 void		free_env(t_env **env);
 void		*free_array(char **array);
 void		free_stack(t_token **stack);
-void		*free_array(char **array);
 void		free_all(t_env **env, t_token **stack, char **split);
 
 // Env functions
@@ -98,8 +97,9 @@ int			check_key(char *key);
 int			find_plus_equal(char *str);
 int			find_equal_for_export(char *str);
 int			check_sameness(char *str, t_env *env);
-void		check_i_have_value_after_equal_symbol_version_two(int index,
-				char *str, t_env **env);
+void	check_i_have_value_after_equal_symbol_version_two(int index,
+														char *str,
+														t_env **env);
 void		check_i_have_value_after_equal_symbol(int index, char *str,
 				t_env **node);
 void		change_value_for_plus_equal_case(char *str, t_env **env);
