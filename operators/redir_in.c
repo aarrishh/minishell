@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 18:54:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/20 18:27:34 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,10 @@ void	redir_in(t_data *data)
 	int		len;
 	int		i;
 	int		j;
-	int		saved_stdout;
 	char	**split_rdrin;
 
 	i = 0;
 	j = 0;
-	saved_stdout = dup(STDIN_FILENO);
 	split_rdrin = split_operator(&data->stack, REDIR_IN);
 	len = two_dim_len(split_rdrin);
 	while (i < len)
@@ -78,14 +76,7 @@ void	redir_in(t_data *data)
 		}
 		i++;
 	}
-	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		// error check?
-		close(fd);
-		return ;
-	}
-	redirect_cmd(data, split_rdrin[0]);
-	dup2(saved_stdout, STDIN_FILENO);
-	close(saved_stdout);
+	if (fd)
+		redirect_cmd(data, split_rdrin[0], fd, 0);
 	close(fd);
 }

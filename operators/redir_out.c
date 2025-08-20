@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 19:07:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/20 18:27:20 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,47 @@ char	*find_filename_out(t_token *stack, int i)
 	return (NULL);
 }
 
-void	redirect_cmd(t_data *data, char *cmd)
+void	redirect_cmd(t_data *data, char *cmd, int fd, int out)
 {
 	char	**main_cmd;
 	char	*path;
 	pid_t	pid;
+	int		saved_stdout;
 
 	main_cmd = ft_split(cmd, ' ');
 	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
 	{
+		saved_stdout = dup(out);
+		if (dup2(fd, out) == -1)
+		{
+			// do we need error check?
+			close(fd);
+			return ;
+		}
 		built_in_functions(&data->stack, main_cmd[0], &data->env, data->split);
 		free_array(main_cmd);
+		dup2(saved_stdout, out);
+		close(saved_stdout);
 	}
 	else
 	{
 		pid = fork();
 		if (pid == 0)
 		{
+			if (dup2(fd, out) == -1)
+			{
+				// do we need error check?
+				close(fd);
+				return ;
+			}
 			path = split_path(&data->env, main_cmd[0]);
 			if (!path)
 				exit(127);
 			if (execve(path, main_cmd, data->envp))
+			{
+				perror(main_cmd[0]);
 				exit(126);
+			}
 			free_array(main_cmd);
 			free(path);
 		}
@@ -108,12 +127,10 @@ void	redir_function(t_data *data, int append)
 	int		len;
 	int		i;
 	int		j;
-	int		saved_stdout;
 	char	**split_redir;
 
 	i = 0;
 	j = 0;
-	saved_stdout = dup(STDOUT_FILENO);
 	if (append)
 		split_redir = split_operator(&data->stack, APPEND);
 	else
@@ -130,14 +147,7 @@ void	redir_function(t_data *data, int append)
 		}
 		i++;
 	}
-	if (dup2(fd, STDOUT_FILENO) == -1)
-	{
-		// do we need error check?
-		close(fd);
-		return ;
-	}
-	redirect_cmd(data, split_redir[0]);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
+	if (fd)
+		redirect_cmd(data, split_redir[0], fd, 1);
 	close(fd);
 }
