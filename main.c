@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/18 19:40:37 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/20 15:04:24 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ void	handle_cmds(t_data *data)
 	if (data->stack && has_operator(data->stack, PIPE))
 		execute_pipe(data);
 	else if (data->stack && has_operator(data->stack, REDIR_OUT))
-		redir_function(data, 0); // chka es
+		redir_function(data, 0); // chka es exit_status
 	else if (has_operator(data->stack, APPEND))
-		redir_function(data, 1); // chka es
+		redir_function(data, 1); // chka es exit_status
 	else if (has_operator(data->stack, REDIR_IN))
 		redir_in(data);
 	else if (has_operator(data->stack, HEREDOC))
 		printf("not done yet\n");
 	else if (data->stack)
 	{
-		if (is_builtin_cmd((*data->stack).string))
+		if (is_builtin_cmd((*data->stack).string, &data->env, data->stack))
 			built_in_functions(&data->stack, (*data->stack).string, &data->env,
 				data->split);
 		else

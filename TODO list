@@ -139,9 +139,12 @@ exit ''
 
 
 
+arimanuk@c2r1s5:~/Desktop/minishell_new$ echo hi > /etc/passwd
+bash: /etc/passwd: Permission denied
+arimanuk@c2r1s5:~/Desktop/minishell_new$ //
 
-
-
+🌸 minishell ✦ echoecho hi > /etc/passwd
+open: Permission denied //
 
 
 // vaxy gal grel shlvl

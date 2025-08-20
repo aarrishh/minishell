@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 20:10:37 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/20 14:55:10 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 		close(fds->pfd[1]);
 	}
 	main_cmd = ft_split(cmd, ' ');
-	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
+	if (main_cmd[0] && is_builtin_cmd(main_cmd[0], &data->env, data->stack))
 	{
 		built_in_functions(&data->stack, main_cmd[0], &data->env, data->split);
 		free_array(main_cmd);

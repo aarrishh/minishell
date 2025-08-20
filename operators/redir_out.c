@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 12:57:43 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/20 14:55:42 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	redirect_cmd(t_data *data, char *cmd)
 	char	*path;
 
 	main_cmd = ft_split(cmd, ' ');
-	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
+	if (main_cmd[0] && is_builtin_cmd(main_cmd[0], &data->env, data->stack))
 	{
 		built_in_functions(&data->stack, main_cmd[0], &data->env, data->split);
 		free_array(main_cmd);
@@ -77,7 +77,7 @@ int	find_and_open(t_data **data, int append, int i)
 	if (!filename)
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
-		exit(1);
+		g_exit_status = 2;
 	}
 	if (append)
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -86,7 +86,7 @@ int	find_and_open(t_data **data, int append, int i)
 	if (fd == -1)
 	{
 		perror("open");
-		exit(1);
+		g_exit_status = 1;;
 	}
 	return (fd);
 }
