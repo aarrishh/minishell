@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 12:55:18 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:18:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char	**fork_for_pipe(t_data *data, char **commands, int num_cmds)
 	char		**failed_cmds;
 
 	i = 0;
+	fds.prev_fd = 0;
 	failed_cmds = malloc(sizeof(char *) * (num_cmds + 1));
 	if (!failed_cmds)
 		return (NULL);
@@ -93,9 +94,11 @@ char	**fork_for_pipe(t_data *data, char **commands, int num_cmds)
 		else
 			parent(&fds);
 		main_cmd = ft_split(commands[i], ' ');
-		failed_cmds[i] = main_cmd[0];
+		failed_cmds[i] = ft_strdup(main_cmd[0]);
+		free_array(main_cmd);
 		i++;
 	}
+	failed_cmds[i] = NULL;
 	return (failed_cmds);
 }
 
@@ -113,13 +116,21 @@ void	execute_pipe(t_data *data)
 	num_cmds = two_dim_len(commands);
 	i = 0;
 	failed_cmds = fork_for_pipe(data, commands, num_cmds);
+	if (!failed_cmds)
+		return ;
 	while (i < num_cmds)
 	{
 		waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
-			exit_codes[i] = WEXITSTATUS(status);
+		{
+			g_exit_status = WEXITSTATUS(status);
+			exit_codes[i] = g_exit_status;
+		}
 		else if (WIFSIGNALED(status))
-			exit_codes[i] = 128 + WTERMSIG(status);
+		{
+			g_exit_status = 128 + WTERMSIG(status);
+			exit_codes[i] = g_exit_status;
+		}
 		i++;
 	}
 	i = num_cmds - 1;
@@ -130,4 +141,5 @@ void	execute_pipe(t_data *data)
 		i--;
 	}
 	free_array(commands);
+	free_array(failed_cmds);
 }

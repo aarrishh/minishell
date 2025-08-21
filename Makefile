@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/18 15:36:14 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/21 13:40:59 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,4 +80,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+valgrind: valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=ignore_readline.supp ./minishell
+
+.PHONY: all clean fclean re valgrind

@@ -1,0 +1,7 @@
+{
+   readline_leaks
+   Memcheck:Leak
+   fun:malloc
+   fun:readline
+   obj:/usr/lib/libreadline.so.*
+}
