@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 16:57:35 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:08:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ char	*split_path(t_env **env, char *cmd)
 		i++;
 	}
 	free_array(splitted_path);
-	printf("%s: command not found\n", cmd);
 	return (NULL);
 }
 
@@ -97,10 +96,11 @@ char	**envp_from_list(t_env *env)
 
 void	free_envp(char **envp)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (!envp)
-		return;
+		return ;
 	while (envp[i])
 		free(envp[i++]);
 	free(envp);
@@ -149,4 +149,6 @@ void	execute_else(t_env **env, char **cmd)
 		else if (WIFSIGNALED(status))
 			g_exit_status = 128 + WTERMSIG(status);
 	}
+	if (g_exit_status == 127)
+		printf("%s: command not found\n", cmd[0]);
 }
