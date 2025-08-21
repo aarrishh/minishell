@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 16:57:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:56:35 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,7 @@ void		print_export(t_env *env);
 // Signal functions
 void		handle_ctrl_d(void);
 void		setup_signals(void);
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
 
 #endif
