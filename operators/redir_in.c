@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 15:20:39 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 18:43:03 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	open_rdirin(t_token *stack, int i)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("open");
+		// perror("open");
 		return (0);
 	}
 	return (fd);

@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/21 16:47:09 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/21 18:47:08 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ OLIVE_GREEN    := \033[38;2;128;128;0m
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) Makefile minishell.h quotes/quotes.h
 	@echo "$(PB)[LINKING]$(RESET) Building $(EMERALD_GREEN) $(NAME) $(RESET)..."
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(LDFLAGS)
 	@echo "$(DEEP_PINK)      MINISHELL IS READY!$(RESET)"
