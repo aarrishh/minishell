@@ -6,11 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/08/21 16:46:35 by mabaghda         ###   ########.fr       */
-=======
-/*   Updated: 2025/08/21 15:46:02 by arimanuk         ###   ########.fr       */
->>>>>>> origin/Arish
+/*   Updated: 2025/08/21 17:01:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +14,9 @@
 
 static int	env_size(t_env *env)
 {
-<<<<<<< HEAD
 	int	count;
 
 	count = 0;
-=======
-	int count = 0;
-
->>>>>>> origin/Arish
 	while (env)
 	{
 		count++;
@@ -41,15 +32,6 @@ char	*join_key_value(char *key, char *value)
 
 	if (!value)
 		value = "";
-<<<<<<< HEAD
-	len = strlen(key) + 1 + strlen(value) + 1;
-	str = malloc(len);
-	if (!str)
-		return (NULL);
-	strcpy(str, key);
-	strcat(str, "=");
-	strcat(str, value);
-=======
 	len = ft_strlen(key) + 1 + ft_strlen(value) + 1;
 	str = malloc(len);
 	if (!str)
@@ -57,7 +39,6 @@ char	*join_key_value(char *key, char *value)
 	ft_strcpy(str, key);
 	ft_strcat(str, "=");
 	ft_strcat(str, value);
->>>>>>> origin/Arish
 	return (str);
 }
 
@@ -87,10 +68,6 @@ char	**env_to_envp(t_env *env)
 	return (envp);
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/Arish
 void	env_add_back(t_env *node, t_env **head)
 {
 	t_env	*tmp;
