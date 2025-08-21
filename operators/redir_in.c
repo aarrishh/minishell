@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/20 18:27:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:20:39 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,15 @@ void	redir_in(t_data *data)
 
 	i = 0;
 	j = 0;
+	fd = 0;
 	split_rdrin = split_operator(&data->stack, REDIR_IN);
 	len = two_dim_len(split_rdrin);
 	while (i < len)
 	{
 		if (i != 0)
 		{
+			if (fd)
+				close(fd);
 			fd = open_rdirin(data->stack, j);
 			j++;
 		}

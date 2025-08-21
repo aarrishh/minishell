@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 11:25:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:18:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
 	char	**main_cmd;
 	char	*path;
 	pid_t	pid;
+	int		status;
 	int		saved_stdout;
 
 	main_cmd = ft_split(cmd, ' ');
@@ -92,8 +93,13 @@ void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
 		}
 		else
 		{
-			g_exit_status = 127;
-			wait(NULL);
+			waitpid(-1, &status, 0);
+			if (WIFEXITED(status))
+				g_exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				g_exit_status = 128 + WTERMSIG(status);
+			// g_exit_status = 127;
+			// wait(NULL);
 		}
 	}
 }
@@ -131,6 +137,7 @@ void	redir_function(t_data *data, int append)
 
 	i = 0;
 	j = 0;
+	fd = 0;
 	if (append)
 		split_redir = split_operator(&data->stack, APPEND);
 	else
@@ -140,8 +147,8 @@ void	redir_function(t_data *data, int append)
 	{
 		if (i != 0)
 		{
-			// if (fd)
-			// 	close(fd);
+			if (fd)
+				close(fd);
 			fd = find_and_open(&data, append, j);
 			j++;
 		}
