@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/19 18:01:19 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 12:55:18 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,18 @@ int	two_dim_len(char **str)
 	return (i);
 }
 
-void	execute_pipe(t_data *data)
+char	**fork_for_pipe(t_data *data, char **commands, int num_cmds)
 {
-	char		**commands;
-	int			num_cmds;
 	int			i;
 	pid_t		pid;
 	t_pipe_fd	fds;
-	int			status;
+	char		**main_cmd;
+	char		**failed_cmds;
 
-	// g_exit_status = 0;
-	commands = split_operator(&data->stack, PIPE);
-	num_cmds = two_dim_len(commands);
 	i = 0;
+	failed_cmds = malloc(sizeof(char *) * (num_cmds + 1));
+	if (!failed_cmds)
+		return (NULL);
 	while (i < num_cmds)
 	{
 		if (i < num_cmds - 1)
@@ -93,16 +92,42 @@ void	execute_pipe(t_data *data)
 			child(data, &fds, commands[i]);
 		else
 			parent(&fds);
+		main_cmd = ft_split(commands[i], ' ');
+		failed_cmds[i] = main_cmd[0];
 		i++;
 	}
+	return (failed_cmds);
+}
+
+void	execute_pipe(t_data *data)
+{
+	char	**commands;
+	char	**failed_cmds;
+	int		num_cmds;
+	int		i;
+	int		status;
+	int		exit_codes[256];
+
+	// g_exit_status = 0;
+	commands = split_operator(&data->stack, PIPE);
+	num_cmds = two_dim_len(commands);
 	i = 0;
-	while (i++ < num_cmds)
+	failed_cmds = fork_for_pipe(data, commands, num_cmds);
+	while (i < num_cmds)
 	{
-		waitpid(pid, &status, 0);
+		waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
+			exit_codes[i] = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			g_exit_status = 128 + WTERMSIG(status);
+			exit_codes[i] = 128 + WTERMSIG(status);
+		i++;
+	}
+	i = num_cmds - 1;
+	while (i >= 0)
+	{
+		if (exit_codes[i] == 127)
+			printf("%s: command not found\n", failed_cmds[i]);
+		i--;
 	}
 	free_array(commands);
 }
