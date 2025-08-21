@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:20:52 by arina             #+#    #+#             */
-/*   Updated: 2025/08/14 14:56:04 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:36:25 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	n_check(char *str)
 
 void	tpelu_pahna(t_token *tmp, int flag)
 {
+	g_exit_status = 0;
 	if (tmp)
 	{
 		if (flag == 1)

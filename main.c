@@ -6,13 +6,13 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 16:46:39 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:57:20 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_exit_status = 0;
+int	g_exit_status = 0;
 
 void	init_data(t_data *data, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 16:36:55 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:57:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void		redir_in(t_data *data);
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strstr(char *str, char *to_find);
+char		*ft_strcat(char *dest, char *src);
+char		*ft_strcpy(char *dest, char *src);
 void		add_back(t_token *node, t_token **a);
 int			ft_atol(const char *str, long long *result);
 int			ft_strcmp(char *s1, char *s2);
