@@ -6,36 +6,40 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/20 17:17:26 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/21 13:48:34 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	change_shlvl_value(t_env **env)
+void	change_shlvl_value(t_env **env, char **cmd)
 {
 	t_env	*tmp;
-	int		value;
-	char	*res;
+	int		res;
 
 	tmp = *env;
-	while (tmp)
+	res = 0;
+	if (ft_strcmp(cmd[0], "./minishell") == 0 && cmd[1] == NULL)
 	{
-		if (ft_strcmp(tmp->key, "SHLVL") == 0)
+		while (tmp)
 		{
-			value = ft_atoi(tmp->value);
-			value += 1;
-			res = ft_itoa(value);
-			tmp->value = ft_strdup(res);
-			// printf("value jan->%s\n", tmp->value);
-			// break ;
+			if (ft_strcmp(tmp->key, "SHLVL") == 0)
+			{
+				if (tmp->value)
+					res = ft_atoi(tmp->value);
+				free(tmp->value);
+				tmp->value = ft_itoa(res + 1);
+				return ;
+			}
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
 	}
 }
 
 int	is_builtin_cmd(char *cmd, t_env **env, t_token *stack)
 {
+	(void)env;
+	(void)stack;
 	if (!cmd)
 		return (0);
 	if (!ft_strcmp(cmd, "echo"))
@@ -52,12 +56,6 @@ int	is_builtin_cmd(char *cmd, t_env **env, t_token *stack)
 		return (1);
 	if (!ft_strcmp(cmd, "exit"))
 		return (1);
-	if (!ft_strcmp(cmd, "./minishell"))
-	{
-		(void)stack;
-		change_shlvl_value(env);
-		return (0);
-	}
 	return (0);
 }
 
