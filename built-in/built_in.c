@@ -6,14 +6,40 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/18 20:40:30 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/21 13:48:34 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_builtin_cmd(char *cmd)
+void	change_shlvl_value(t_env **env, char **cmd)
 {
+	t_env	*tmp;
+	int		res;
+
+	tmp = *env;
+	res = 0;
+	if (ft_strcmp(cmd[0], "./minishell") == 0 && cmd[1] == NULL)
+	{
+		while (tmp)
+		{
+			if (ft_strcmp(tmp->key, "SHLVL") == 0)
+			{
+				if (tmp->value)
+					res = ft_atoi(tmp->value);
+				free(tmp->value);
+				tmp->value = ft_itoa(res + 1);
+				return ;
+			}
+			tmp = tmp->next;
+		}
+	}
+}
+
+int	is_builtin_cmd(char *cmd, t_env **env, t_token *stack)
+{
+	(void)env;
+	(void)stack;
 	if (!cmd)
 		return (0);
 	if (!ft_strcmp(cmd, "echo"))

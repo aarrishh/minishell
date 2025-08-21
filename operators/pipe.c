@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 14:18:08 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:41:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 		close(fds->pfd[1]);
 	}
 	main_cmd = ft_split(cmd, ' ');
-	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
+	if (main_cmd[0] && is_builtin_cmd(main_cmd[0], &data->env, data->stack))
 	{
 		built_in_functions(&data->stack, main_cmd[0], &data->env, data->split);
 		free_array(main_cmd);
@@ -111,7 +111,6 @@ void	execute_pipe(t_data *data)
 	int		status;
 	int		exit_codes[256];
 
-	// g_exit_status = 0;
 	commands = split_operator(&data->stack, PIPE);
 	num_cmds = two_dim_len(commands);
 	i = 0;

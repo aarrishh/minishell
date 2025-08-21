@@ -3,14 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/18 20:41:12 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:46:35 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int	env_size(t_env *env)
+{
+	int	count;
+
+	count = 0;
+	while (env)
+	{
+		count++;
+		env = env->next;
+	}
+	return (count);
+}
+
+char	*join_key_value(char *key, char *value)
+{
+	int		len;
+	char	*str;
+
+	if (!value)
+		value = "";
+	len = strlen(key) + 1 + strlen(value) + 1;
+	str = malloc(len);
+	if (!str)
+		return (NULL);
+	strcpy(str, key);
+	strcat(str, "=");
+	strcat(str, value);
+	return (str);
+}
+
+char	**env_to_envp(t_env *env)
+{
+	char	**envp;
+	int		i;
+
+	envp = malloc(sizeof(char *) * (env_size(env) + 1));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	while (env)
+	{
+		envp[i] = join_key_value(env->key, env->value);
+		if (!envp[i])
+		{
+			while (i > 0)
+				free(envp[--i]);
+			free(envp);
+			return (NULL);
+		}
+		i++;
+		env = env->next;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
 
 void	env_add_back(t_env *node, t_env **head)
 {
@@ -66,8 +122,8 @@ t_env	*add_env_to_list(char **envp)
 	while (envp[i])
 	{
 		str = ft_strdup(envp[i]);
-		cur_node = new_node(ft_substr(str, 0, find_equal(str)), \
-		ft_strdup(ft_strchr(str, '=') + 1));
+		cur_node = new_node(ft_substr(str, 0, find_equal(str)),
+				ft_strdup(ft_strchr(str, '=') + 1));
 		free(str);
 		env_add_back(cur_node, &env);
 		i++;
@@ -75,9 +131,29 @@ t_env	*add_env_to_list(char **envp)
 	return (env);
 }
 
+void	add_env_value(t_env **env, char *key, char *value)
+{
+	t_env	*tmp;
+	t_env	*node;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return ;
+		}
+		tmp = tmp->next;
+	}
+	node = new_node(ft_strdup(key), ft_strdup(value));
+	env_add_back(node, env);
+}
+
 void	env_command(t_env *env, t_token *stack)
 {
-	if (stack->next)
+	if (stack->next && stack->next->type == WORD)
 	{
 		printf("env: '%s': No such file or directory\n", stack->next->string);
 		g_exit_status = 127;
@@ -85,8 +161,8 @@ void	env_command(t_env *env, t_token *stack)
 	}
 	while (env)
 	{
-		if ((ft_strcmp(env->value, "") != 0)
-			|| (ft_strcmp(env->value, "") == 0 && env->flag == 1))
+		if ((ft_strcmp(env->value, "") != 0) || (ft_strcmp(env->value, "") == 0
+				&& env->flag == 1))
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}

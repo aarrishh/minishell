@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 12:49:50 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:36:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,79 @@ char	*split_path(t_env **env, char *cmd)
 	return (NULL);
 }
 
-void	execute_else(t_env **env, char **cmd, char **envp)
+char	**envp_from_list(t_env *env)
+{
+	int		len;
+	char	**envp;
+	t_env	*tmp;
+	int		i;
+	char	*str;
+
+	len = 0;
+	tmp = env;
+	while (tmp)
+	{
+		len++;
+		tmp = tmp->next;
+	}
+	envp = malloc(sizeof(char *) * (len + 1));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	tmp = env;
+	while (tmp)
+	{
+		str = ft_strjoin(tmp->key, "=");
+		envp[i] = ft_strjoin(str, tmp->value);
+		free(str);
+		i++;
+		tmp = tmp->next;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
+void	free_envp(char **envp)
+{
+	int i = 0;
+
+	if (!envp)
+		return;
+	while (envp[i])
+		free(envp[i++]);
+	free(envp);
+}
+
+void	execute_else(t_env **env, char **cmd)
 {
 	pid_t	pid;
 	char	*path;
 	int		status;
+	char	**envp;
 
 	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return ;
+	}
 	if (pid == 0)
 	{
+		change_shlvl_value(env, cmd);
+		envp = env_to_envp(*env);
+		if (!envp)
+			exit(1);
 		path = split_path(env, cmd[0]);
 		if (!path)
+		{
+			free_envp(envp);
 			exit(127);
+		}
 		if (execve(path, cmd, envp) == -1)
 		{
 			perror(cmd[0]);
+			free(path);
+			free_envp(envp);
 			exit(126);
 		}
 	}

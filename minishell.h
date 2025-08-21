@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/20 18:26:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:36:55 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_pipe_fd
 // Pipe functions
 void		execute_pipe(t_data *data);
 char		**split_operator(t_token **stack, t_token_type type);
-void		execute_else(t_env **env, char **cmd, char **envp);
+void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
 void		redir_function(t_data *data, int append);
@@ -76,7 +76,7 @@ void		cd_command(t_token *stack, t_env **env);
 void		built_in_functions(t_token **stack, char *string, t_env **env,
 				char **split);
 void		unset_command(t_token *stack, t_env **env);
-int			is_builtin_cmd(char *cmd);
+int			is_builtin_cmd(char *cmd, t_env **env, t_token *stack);
 
 // Free functions
 void		free_env(t_env **env);
@@ -85,10 +85,15 @@ void		free_stack(t_token **stack);
 void		free_all(t_env **env, t_token **stack, char **split);
 
 // Env functions
+void		add_env_value(t_env **env, char *key, char *value);
 void		env_add_back(t_env *node, t_env **head);
+void		change_shlvl_value(t_env **env, char **cmd);
+char		*get_env_value(t_env *env, char *key);
 t_env		*new_node(char *key, char *value);
 t_env		*add_env_to_list(char **envp);
 t_token		*create_node(char *res);
+t_env		*copy_env_for_print(t_env *env);
+char		**env_to_envp(t_env *env);
 
 // Export functions
 t_env		*sort_env(t_env *env);

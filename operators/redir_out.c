@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 15:18:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:40:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
 	int		saved_stdout;
 
 	main_cmd = ft_split(cmd, ' ');
-	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
+	if (main_cmd[0] && is_builtin_cmd(main_cmd[0], &data->env, data->stack))
 	{
 		saved_stdout = dup(in_or_out);
 		if (dup2(fd, in_or_out) == -1)
@@ -113,7 +113,7 @@ int	find_and_open(t_data **data, int append, int i)
 	if (!filename)
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
-		exit(1);
+		g_exit_status = 2;
 	}
 	if (append)
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -122,7 +122,7 @@ int	find_and_open(t_data **data, int append, int i)
 	if (fd == -1)
 	{
 		perror("open");
-		return (0);
+		exit(1);
 	}
 	return (fd);
 }

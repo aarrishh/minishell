@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/19 18:00:04 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:46:39 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	handle_cmds(t_data *data)
 		printf("not done yet\n");
 	else if (data->stack)
 	{
-		if (is_builtin_cmd((*data->stack).string))
+		if (is_builtin_cmd((*data->stack).string, &data->env, data->stack))
 			built_in_functions(&data->stack, (*data->stack).string, &data->env,
 				data->split);
 		else
-			execute_else(&data->env, data->split, data->envp);
+			execute_else(&data->env, data->split);
 	}
 }
 
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");
-		if (line && line[0] != '\0' && !is_space(line))
+		if (line && line[0] != '\0') // && !is_space(line))
 			add_history(line);
 		if (!line)
 			handle_ctrl_d();
