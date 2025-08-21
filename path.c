@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 13:46:25 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:10:05 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ void	execute_else(t_env **env, char **cmd)
 	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		change_shlvl_value(env, cmd);
 		envp = env_to_envp(*env);
 		if (!envp)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 18:28:46 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/09 17:50:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:02:18 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,4 +133,36 @@ int	ft_atol(const char *str, long long *result)
 		return (-1);
 	*result = res * sign;
 	return (0);
+}
+
+char	*ft_strcat(char *dest, char *src)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (dest[i] != '\0')
+		i++;
+	while (src[j] != '\0')
+	{
+		dest[i + j] = src[j];
+		j++;
+	}
+	dest[i + j] = '\0';
+	return (dest);
+}
+
+char	*ft_strcpy(char *dest, char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

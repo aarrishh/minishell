@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 07:00:52 by arina             #+#    #+#             */
-/*   Updated: 2025/08/09 17:28:02 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/21 15:42:16 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,14 @@ void	unset_command(t_token *stack, t_env **env)
 	while (stack)
 	{
 		if (check_key(stack->string) == -2)
+		{
 			printf("minishell: unset: `%s': not a valid identifier\n", \
 			stack->string);
+			g_exit_status = 1;
+			return ;
+		}
 		find_key_for_unset(stack->string, env);
 		stack = stack->next;
 	}
+	g_exit_status = 0;
 }
