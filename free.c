@@ -3,30 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 12:36:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 14:54:43 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 15:49:11 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*free_array(char **array)
+void	free_array(char **array)
 {
 	int	i;
 
 	i = 0;
-	if (array && array[i])
+
+	while (array[i])
 	{
-		while (array[i])
-		{
+			// printf("ee->%s\n", array[i]);
 			free(array[i]);
+			array[i] = NULL;
 			i++;
 		}
-		free(array);
-	}
-	return (NULL);
+		// free(array);
 }
 
 void	free_env(t_env **env)
@@ -48,14 +47,16 @@ void	free_stack(t_token **stack)
 {
 	t_token	*tmp;
 
-	tmp = *stack;
-	while (tmp)
+	while (*stack)
 	{
-		tmp = tmp->next;
+		tmp = (*stack)->next;
+		if ((*stack)->string)
+			free((*stack)->string);
 		free(*stack);
 		*stack = tmp;
 	}
 }
+
 
 void	free_all(t_env **env, t_token **stack, char **split)
 {

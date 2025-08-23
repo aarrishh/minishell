@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 16:57:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 15:54:11 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,13 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");
-		if (line && line[0] != '\0') // && !is_space(line))
+		if (line && line[0] != '\0')
 			add_history(line);
 		if (!line)
+		{
+			free_all(&data.env, &data.stack, data.split);
 			handle_ctrl_d();
+		}
 		if (line[0] == '\0')
 		{
 			free(line);

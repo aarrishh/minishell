@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/08/19 17:59:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:37:33 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,10 @@ void	update_env_value(t_env **env, char *key, char *update_value)
 	}
 }
 
-void	cd_command(t_token *stack, t_env **env)
+void	update_env_new_and_old_pwd(t_env **env, char *old_pwd)
 {
-	char	*old_pwd;
 	char	*new_pwd;
 
-	old_pwd = get_env_value(*env, "PWD");
-	if (chdir(stack->next->string) != 0)
-	{
-		perror("minishell: cd");
-		g_exit_status = 1;
-		return ;
-	}
 	if (old_pwd)
 		update_env_value(env, "OLDPWD", old_pwd);
 	new_pwd = getcwd(NULL, 0);
@@ -61,3 +53,28 @@ void	cd_command(t_token *stack, t_env **env)
 		free(new_pwd);
 	}
 }
+
+void	cd_command(t_token *stack, t_env **env)
+{
+	char	*old_pwd;
+	char	*target;
+
+	old_pwd = get_env_value(*env, "PWD");
+	if (!stack->next)
+		target = get_env_value(*env, "HOME");
+	else if (ft_strcmp(stack->next->string, "-") == 0)
+		target = get_env_value(*env, "OLDPWD");
+	else
+		target = stack->next->string;
+	if (!target || chdir(target) != 0)
+	{
+		perror("minishell: cd");
+		g_exit_status = 1;
+		return ;
+	}
+	update_env_new_and_old_pwd(env, old_pwd);
+	g_exit_status = 0;
+}
+
+
+

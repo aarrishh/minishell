@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/17 18:27:12 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/22 21:26:45 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	validation(char **line, t_token **stack)
 			node = create_node((ft_substr(line[i], j, cur_ind)));
 			add_back(node, stack);
 			j += cur_ind;
-		} // free(line[i])
+		}
 		i++;
 	}
 }
