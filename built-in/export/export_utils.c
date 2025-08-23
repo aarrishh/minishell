@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:39:22 by arina             #+#    #+#             */
-/*   Updated: 2025/08/08 19:00:53 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/23 21:19:46 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,13 @@ t_env	*sort_env(t_env *env)
 void	change_value(char *str, t_env **env)
 {
 	t_env	*tmp;
+	char	*key;
 
 	tmp = *env;
+	key = ft_substr(str, 0, find_equal(str));
 	while (tmp)
 	{
-		if (ft_strcmp(ft_substr(str, 0, find_equal(str)), tmp->key) == 0)
+		if (ft_strcmp(key, tmp->key) == 0)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(ft_strchr(str, '=') + 1);
@@ -63,18 +65,31 @@ void	change_value(char *str, t_env **env)
 		}
 		tmp = tmp->next;
 	}
+	free(key);
 }
+
 
 void	change_value_for_plus_equal_case(char *str, t_env **env)
 {
 	t_env	*tmp;
+	char	*key;
+	char	*idk;
+	char	*new_value;
 
+	key = ft_substr(str, 0, find_plus(str));
+	idk = ft_strchr(str, '=') + 1;
 	tmp = *env;
 	while (tmp)
 	{
-		if (ft_strcmp(ft_substr(str, 0, find_plus(str)), tmp->key) == 0)
-			tmp->value = ft_strjoin(tmp->value, \
-			ft_strdup(ft_strchr(str, '=') + 1));
+		if (ft_strcmp(key, tmp->key) == 0)
+		{
+			new_value = ft_strjoin(tmp->value, idk);
+			free(tmp->value);
+			tmp->value = new_value;
+			break ;
+		}
 		tmp = tmp->next;
 	}
+	free(key);
 }
+

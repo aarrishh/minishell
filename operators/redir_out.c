@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 16:40:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:24:38 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
 	int		saved_stdout;
 
 	main_cmd = ft_split(cmd, ' ');
-	if (main_cmd[0] && is_builtin_cmd(main_cmd[0], &data->env, data->stack))
+	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
 	{
 		saved_stdout = dup(in_or_out);
 		if (dup2(fd, in_or_out) == -1)

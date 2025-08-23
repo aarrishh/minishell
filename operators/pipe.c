@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 17:06:18 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:24:31 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 		close(fds->pfd[1]);
 	}
 	main_cmd = ft_split(cmd, ' ');
-	if (main_cmd[0] && is_builtin_cmd(main_cmd[0], &data->env, data->stack))
+	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
 	{
 		built_in_functions(&data->stack, main_cmd[0], &data->env, data->split);
 		free_array(main_cmd);

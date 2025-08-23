@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 12:36:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 15:49:11 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:06:28 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	free_array(char **array)
 
 	while (array[i])
 	{
-			// printf("ee->%s\n", array[i]);
-			free(array[i]);
-			array[i] = NULL;
-			i++;
-		}
-		// free(array);
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	array = NULL;
 }
 
 void	free_env(t_env **env)
@@ -33,13 +33,16 @@ void	free_env(t_env **env)
 	t_env	*tmp;
 
 	tmp = *env;
-	while (*env)
+	if (*env)
 	{
-		tmp = tmp->next;
-		free((*env)->key);
-		free((*env)->value);
-		free((*env));
-		*env = tmp;
+		while (*env)
+		{
+			tmp = tmp->next;
+			free((*env)->key);
+			free((*env)->value);
+			free((*env));
+			*env = tmp;
+		}
 	}
 }
 
@@ -57,22 +60,24 @@ void	free_stack(t_token **stack)
 	}
 }
 
-
-void	free_all(t_env **env, t_token **stack, char **split)
+void	free_all(t_env **env, t_token **stack, char ***split)
 {
-	if (env)
+	if (env && *env)
 	{
 		free_env(env);
-		env = NULL;
+		*env = NULL;
+		// env = NULL;
 	}
-	if (stack)
+	if (stack && *stack)
 	{
 		free_stack(stack);
-		stack = NULL;
+		*stack = NULL;
+		// stack = NULL;
 	}
-	if (split)
+	if (split && *split)
 	{
-		free_array(split);
-		split = NULL;
+		free_array(*split);
+		*split = NULL;
+		// split = NULL;
 	}
 }

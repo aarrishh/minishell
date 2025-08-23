@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/22 18:29:58 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:24:20 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ void		cd_command(t_token *stack, t_env **env);
 void		built_in_functions(t_token **stack, char *string, t_env **env,
 				char **split);
 void		unset_command(t_token *stack, t_env **env);
-int			is_builtin_cmd(char *cmd, t_env **env, t_token *stack);
+int			is_builtin_cmd(char *cmd);
 
 // Free functions
 void		free_env(t_env **env);
 void		free_array(char **array);
 void		free_stack(t_token **stack);
-void		free_all(t_env **env, t_token **stack, char **split);
+void		free_all(t_env **env, t_token **stack, char ***split);
 
 // Env functions
 void		add_env_value(t_env **env, char *key, char *value);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/21 16:47:09 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/23 17:48:37 by arimanuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 LDFLAGS = -lreadline
 
 SRCS = main.c list.c functions.c path.c \
