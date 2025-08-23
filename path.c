@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 17:08:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 18:04:52 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,62 @@ void	free_envp(char **envp)
 	free(envp);
 }
 
+void	child_process_execution(t_env **env, char **cmd)
+{
+	char	*path;
+	char	**envp;
+
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	change_shlvl_value(env, cmd);
+	envp = env_to_envp(*env);
+	if (!envp)
+		exit(1);
+	path = split_path(env, cmd[0]);
+	if (!path)
+	{
+		free_envp(envp);
+		exit(127);
+	}
+	if (execve(path, cmd, envp) == -1)
+	{
+		perror(cmd[0]);
+		free(path);
+		free_envp(envp);
+		exit(126);
+	}
+}
+
+void parent_process_handling(pid_t pid, int *status, char **cmd)
+{
+	int sig;
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	if (waitpid(pid, status, 0) == -1)
+		perror("waitpid");
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
+	if (WIFEXITED(*status))
+		g_exit_status = WEXITSTATUS(*status);
+	else if (WIFSIGNALED(*status))
+	{
+		sig = WTERMSIG(*status);
+		g_exit_status = 128 + sig;
+		if (sig == SIGINT)
+			write(1, "\n", 1);
+		else if (sig == SIGQUIT)
+			write(1, "Quit: 3\n", 8);
+	}
+	if (g_exit_status == 127)
+		printf("%s: command not found\n", cmd[0]);
+}
+
+
 void	execute_else(t_env **env, char **cmd)
 {
 	pid_t	pid;
-	char	*path;
 	int		status;
-	char	**envp;
 
 	pid = fork();
 	if (pid < 0)
@@ -120,35 +170,7 @@ void	execute_else(t_env **env, char **cmd)
 		return ;
 	}
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		change_shlvl_value(env, cmd);
-		envp = env_to_envp(*env);
-		if (!envp)
-			exit(1);
-		path = split_path(env, cmd[0]);
-		if (!path)
-		{
-			free_envp(envp);
-			exit(127);
-		}
-		if (execve(path, cmd, envp) == -1)
-		{
-			perror(cmd[0]);
-			free(path);
-			free_envp(envp);
-			exit(126);
-		}
-	}
+		child_process_execution(env, cmd);
 	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			g_exit_status = 128 + WTERMSIG(status);
-	}
-	if (g_exit_status == 127)
-		printf("%s: command not found\n", cmd[0]);
+		parent_process_handling(pid, &status, cmd);
 }

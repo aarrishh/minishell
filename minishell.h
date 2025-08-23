@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 16:57:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/22 18:29:58 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int			is_builtin_cmd(char *cmd, t_env **env, t_token *stack);
 
 // Free functions
 void		free_env(t_env **env);
-void		*free_array(char **array);
+void		free_array(char **array);
 void		free_stack(t_token **stack);
 void		free_all(t_env **env, t_token **stack, char **split);
 
@@ -117,5 +117,7 @@ void		print_export(t_env *env);
 // Signal functions
 void		handle_ctrl_d(void);
 void		setup_signals(void);
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
 
 #endif

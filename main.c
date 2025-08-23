@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 17:55:15 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 20:59:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ int	main(int argc, char **argv, char **envp)
 		if (line && line[0] != '\0') // && !is_space(line))
 			add_history(line);
 		if (!line)
+		{
+			free_all(&data.env, &data.stack, data.split);
 			handle_ctrl_d();
+		}
 		if (line[0] == '\0')
 		{
 			free(line);
