@@ -6,13 +6,13 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/23 20:59:58 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:34:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_status = 0;
+int		g_exit_status = 0;
 
 void	init_data(t_data *data, char **envp)
 {
@@ -33,12 +33,12 @@ void	handle_cmds(t_data *data)
 	else if (data->stack && has_operator(data->stack, REDIR_IN))
 		redir_in(data);
 	else if (data->stack && has_operator(data->stack, HEREDOC))
-		printf("not done yet\n");
+		handle_heredoc(data);
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string, &data->env, data->stack))
 			built_in_functions(&data->stack, (*data->stack).string, &data->env,
-				data->split);
+					data->split);
 		else
 			execute_else(&data->env, data->split);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/22 18:29:58 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:39:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_pipe_fd
 	int		last_cmd;
 }			t_pipe_fd;
 
-// Pipe functions
+// Operations functions
 void		execute_pipe(t_data *data);
 char		**split_operator(t_token **stack, t_token_type type);
 void		execute_else(t_env **env, char **cmd);
@@ -46,6 +46,7 @@ void		redir_function(t_data *data, int append);
 void		redirect_cmd(t_data *data, char *cmd, int fd, int in);
 int			two_dim_len(char **str);
 void		redir_in(t_data *data);
+void		handle_heredoc(t_data *data);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -117,7 +118,7 @@ void		print_export(t_env *env);
 // Signal functions
 void		handle_ctrl_d(void);
 void		setup_signals(void);
-void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
+void		sigint_handler(int sig);
+void		sigquit_handler(int sig);
 
 #endif
