@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:24 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/06 15:02:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:31:43 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,16 @@ void	keep_char(char *line, char *new, t_iter *ij)
 	(ij->j)++;
 }
 
-int	check_after_key(char chr)
+int	key_len(char *str)
 {
-	return ((chr >= 'a' && chr <= 'z') || (chr >= 'A' && chr <= 'Z')
-		|| (chr >= '0' && chr <= '9'));
+	int	len;
+
+	len = 0;
+	while (str[len] && (str[len] == '_' || (str[len] >= 'A' && str[len] <= 'Z')
+			|| (str[len] >= 'a' && str[len] <= 'z') || (str[len] >= '0'
+				&& str[len] <= '9')))
+		len++;
+	return (len);
 }
 
 t_quote_state	quote_state(t_quote_state quote, char c)
