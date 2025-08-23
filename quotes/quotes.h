@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 19:32:23 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 20:15:01 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ int					key_len(char *str);
 t_quote_state		quote_state(t_quote_state state, char c);
 int					is_quote_closed(char *line);
 void				keep_value(char *new, char *value, int *j);
-void				dquote_expansion(char *str, char *new, t_iter *ij,
-						t_env **env);
 void				exp_help_loop(t_quote_state state, char *str, char *new,
 						t_iter *ij, t_env **env);
 char				*find_var_value(char *str, t_env **env, int *key_len);
