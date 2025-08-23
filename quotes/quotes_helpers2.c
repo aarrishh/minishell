@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 19:31:56 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:51:25 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ char	*find_var_value(char *str, t_env **env, int *key_length)
 	tmp = *env;
 	*key_length = 1;
 	str++;
+	if (!str)
+		return ("");
 	if (*str >= '0' && *str <= '9')
 	{
 		*key_length = 2;
@@ -123,7 +125,7 @@ char	*find_var_value(char *str, t_env **env, int *key_length)
 	len = key_len(str);
 	while (tmp)
 	{
-		if (ft_strncmp(str, tmp->key, len) == 0)
+		if ((ft_strncmp(str, tmp->key, len) == 0) && tmp->key[len] == '\0')
 		{
 			*key_length = len + 1;
 			return (tmp->value);
