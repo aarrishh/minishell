@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 19:51:25 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:58:16 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 		return ;
 	}
 	value = find_var_value(line + ij->i, env, &key_len);
+	if (key_len == 1)
+	{
+		new[ij->j] = line[ij->i];
+		(ij->i)++;
+		(ij->j)++;
+	}
 	if (value)
 	{
 		while (value[a])
@@ -115,8 +121,8 @@ char	*find_var_value(char *str, t_env **env, int *key_length)
 	tmp = *env;
 	*key_length = 1;
 	str++;
-	if (!str)
-		return ("");
+	// if (!str)
+	// 	return ("");
 	if (*str >= '0' && *str <= '9')
 	{
 		*key_length = 2;
