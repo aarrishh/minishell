@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/23 21:24:10 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/24 16:21:52 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,5 @@ int	main(int argc, char **argv, char **envp)
 		free_all(NULL, &data.stack, &data.split);
 		free(line);
 	}
-	rl_clear_history();
 	return (0);
 }
