@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/08/23 17:35:43 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/25 13:16:49 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	exit_command_print_function(t_token *tmp, long long num)
 {
 	if (tmp->next)
 	{
-		g_exit_status = 1;
+		g_exit_status = 127;
 		return (printf("exit\nminishell: exit: too many arguments\n"), 1);
 	}
 	else

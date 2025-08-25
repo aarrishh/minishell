@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 21:24:31 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/25 16:17:47 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 {
 	char	**main_cmd;
 	char	*path;
+	char	**envp;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -39,10 +40,11 @@ void	child(t_data *data, t_pipe_fd *fds, char *cmd)
 	}
 	else
 	{
+		envp = env_to_envp(data->env);
 		path = split_path(&data->env, main_cmd[0]);
 		if (!path)
 			exit(127);
-		execve(path, main_cmd, data->envp);
+		execve(path, main_cmd, envp);
 		free_array(main_cmd);
 		free(path);
 		exit(1);
