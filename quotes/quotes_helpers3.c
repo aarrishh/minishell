@@ -6,13 +6,13 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:14:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/26 13:27:11 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:34:03 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	count_words(const char *str, char c)
+static int	q_count_words(const char *str, char c)
 {
 	int				a;
 	int				count;
@@ -49,7 +49,7 @@ char	**split_for_quotes(char const *s, char c)
 	state = NO_QUOTE;
 	if (!s)
 		return (NULL);
-	words_count = count_words(s, c);
+	words_count = q_count_words(s, c);
 	arr = (char **)malloc((words_count + 1) * (sizeof(char *)));
 	if (!arr)
 		return (NULL);
