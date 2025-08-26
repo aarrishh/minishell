@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/26 15:45:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:01:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	create_file(void)
 	int		i;
 	int		fd;
 	char	*num;
-	char *filename;
-
+	char	*filename;
 
 	i = 1;
 	fd = 0;
@@ -61,8 +60,8 @@ int	create_file(void)
 
 void	handle_heredoc(t_data *data)
 {
-	int fd;
-	char *line;
+	int		fd;
+	char	*line;
 
 	keep_delimiter(data);
 	fd = create_file();
@@ -74,13 +73,19 @@ void	handle_heredoc(t_data *data)
 			handle_ctrl_d();
 			break ;
 		}
-		ft_putendl_fd(line, fd);
 		if (ft_strcmp(line, get_lim_value(data)) == 0)
 		{
 			free(line);
 			break ;
 		}
+		else
+			ft_putendl_fd(line, fd);
 	}
-	// heto kardal
+	read_from_file(fd);
 	close(fd);
+}
+
+void	read_from_file(int fd)
+{
+	;
 }
