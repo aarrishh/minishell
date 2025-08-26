@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/26 14:22:46 by mabaghda         ###   ########.fr       */
+/*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
+/*   Updated: 2025/08/26 19:45:47 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void		redirect_cmd(t_data *data, char *cmd, int fd, int in);
 int			two_dim_len(char **str);
 void		redir_in(t_data *data);
 void		handle_heredoc(t_data *data);
+void		read_from_file(t_env **env, int fd, char **cmd);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -120,5 +121,7 @@ void		handle_ctrl_d(void);
 void		setup_signals(void);
 void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
+void		parent_process_handling(pid_t pid, int *status, char **cmd);
+void		child_process_execution(t_env **env, char **cmd);
 
 #endif

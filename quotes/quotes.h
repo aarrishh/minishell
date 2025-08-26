@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/26 13:16:30 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/26 20:08:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum e_token_type
 	REDIR_OUT, // > 3
 	APPEND,    // >> 5
 	HEREDOC,   // << 4
-	LIM        // 6
+	// LIM        // 6
 }					t_token_type;
 
 typedef struct s_token
