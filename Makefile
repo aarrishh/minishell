@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/23 21:40:02 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/08/26 14:12:50 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRCS = main.c list.c functions.c path.c \
 		tokenization/tokenization.c \
 		tokenization/init_tokens_type.c \
 		quotes/quotes.c quotes/quotes_len.c operators/pipe.c operators/split_op.c \
-		quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
+		quotes/quotes_helpers1.c quotes/quotes_helpers2.c quotes/quotes_helpers3.c \
 		built-in/built_in.c built-in/exit.c built-in/cd.c built-in/pwd.c \
 		built-in/echo.c built-in/unset.c built-in/env.c \
 		built-in/export/check.c built-in/export/find_and_return.c \

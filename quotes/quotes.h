@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 21:33:57 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/26 13:16:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_data
 	char			**split;
 }					t_data;
 
+char				**split_for_quotes(char const *s, char c);
 void				handle_dollar(char *line, char *new, t_iter *ij,
 						t_env **env);
 void				keep_char(char *line, char *new, t_iter *ij);
