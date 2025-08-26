@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:34 by arina             #+#    #+#             */
-/*   Updated: 2025/08/13 17:04:28 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:59:53 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ t_env	*new_node_for_export(char *key, char *value, int flag)
 
 t_env	*copy_env_for_print(t_env *env)
 {
-	t_env	*tmp;
+	t_env	*tmp = NULL;
 	t_env	*cur_node;
 
-	tmp = NULL;
 	while (env)
 	{
-		cur_node = new_node_for_export(env->key, env->value, env->flag);
+		cur_node = new_node_for_export(ft_strdup(env->key),
+				ft_strdup(env->value), env->flag);
 		env_add_back(cur_node, &tmp);
 		env = env->next;
 	}
@@ -63,8 +63,10 @@ void	free_list(t_env **copy)
 void	print_export(t_env *env)
 {
 	t_env	*tmp;
+	t_env	*head;
 
 	tmp = copy_env_for_print(env);
+	head = tmp;
 	sort_env(tmp);
 	while (tmp)
 	{
@@ -74,5 +76,6 @@ void	print_export(t_env *env)
 			printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	free_list(&tmp);
+	free_list(&head);
 }
+

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/23 21:34:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:23:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	handle_cmds(t_data *data)
 		handle_heredoc(data);
 	else if (data->stack)
 	{
-		if (is_builtin_cmd((*data->stack).string, &data->env, data->stack))
+		if (is_builtin_cmd((*data->stack).string))
 			built_in_functions(&data->stack, (*data->stack).string, &data->env,
 					data->split);
 		else
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		if (!line)
 		{
-			free_all(&data.env, &data.stack, data.split);
+			free_all(&data.env, &data.stack, &data.split);
 			handle_ctrl_d();
 		}
 		if (line[0] == '\0')
@@ -74,9 +74,8 @@ int	main(int argc, char **argv, char **envp)
 			validation(data.split, &data.stack);
 		init_tokens_type(&data.stack);
 		handle_cmds(&data);
-		free_all(NULL, &data.stack, data.split);
+		free_all(NULL, &data.stack, &data.split);
 		free(line);
 	}
-	rl_clear_history();
 	return (0);
 }

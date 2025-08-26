@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/08/09 18:27:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:11:21 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,21 @@
 
 void	we_find_only_equal_in_string(char *str, t_env **env, t_env **node)
 {
+	char	*sub;
+
 	if (check_sameness(str, *env) == 0)
 	{
-		if ((check_key(ft_substr(str, 0, find_equal(str))) == -1)
-			|| (check_key(ft_substr(str, 0, find_equal(str))) == -2))
+		sub = ft_substr(str, 0, find_equal(str));
+		if ((check_key(sub) == -1) || (check_key(sub) == -2))
 			(*node) = NULL;
 		else
 		{
-			(*node) = new_node(ft_substr(str, 0, find_equal(str)),
+			(*node) = new_node(sub,
 					ft_strdup(ft_strchr(str, '=') + 1));
 			check_i_have_value_after_equal_symbol(find_equal(str), str, node);
+			return ;
 		}
+		free(sub);
 	}
 	else
 	{
@@ -33,6 +37,7 @@ void	we_find_only_equal_in_string(char *str, t_env **env, t_env **node)
 			env);
 	}
 }
+
 
 void	we_find_equal_and_plus_in_string(char *str, t_env **env, t_env **node)
 {
@@ -65,7 +70,7 @@ void	export_command(t_token *stack, t_env **env)
 		else
 		{
 			if (check_sameness(stack->string, *env) == 0)
-				node = new_node(stack->string, ft_strdup(""));
+				node = new_node(ft_strdup(stack->string), ft_strdup(""));
 		}
 		if (node)
 			env_add_back(node, env);

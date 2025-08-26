@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 13:48:34 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/23 21:24:53 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ void	change_shlvl_value(t_env **env, char **cmd)
 	}
 }
 
-int	is_builtin_cmd(char *cmd, t_env **env, t_token *stack)
+int	is_builtin_cmd(char *cmd)
 {
-	(void)env;
-	(void)stack;
 	if (!cmd)
 		return (0);
 	if (!ft_strcmp(cmd, "echo"))
