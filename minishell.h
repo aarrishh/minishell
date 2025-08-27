@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/26 19:45:47 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/27 21:02:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ void		redirect_cmd(t_data *data, char *cmd, int fd, int in);
 int			two_dim_len(char **str);
 void		redir_in(t_data *data);
 void		handle_heredoc(t_data *data);
-void		read_from_file(t_env **env, int fd, char **cmd);
+void		read_from_file(t_env **env, char *filename, char **cmd);
+int			check_dollar_hd(char *line);
+char		*expand_heredoc(char *line);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);

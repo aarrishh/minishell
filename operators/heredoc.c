@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/26 21:15:23 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/27 21:03:12 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,29 @@
 // 	return (NULL);
 // }
 
-int	create_file(int i)
+char	*create_file(int i, int *fd)
 {
-	int		fd;
+	int		fd_0;
 	char	*num;
 	char	*filename;
 
-	fd = 0;
+	fd_0 = 0;
 	filename = NULL;
 	num = ft_itoa(i);
 	filename = ft_strjoin("/tmp/arish_manan_heredoc_", num);
 	free(num);
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	free(filename);
-	filename = NULL;
-	return (fd);
+	fd_0 = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	*fd = fd_0;
+	return (filename);
 }
 
-int	read_heredoc_loop(char *delimiter, int i)
+char	*read_heredoc_loop(char *delimiter, int i)
 {
-	int		fd;
+	char	*filename;
 	char	*line;
+	int		fd;
 
-	fd = create_file(i);
+	filename = create_file(i, &fd);
 	while (1)
 	{
 		line = readline("> ");
@@ -70,15 +70,37 @@ int	read_heredoc_loop(char *delimiter, int i)
 			handle_ctrl_d();
 			break ;
 		}
+		if (check_dollar_hd(line))
+			line = expand_heredoc(line);
 		if (line && delimiter && ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
-			exit(0);
 		}
 		else
 			ft_putendl_fd(line, fd);
 		free(line);
+	}
+	close(fd);
+	return (filename);
+}
+
+char	*expand_heredoc(char *line)
+{
+	return (line);
+	//handle_dollar();
+}
+
+int	check_dollar_hd(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$')
+			return (1);
+		i++;
 	}
 	return (0);
 }
@@ -90,7 +112,7 @@ void	handle_heredoc(t_data *data)
 	char	**cmd;
 	pid_t	pid;
 	int		i;
-	int		fd;
+	char	*filename;
 	int		len;
 
 	// keep_delimiter(data);
@@ -102,17 +124,26 @@ void	handle_heredoc(t_data *data)
 	i = 0;
 	while (i < len)
 	{
-		pid = fork();
-		if (pid == 0)
+		if (i != 0)
 		{
-			if (i != 0)
-				fd = read_heredoc_loop(split_hd[i], i);
-			if (i == len - 1)
-				read_from_file(&data->env, fd, cmd);
-			exit(0);
+			pid = fork();
+			if (pid == 0)
+			{
+				if (i == len - 1)
+				{
+					filename = read_heredoc_loop(split_hd[i], i);
+					read_from_file(&data->env, filename, cmd);
+					// exit(0);
+				}
+				else
+				{
+					read_heredoc_loop(split_hd[i], i);
+					exit(0);
+				}
+			}
+			else
+				parent_process_handling(pid, &status, cmd);
 		}
-		else
-			parent_process_handling(pid, &status, cmd);
 		i++;
 	}
 	free_array(split_hd);
@@ -120,9 +151,17 @@ void	handle_heredoc(t_data *data)
 }
 
 //TODO read from file
-void	read_from_file(t_env **env, int fd, char **cmd)
+void	read_from_file(t_env **env, char *filename, char **cmd)
 {
-	dup2(fd, 0);
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
+	if (dup2(fd, 0) == -1)
+	{
+		// perror("minishell: dup2");
+		exit(127);
+	}
 	close(fd);
 	child_process_execution(env, cmd);
+	exit(0);
 }
