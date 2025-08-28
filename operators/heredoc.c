@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/28 18:11:06 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/28 18:31:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void	handle_heredoc(t_data *data)
 		}
 		i++;
 	}
+	// Do I have to delete the temp files here?
 	free_array(split_hd);
 	free_array(cmd);
 }
