@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/28 17:11:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/28 18:09:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_pipe_fd
 // Operations functions
 void		execute_pipe(t_data *data);
 char		**split_operator(t_token **stack, t_token_type type);
-void			execute_else(t_env **env, char **cmd);
+void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
 void		redir_function(t_data *data, int append);
@@ -49,7 +49,7 @@ void		redir_in(t_data *data);
 void		handle_heredoc(t_data *data);
 void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
-char		*expand_heredoc(char *line);
+char		*expand_heredoc(char *line, t_env **env);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
