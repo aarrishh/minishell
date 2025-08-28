@@ -1,14 +1,6 @@
 {
   "configurations": [
     {
-      "type": "lldb",
-      "request": "launch",
-      "name": "Launch",
-      "program": "${workspaceFolder}/minishell",
-      "args": [],
-      "cwd": "${workspaceFolder}"
-    },
-    {
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
@@ -16,7 +8,7 @@
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/root/minishell",
-      "program": "/root/minishell/build/Debug/outDebug",
+      "program": "/root/minishell/minishell",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
