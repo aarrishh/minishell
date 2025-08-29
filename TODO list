@@ -16,3 +16,12 @@ nosuchcommand > out (failed command with redirect) (we have leak when running ex
 👉 Redirections allocate filenames, open fds, and can leave leaks if not freed.
 
 
+exporti jamanak senc xndira linum
+-> erb vor grum em export HELLO="123 A-", petqa sarqi mi hat
+   HELLO u mejy "123 A-" arjeq, bayc inqy arandzin vercnuma HELLO="123"
+   u arandzin -A a saqrum, indz petqa vor quote-rum stuges ete export-a
+   grac stack-i stringum u ete nexti string chakerti meja split mi ara 
+   space-ov
+
+   aysinqn zut sax chakerti mijiny bar ynduni
+   
