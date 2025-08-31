@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/28 21:24:59 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:55:50 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,24 +78,59 @@ int	open_rdirin(char *filename)
 // 	close(fd);
 // }
 
+char	**add_arg_to_cmd(char **cmd_arg, char *str)
+{
+	int		len;
+	char	**new;
+	int		i;
+
+	len = 0;
+	while (cmd_arg && cmd_arg[len])
+		len++;
+	new = (char **)malloc(sizeof(char *) * (len + 2));
+	i = 0;
+	while (i < len)
+	{
+		new[i] = cmd_arg[i];
+		i++;
+	}
+	new[i] = str;
+	new[i + 1] = NULL;
+	free(cmd_arg);
+	return (new);
+}
+
 void	redir_in(t_data *data)
 {
-	t_token *tmp;
-	char *cmd;
-	int fd;
+	t_token	*tmp;
+	char	**cmd;
+	int		fd;
 
 	tmp = data->stack;
-	cmd = data->stack->string;
-	while (tmp)
+	while (tmp && tmp->type != REDIR_IN)
+		tmp = tmp->next;
+	cmd = make_arr_command(data->stack, REDIR_IN);
+	while (tmp && (tmp->type == WORD || tmp->type == REDIR_IN))
 	{
-		if (tmp->type == REDIR_IN && tmp->next)
+		if (tmp && tmp->type == REDIR_IN && tmp->next
+			&& tmp->next->type == WORD)
 		{
-			while (tmp && tmp->next)
+			tmp = tmp->next;
+			while (tmp && tmp->next && tmp->next->type == WORD)
+			{
+				cmd = add_arg_to_cmd(cmd, tmp->next->string);
 				tmp = tmp->next;
+			}
 		}
-		else if (tmp->type == REDIR_IN && tmp->next == NULL)
+		if (tmp->type == REDIR_IN && tmp->next == NULL)
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
+			g_exit_status = 2;
+			return ;
+		}
+		if (tmp->type == REDIR_IN && tmp->next->type == REDIR_IN)
+		{
+			printf("minishell: syntax error near unexpected token `<'\n");
 			g_exit_status = 2;
 			return ;
 		}

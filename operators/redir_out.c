@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/28 21:12:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/31 20:12:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,14 @@ int	has_operator(t_token *stack, t_token_type type)
 	return (0);
 }
 
-void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
+void	redirect_cmd(t_data *data, char **cmd, int fd, int in_or_out)
 {
-	char	**main_cmd;
 	char	*path;
 	pid_t	pid;
 	int		status;
 	int		saved_stdout;
 
-	main_cmd = ft_split(cmd, ' ');
-	if (main_cmd[0] && is_builtin_cmd(main_cmd[0]))
+	if (cmd[0] && is_builtin_cmd(cmd[0]))
 	{
 		saved_stdout = dup(in_or_out);
 		if (dup2(fd, in_or_out) == -1)
@@ -41,8 +39,8 @@ void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
 			close(fd);
 			return ;
 		}
-		built_in_functions(&data->stack, main_cmd[0], &data->env, data->split);
-		free_array(main_cmd);
+		built_in_functions(&data->stack, cmd[0], &data->env, data->split);
+		free_array(cmd);
 		dup2(saved_stdout, in_or_out);
 		close(saved_stdout);
 	}
@@ -57,15 +55,15 @@ void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
 				close(fd);
 				return ;
 			}
-			path = split_path(&data->env, main_cmd[0]);
+			path = split_path(&data->env, cmd[0]);
 			if (!path)
 				exit(127);
-			if (execve(path, main_cmd, data->envp))
+			if (execve(path, cmd, data->envp))
 			{
-				perror(main_cmd[0]);
+				perror(cmd[0]);
 				exit(126);
 			}
-			free_array(main_cmd);
+			free_array(cmd);
 			free(path);
 		}
 		else
@@ -99,33 +97,34 @@ int	find_and_open(char *filename, int append)
 
 void	redir_function(t_data *data)
 {
-	t_token	*tmp;
-	char	*cmd;
-	int		fd;
+	(void)data;
+	// t_token	*tmp;
+	// char	*cmd;
+	// int		fd;
 
-	tmp = data->stack;
-	cmd = data->stack->string;
-	while (tmp)
-	{
-		if (tmp->type == APPEND && tmp->next)
-		{
-			fd = find_and_open(tmp->next->string, 1);
-		}
-		else if (tmp->type == REDIR_OUT && tmp->next)
-		{
-			fd = find_and_open(tmp->next->string, 0);
-		}
-		if (tmp->next == NULL && (tmp->type == APPEND
-				|| tmp->type == REDIR_OUT))
-		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
-			g_exit_status = 2;
-			return ;
-		}
-		if (tmp->type == WORD && tmp->next == NULL)
-			redirect_cmd(data, cmd, fd, 1);
-		tmp = tmp->next;
-	}
+	// tmp = data->stack;
+	// cmd = data->stack->string;
+	// while (tmp)
+	// {
+	// 	if (tmp->type == APPEND && tmp->next)
+	// 	{
+	// 		fd = find_and_open(tmp->next->string, 1);
+	// 	}
+	// 	else if (tmp->type == REDIR_OUT && tmp->next)
+	// 	{
+	// 		fd = find_and_open(tmp->next->string, 0);
+	// 	}
+	// 	if (tmp->next == NULL && (tmp->type == APPEND
+	// 			|| tmp->type == REDIR_OUT))
+	// 	{
+	// 		printf("minishell: syntax error near unexpected token `newline'\n");
+	// 		g_exit_status = 2;
+	// 		return ;
+	// 	}
+	// 	if (tmp->type == WORD && tmp->next == NULL)
+	// 		redirect_cmd(data, cmd, fd, 1);
+	// 	tmp = tmp->next;
+	// }
 }
 
 // char	*find_filename(t_token *stack, int i)

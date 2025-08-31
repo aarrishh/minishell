@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/31 18:57:55 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/31 19:53:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ int	two_dim_len(char **str)
 // 	free_array(commands);
 // 	free_array(failed_cmds);
 // }
-char	**make_arr_pipe(t_token *stack)
+
+char	**make_arr_command(t_token *stack, t_token_type type)
 {
 	t_token	*tmp;
 	char	**cmd;
@@ -152,14 +153,14 @@ char	**make_arr_pipe(t_token *stack)
 	len = 0;
 	i = 0;
 	tmp = stack;
-	while (tmp && tmp->type != PIPE)
+	while (tmp && tmp->type != type)
 	{
 		len++;
 		tmp = tmp->next;
 	}
 	cmd = (char **)malloc(sizeof(char *) * (len + 1));
 	tmp = stack;
-	while (i < len && tmp && tmp->type != PIPE)
+	while (i < len && tmp && tmp->type != type)
 	{
 		cmd[i] = ft_strdup(tmp->string);
 		if (!cmd[i])
@@ -194,7 +195,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds)
 			i++;
 			continue ;
 		}
-		commands = make_arr_pipe(tmp);
+		commands = make_arr_command(tmp, PIPE);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
 		if (tmp && tmp->type == PIPE)
