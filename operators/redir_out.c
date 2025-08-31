@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 21:24:38 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/28 21:12:54 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,6 @@ int	has_operator(t_token *stack, t_token_type type)
 		stack = stack->next;
 	}
 	return (0);
-}
-
-char	*find_filename_out(t_token *stack, int i)
-{
-	int	count;
-
-	count = 0;
-	while (stack)
-	{
-		if ((stack->type == REDIR_OUT || stack->type == APPEND))
-		{
-			if (count == i)
-			{
-				if (stack->next)
-					return (stack->next->string);
-				else
-					return (NULL);
-			}
-			count++;
-		}
-		stack = stack->next;
-	}
-	return (NULL);
 }
 
 void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
@@ -104,17 +81,10 @@ void	redirect_cmd(t_data *data, char *cmd, int fd, int in_or_out)
 	}
 }
 
-int	find_and_open(t_data **data, int append, int i)
+int	find_and_open(char *filename, int append)
 {
-	int		fd;
-	char	*filename;
+	int	fd;
 
-	filename = find_filename_out((*data)->stack, i);
-	if (!filename)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		g_exit_status = 2;
-	}
 	if (append)
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
@@ -127,34 +97,124 @@ int	find_and_open(t_data **data, int append, int i)
 	return (fd);
 }
 
-void	redir_function(t_data *data, int append)
+void	redir_function(t_data *data)
 {
+	t_token	*tmp;
+	char	*cmd;
 	int		fd;
-	int		len;
-	int		i;
-	int		j;
-	char	**split_redir;
 
-	i = 0;
-	j = 0;
-	fd = 0;
-	if (append)
-		split_redir = split_operator(&data->stack, APPEND);
-	else
-		split_redir = split_operator(&data->stack, REDIR_OUT);
-	len = two_dim_len(split_redir);
-	while (i < len)
+	tmp = data->stack;
+	cmd = data->stack->string;
+	while (tmp)
 	{
-		if (i != 0)
+		if (tmp->type == APPEND && tmp->next)
 		{
-			if (fd)
-				close(fd);
-			fd = find_and_open(&data, append, j);
-			j++;
+			fd = find_and_open(tmp->next->string, 1);
 		}
-		i++;
+		else if (tmp->type == REDIR_OUT && tmp->next)
+		{
+			fd = find_and_open(tmp->next->string, 0);
+		}
+		if (tmp->next == NULL && (tmp->type == APPEND
+				|| tmp->type == REDIR_OUT))
+		{
+			printf("minishell: syntax error near unexpected token `newline'\n");
+			g_exit_status = 2;
+			return ;
+		}
+		if (tmp->type == WORD && tmp->next == NULL)
+			redirect_cmd(data, cmd, fd, 1);
+		tmp = tmp->next;
 	}
-	if (fd)
-		redirect_cmd(data, split_redir[0], fd, 1);
-	close(fd);
 }
+
+// char	*find_filename(t_token *stack, int i)
+// {
+// 	int	count;
+
+// 	count = 0;
+// 	while (stack)
+// 	{
+// 		if ((stack->type == REDIR_OUT || stack->type == APPEND))
+// 		{
+// 			if (count == i)
+// 			{
+// 				if (stack->next)
+// 					return (stack->next->string);
+// 				else
+// 					return (NULL);
+// 			}
+// 			count++;
+// 		}
+// 		stack = stack->next;
+// 	}
+// 	return (NULL);
+// }
+
+// void	start_redirs(char **split_redir, t_data *data, int append)
+// {
+// 	int	fd;
+// 	int	len;
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	j = 0;
+// 	fd = 0;
+// 	len = two_dim_len(split_redir);
+// 	while (i < len)
+// 	{
+// 		if (i != 0)
+// 		{
+// 			if (fd)
+// 				close(fd);
+// 			fd = find_and_open(&data, append, j);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	if (fd)
+// 		redirect_cmd(data, split_redir[0], fd, append);
+// 	close(fd);
+// }
+
+// void	redir_function(t_data *data)
+// {
+// 	char	**split_redir;
+// 	char	**inner_split;
+// 	int		i;
+
+// 	i = 0;
+// 	if (has_operator(data->stack, APPEND))
+// 	{
+// 		split_redir = split_operator(&data->stack, APPEND);
+// 		if (!split_redir)
+// 			return ;
+// 		start_redirs(split_redir, data, 1);
+// 		if (has_operator(data->stack, REDIR_OUT))
+// 		{
+// 			while (split_redir[i])
+// 			{
+// 				inner_split = ft_split(split_redir[i], '>');
+// 				i++;
+// 			}
+// 			start_redirs(inner_split, data, 0);
+// 		}
+// 	}
+// 	else if (has_operator(data->stack, REDIR_OUT))
+// 	{
+// 		split_redir = split_operator(&data->stack, REDIR_OUT);
+// 		if (!split_redir)
+// 			return ;
+// 		start_redirs(split_redir, data, 1);
+// 		if (has_operator(data->stack, APPEND))
+// 		{
+// 			while (split_redir[i])
+// 			{
+// 				inner_split = ft_split(split_redir[i], '>>');
+// 				i++;
+// 			}
+// 			start_redirs(inner_split, data, 0);
+// 		}
+// 	}
+// }

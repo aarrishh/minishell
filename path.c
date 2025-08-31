@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/21 18:04:52 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/28 17:13:24 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,13 @@ void	child_process_execution(t_env **env, char **cmd)
 		free_envp(envp);
 		exit(127);
 	}
+	if (!cmd[0] || is_builtin_cmd(cmd[0]))
+	{
+		free(path);
+		free_envp(envp);
+		printf("%s %s: command not found\n", cmd[0], cmd[1]);
+		exit(126);
+	}
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror(cmd[0]);
@@ -132,9 +139,9 @@ void	child_process_execution(t_env **env, char **cmd)
 	}
 }
 
-void parent_process_handling(pid_t pid, int *status, char **cmd)
+void	parent_process_handling(pid_t pid, int *status, char **cmd)
 {
-	int sig;
+	int	sig;
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -156,7 +163,6 @@ void parent_process_handling(pid_t pid, int *status, char **cmd)
 	if (g_exit_status == 127)
 		printf("%s: command not found\n", cmd[0]);
 }
-
 
 void	execute_else(t_env **env, char **cmd)
 {

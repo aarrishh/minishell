@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 12:07:12 by arina             #+#    #+#             */
-/*   Updated: 2025/08/23 21:24:20 by arimanuk         ###   ########.fr       */
+/*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
+/*   Updated: 2025/08/28 19:51:39 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,21 @@ typedef struct s_pipe_fd
 	int		last_cmd;
 }			t_pipe_fd;
 
-// Pipe functions
+// Operations functions
 void		execute_pipe(t_data *data);
 char		**split_operator(t_token **stack, t_token_type type);
 void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
-void		redir_function(t_data *data, int append);
+void		redir_function(t_data *data);
 void		redirect_cmd(t_data *data, char *cmd, int fd, int in);
 int			two_dim_len(char **str);
 void		redir_in(t_data *data);
+void		handle_heredoc(t_data *data);
+void		read_from_file(t_env **env, char *filename, char **cmd);
+int			check_dollar_hd(char *line);
+char		*expand_heredoc(char *line, t_env **env);
+void		start_redirs(char **split_redir, t_data *data, int append);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -117,7 +122,9 @@ void		print_export(t_env *env);
 // Signal functions
 void		handle_ctrl_d(void);
 void		setup_signals(void);
-void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
+void		sigint_handler(int sig);
+void		sigquit_handler(int sig);
+void		parent_process_handling(pid_t pid, int *status, char **cmd);
+void		child_process_execution(t_env **env, char **cmd);
 
 #endif

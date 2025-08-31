@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/19 18:01:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/23 20:45:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	expand_exit_status(char *new, t_iter *ij)
 
 	status_str = ft_itoa(g_exit_status);
 	if (!status_str)
-		return;
+		return ;
 	a = 0;
 	while (status_str[a])
 		new[ij->j++] = status_str[a++];
@@ -32,74 +32,30 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 {
 	char	*value;
 	int		key_len;
-	int		a;
 
-	a = 0;
 	if (line[ij->i] == '$' && line[ij->i + 1] == '?')
 	{
 		expand_exit_status(new, ij);
 		return ;
 	}
 	value = find_var_value(line + ij->i, env, &key_len);
+	if (key_len == 1)
+	{
+		new[ij->j] = line[ij->i];
+		(ij->i)++;
+		(ij->j)++;
+	}
 	if (value)
 	{
-		if ((check_after_key(line[ij->i + key_len])))
-		{
-			ij->i += key_len;
-			while (line[ij->i] && check_after_key(line[ij->i]))
-				ij->i++;
-			return ;
-		}
-		while (value[a])
-		{
-			new[ij->j] = value[a];
-			a++;
-			(ij->j)++;
-		}
+		keep_value(new, value, &ij->j);
 		ij->i += key_len;
 	}
 	else
-	{
-		new[ij->j] = line[ij->i];
-		(ij->i)++;
-		(ij->j)++;
-	}
+		keep_char(line, new, ij);
 }
 
-void	dquote_expansion(char *line, char *new, t_iter *ij, t_env **env)
-{
-	char	*value;
-	int		key_len;
-
-	if (line[ij->i] == '$')
-	{
-		value = find_var_value(line + ij->i, env, &key_len);
-		if (value)
-		{
-			if ((check_after_key(line[ij->i + key_len])))
-			{
-				ij->i += key_len;
-				while (line[ij->i] && check_after_key(line[ij->i]))
-					ij->i++;
-			}
-			else
-			{
-				keep_value(new, value, &ij->j);
-				ij->i += key_len;
-			}
-		}
-		else
-			keep_char(line, new, ij);
-	}
-	else
-	{
-		new[ij->j] = line[ij->i];
-		(ij->i)++;
-		(ij->j)++;
-	}
-}
-
-void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij, t_env **env)
+void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
+		t_env **env)
 {
 	(ij->i)++;
 	if (state == IN_SINGLE)
@@ -116,31 +72,46 @@ void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij, t_env 
 	else if (state == IN_DOUBLE)
 	{
 		while (str[ij->i] && str[ij->i] != '"')
-			dquote_expansion(str, new, ij, env);
+			if (str[ij->i] == '$')
+				handle_dollar(str, new, ij, env);
+			else
+				keep_char(str, new, ij);
 		if (str[ij->i] == '"')
 			(ij->i)++;
 	}
 }
 
-char	*find_var_value(char *str, t_env **env, int *key_len)
+// int	check_valid_dollar(char chr)
+// {
+// 	return (chr == '_' || (chr >= 'A' && chr <= 'Z') || (chr >= 'a'
+// 			&& chr <= 'z') || (chr >= '0' && chr <= '9'));
+// }
+
+char	*find_var_value(char *str, t_env **env, int *key_length)
 {
 	t_env	*tmp;
 	int		len;
 
 	tmp = *env;
-	*key_len = 1;
+	*key_length = 1;
 	str++;
+	// if (!str || !check_valid_dollar(*str))
+	// return ("");
+	if (*str >= '0' && *str <= '9')
+	{
+		*key_length = 2;
+		return ("");
+	}
+	len = key_len(str);
 	while (tmp)
 	{
-		len = ft_strlen(tmp->key);
-		if (ft_strncmp(str, tmp->key, len) == 0)
+		if ((ft_strncmp(str, tmp->key, len) == 0) && tmp->key[len] == '\0')
 		{
-			*key_len = len + 1;
+			*key_length = len + 1;
 			return (tmp->value);
 		}
 		tmp = tmp->next;
 	}
-	if (ft_strncmp(str, "EMPTY", 5) == 0)
-		return ("");
-	return (NULL);
+	*key_length = len + 1;
+	return ("");
 }

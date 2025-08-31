@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/29 16:51:54 by arina            ###   ########.fr       */
+/*   Updated: 2025/08/31 17:08:47 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ char	*expand_quotes(char *line, t_env **env_struct)
 int	start_quotes(char *line, t_data *data)
 {
 	int				i;
+	int				len;
 	t_quote_state	state;
-	char			*expanded;
+	char			**expanded;
 	char			*quote_line;
 
 	i = 0;
+	len = 0;
 	state = NO_QUOTE;
 	expanded = NULL;
 	while (line[i])
@@ -82,9 +84,21 @@ int	start_quotes(char *line, t_data *data)
 	}
 	else if (state == NO_QUOTE)
 	{
-		expanded = expand_quotes(line, &data->env);
-		data->split = ft_split(expanded, ' ');
-		free(expanded);
+		data->split = split_for_quotes(line, ' ');
+		len = two_dim_len(data->split);
+		i = 0;
+		expanded = (char **)malloc(sizeof(char *) * (len + 1));
+		if (!expanded)
+			return (0);
+		while (i < len)
+		{
+			expanded[i] = expand_quotes(data->split[i], &data->env);
+			free(data->split[i]);
+			i++;
+		}
+		expanded[i] = NULL;
+		free(data->split);
+		data->split = expanded;
 	}
 	return (1);
 }

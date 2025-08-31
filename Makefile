@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+         #
+#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/08/23 17:48:37 by arimanuk         ###   ########.fr        #
+#    Updated: 2025/08/26 14:23:02 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,13 +23,13 @@ SRCS = main.c list.c functions.c path.c \
 		tokenization/tokenization.c \
 		tokenization/init_tokens_type.c \
 		quotes/quotes.c quotes/quotes_len.c operators/pipe.c operators/split_op.c \
-		quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
+		quotes/quotes_helpers1.c quotes/quotes_helpers2.c quotes/quotes_helpers3.c \
 		built-in/built_in.c built-in/exit.c built-in/cd.c built-in/pwd.c \
 		built-in/echo.c built-in/unset.c built-in/env.c \
 		built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
 		built-in/export/print.c free.c signal.c  \
-		operators/redir_in.c operators/redir_out.c
+		operators/redir_in.c operators/redir_out.c operators/heredoc.c
 		
 # SRCS = $(shell find . -name "*.c" ! -path "./libft/*")
 OBJS = $(SRCS:.c=.o)
@@ -53,7 +53,7 @@ OLIVE_GREEN    := \033[38;2;128;128;0m
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) Makefile minishell.h quotes/quotes.h
 	@echo "$(PB)[LINKING]$(RESET) Building $(EMERALD_GREEN) $(NAME) $(RESET)..."
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(LDFLAGS)
 	@echo "$(DEEP_PINK)      MINISHELL IS READY!$(RESET)"

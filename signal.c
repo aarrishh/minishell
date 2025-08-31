@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 15:23:27 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/18 15:42:15 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/21 17:47:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	sigquit_handler(int sig)
 
 void	setup_signals(void)
 {
-	rl_catch_signals = 0;
+	// rl_catch_signals = 0;
 	rl_clear_history();
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);

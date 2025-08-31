@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/08/24 16:21:52 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/28 20:42:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_status = 0;
+int		g_exit_status = 0;
 
 void	init_data(t_data *data, char **envp)
 {
@@ -26,19 +26,18 @@ void	handle_cmds(t_data *data)
 {
 	if (data->stack && has_operator(data->stack, PIPE))
 		execute_pipe(data);
-	else if (data->stack && has_operator(data->stack, REDIR_OUT))
-		redir_function(data, 0);
-	else if (data->stack && has_operator(data->stack, APPEND))
-		redir_function(data, 1);
 	else if (data->stack && has_operator(data->stack, REDIR_IN))
 		redir_in(data);
+	else if (data->stack && (has_operator(data->stack, REDIR_OUT)
+				|| has_operator(data->stack, APPEND)))
+		redir_function(data);
 	else if (data->stack && has_operator(data->stack, HEREDOC))
-		printf("not done yet\n");
+		handle_heredoc(data);
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string))
 			built_in_functions(&data->stack, (*data->stack).string, &data->env,
-				data->split);
+					data->split);
 		else
 			execute_else(&data->env, data->split);
 	}
@@ -56,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");
-		if (line && line[0] != '\0')
+		if (line && line[0] != '\0') // && !is_space(line))
 			add_history(line);
 		if (!line)
 		{

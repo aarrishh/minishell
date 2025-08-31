@@ -6,14 +6,15 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 15:22:38 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/26 13:42:27 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "quotes.h"
 
-t_quote_state	handle_double_quote_len(char *line, int *i, int *len, t_env **env)
+t_quote_state	handle_double_quote_len(char *line, int *i, int *len,
+		t_env **env)
 {
 	(*i)++;
 	while (line[*i] && line[*i] != '"')
@@ -61,17 +62,8 @@ void	handle_len_dollar(char *line, int *i, int *len, t_env **env)
 	value = find_var_value(line + *i, env, &key_len);
 	if (value)
 	{
-		if ((check_after_key(line[*i + key_len])))
-		{
-			*i += key_len;
-			while (line[*i] && check_after_key(line[*i]))
-				(*i)++;
-		}
-		else
-		{
-			*len += ft_strlen(value);
-			*i += key_len;
-		}
+		*len += ft_strlen(value);
+		*i += key_len;
 	}
 	else
 	{

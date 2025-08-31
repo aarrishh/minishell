@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 12:34:44 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/18 15:23:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/28 20:48:42 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ char	**split_operator(t_token **stack, t_token_type type)
 		else
 		{
 			to_free = commands[i];
-			joined = ft_strjoin(tmp->string, " ");
+			if (tmp->next && tmp->next->type != type)
+				joined = ft_strjoin(tmp->string, " ");
+			else
+				joined = ft_strdup(tmp->string);
 			commands[i] = ft_strjoin(commands[i], joined);
 			free(to_free);
 			free(joined);
