@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/28 19:51:39 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/08/31 18:56:36 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
 char		*expand_heredoc(char *line, t_env **env);
 void		start_redirs(char **split_redir, t_data *data, int append);
+int			count_segments(t_token **stack, t_token_type type);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
