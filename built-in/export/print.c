@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:34 by arina             #+#    #+#             */
-/*   Updated: 2025/08/23 17:59:53 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/29 18:07:18 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 void	print_error_export(char *str)
 {
-	g_exit_status = 1;
-	printf("minishell: export: `%s': not a valid identifier\n", str);
+	(void)str;
+	g_exit_status = 1; // het poxel 1
+	write (2, "minishell: export: `", 21);
+	write (2, &str, ft_strlen(str));
+	write (2, "': not a valid identifier\n", 27);
+	// printf("minishell: export: `%s': not a valid identifier\n", str);
 }
 
 t_env	*new_node_for_export(char *key, char *value, int flag)

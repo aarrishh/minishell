@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/08/22 17:37:33 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/08/29 19:06:36 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ void	cd_command(t_token *stack, t_env **env)
 	}
 	update_env_new_and_old_pwd(env, old_pwd);
 	g_exit_status = 0;
+	if (stack->next->next)
+	{
+		ft_putendl_fd("minishell: cd: too many arguments", 2);
+		// write (2, "minishell: cd: too many arguments", 34);
+		g_exit_status = 1;
+	}
 }
 
 
