@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/31 19:53:21 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/01 18:10:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char		*expand_heredoc(char *line, t_env **env);
 void		start_redirs(char **split_redir, t_data *data, int append);
 int			count_segments(t_token **stack, t_token_type type);
 char		**make_arr_command(t_token *stack, t_token_type type);
+char		**add_arg_to_cmd(char **cmd_arg, char *str);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -111,9 +112,8 @@ int			check_key(char *key);
 int			find_plus_equal(char *str);
 int			find_equal_for_export(char *str);
 int			check_sameness(char *str, t_env *env);
-void	check_i_have_value_after_equal_symbol_version_two(int index,
-														char *str,
-														t_env **env);
+void		check_i_have_value_after_equal_symbol_version_two(int index,
+				char *str, t_env **env);
 void		check_i_have_value_after_equal_symbol(int index, char *str,
 				t_env **node);
 void		change_value_for_plus_equal_case(char *str, t_env **env);

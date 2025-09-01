@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/31 20:12:58 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/01 18:18:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,34 +97,41 @@ int	find_and_open(char *filename, int append)
 
 void	redir_function(t_data *data)
 {
-	(void)data;
-	// t_token	*tmp;
-	// char	*cmd;
-	// int		fd;
+	t_token	*tmp;
+	char	**cmd;
+	int		fd;
 
-	// tmp = data->stack;
-	// cmd = data->stack->string;
-	// while (tmp)
-	// {
-	// 	if (tmp->type == APPEND && tmp->next)
-	// 	{
-	// 		fd = find_and_open(tmp->next->string, 1);
-	// 	}
-	// 	else if (tmp->type == REDIR_OUT && tmp->next)
-	// 	{
-	// 		fd = find_and_open(tmp->next->string, 0);
-	// 	}
-	// 	if (tmp->next == NULL && (tmp->type == APPEND
-	// 			|| tmp->type == REDIR_OUT))
-	// 	{
-	// 		printf("minishell: syntax error near unexpected token `newline'\n");
-	// 		g_exit_status = 2;
-	// 		return ;
-	// 	}
-	// 	if (tmp->type == WORD && tmp->next == NULL)
-	// 		redirect_cmd(data, cmd, fd, 1);
-	// 	tmp = tmp->next;
-	// }
+	tmp = data->stack;
+	cmd = NULL;
+	while (tmp && tmp->type != REDIR_OUT && tmp->type != APPEND)
+	{
+		cmd = add_arg_to_cmd(cmd, tmp->string);
+		tmp = tmp->next;
+	}
+	while (tmp && (tmp->type == WORD || tmp->type == REDIR_OUT
+			|| tmp->type == APPEND))
+	{
+		if (tmp && tmp->type == APPEND && tmp->next)
+			fd = find_and_open(tmp->next->string, 1);
+		else if (tmp && tmp->type == REDIR_OUT && tmp->next)
+			fd = find_and_open(tmp->next->string, 0);
+		else if (tmp && (tmp->type == REDIR_IN || tmp->type == APPEND)
+			&& tmp->next == NULL)
+		{
+			printf("minishell: syntax error near unexpected token `newline'\n");
+			g_exit_status = 2;
+			return ;
+		}
+		else if (tmp && tmp->type != WORD && tmp->next->type != WORD)
+		{
+			printf("minishell: syntax error near unexpected token `%s'\n",
+				tmp->next->string);
+			g_exit_status = 2;
+			return ;
+		}
+		tmp = tmp->next;
+	}
+	redirect_cmd(data, cmd, fd, 1);
 }
 
 // char	*find_filename(t_token *stack, int i)
