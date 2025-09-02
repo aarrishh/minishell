@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/28 18:31:30 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/02 22:54:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int	check_dollar_hd(char *line)
 	return (0);
 }
 
-void	handle_heredoc(t_data *data)
+void	handle_heredoc(t_data *data, t_command *cmd_struct)
 {
 	int		status;
 	char	**split_hd;

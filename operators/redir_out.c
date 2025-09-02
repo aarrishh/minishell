@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/01 18:18:40 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/02 23:28:04 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,47 +23,82 @@ int	has_operator(t_token *stack, t_token_type type)
 	return (0);
 }
 
-void	redirect_cmd(t_data *data, char **cmd, int fd, int in_or_out)
+void	execute_command(t_data *data, t_command *cmd_struct)
 {
 	char	*path;
 	pid_t	pid;
 	int		status;
-	int		saved_stdout;
+	int		saved_in;
+	int		saved_out;
 
-	if (cmd[0] && is_builtin_cmd(cmd[0]))
+	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{
-		saved_stdout = dup(in_or_out);
-		if (dup2(fd, in_or_out) == -1)
+		if (cmd_struct->cmd_input != 0)
 		{
-			// do we need error check?
-			close(fd);
-			return ;
+			saved_in = dup(0);
+			if (dup2(cmd_struct->cmd_input, 0) == -1)
+			{
+				// do we need error check?
+				close(cmd_struct->cmd_input);
+				return ;
+			}
 		}
-		built_in_functions(&data->stack, cmd[0], &data->env, data->split);
-		free_array(cmd);
-		dup2(saved_stdout, in_or_out);
-		close(saved_stdout);
+		if (cmd_struct->cmd_output != 1)
+		{
+			saved_out = dup(1);
+			if (dup2(cmd_struct->cmd_output, 1) == -1)
+			{
+				// do we need error check?
+				close(cmd_struct->cmd_output);
+				return ;
+			}
+		}
+		built_in_functions(&data->stack, cmd_struct->cmd[0], &data->env,
+				data->split);
+		free_array(cmd_struct->cmd);
+		if (saved_in)
+		{
+			dup2(saved_in, 0);
+			close(saved_in);
+		}
+		if (saved_out)
+		{
+			dup2(saved_out, 1);
+			close(saved_out);
+		}
 	}
 	else
 	{
 		pid = fork();
 		if (pid == 0)
 		{
-			if (dup2(fd, in_or_out) == -1)
+			if (cmd_struct->cmd_input != 0)
 			{
-				// do we need error check?
-				close(fd);
-				return ;
+				if (dup2(cmd_struct->cmd_input, 0) == -1)
+				{
+					// do we need error check?
+					close(cmd_struct->cmd_input);
+					return ;
+				}
 			}
-			path = split_path(&data->env, cmd[0]);
+			if (cmd_struct->cmd_output != 1)
+			{
+				if (dup2(cmd_struct->cmd_output, 1) == -1)
+				{
+					// do we need error check?
+					close(cmd_struct->cmd_output);
+					return ;
+				}
+			}
+			path = split_path(&data->env, cmd_struct->cmd[0]);
 			if (!path)
 				exit(127);
-			if (execve(path, cmd, data->envp))
+			if (execve(path, cmd_struct->cmd, data->envp))
 			{
-				perror(cmd[0]);
+				perror(cmd_struct->cmd[0]);
 				exit(126);
 			}
-			free_array(cmd);
+			free_array(cmd_struct->cmd);
 			free(path);
 		}
 		else
@@ -95,7 +130,7 @@ int	find_and_open(char *filename, int append)
 	return (fd);
 }
 
-void	redir_function(t_data *data)
+void	redir_function(t_data *data, t_command *cmd_struct)
 {
 	t_token	*tmp;
 	char	**cmd;
@@ -116,7 +151,7 @@ void	redir_function(t_data *data)
 		else if (tmp && tmp->type == REDIR_OUT && tmp->next)
 			fd = find_and_open(tmp->next->string, 0);
 		else if (tmp && (tmp->type == REDIR_IN || tmp->type == APPEND)
-			&& tmp->next == NULL)
+				&& tmp->next == NULL)
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
 			g_exit_status = 2;
@@ -125,102 +160,10 @@ void	redir_function(t_data *data)
 		else if (tmp && tmp->type != WORD && tmp->next->type != WORD)
 		{
 			printf("minishell: syntax error near unexpected token `%s'\n",
-				tmp->next->string);
+					tmp->next->string);
 			g_exit_status = 2;
 			return ;
 		}
 		tmp = tmp->next;
 	}
-	redirect_cmd(data, cmd, fd, 1);
 }
-
-// char	*find_filename(t_token *stack, int i)
-// {
-// 	int	count;
-
-// 	count = 0;
-// 	while (stack)
-// 	{
-// 		if ((stack->type == REDIR_OUT || stack->type == APPEND))
-// 		{
-// 			if (count == i)
-// 			{
-// 				if (stack->next)
-// 					return (stack->next->string);
-// 				else
-// 					return (NULL);
-// 			}
-// 			count++;
-// 		}
-// 		stack = stack->next;
-// 	}
-// 	return (NULL);
-// }
-
-// void	start_redirs(char **split_redir, t_data *data, int append)
-// {
-// 	int	fd;
-// 	int	len;
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	fd = 0;
-// 	len = two_dim_len(split_redir);
-// 	while (i < len)
-// 	{
-// 		if (i != 0)
-// 		{
-// 			if (fd)
-// 				close(fd);
-// 			fd = find_and_open(&data, append, j);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	if (fd)
-// 		redirect_cmd(data, split_redir[0], fd, append);
-// 	close(fd);
-// }
-
-// void	redir_function(t_data *data)
-// {
-// 	char	**split_redir;
-// 	char	**inner_split;
-// 	int		i;
-
-// 	i = 0;
-// 	if (has_operator(data->stack, APPEND))
-// 	{
-// 		split_redir = split_operator(&data->stack, APPEND);
-// 		if (!split_redir)
-// 			return ;
-// 		start_redirs(split_redir, data, 1);
-// 		if (has_operator(data->stack, REDIR_OUT))
-// 		{
-// 			while (split_redir[i])
-// 			{
-// 				inner_split = ft_split(split_redir[i], '>');
-// 				i++;
-// 			}
-// 			start_redirs(inner_split, data, 0);
-// 		}
-// 	}
-// 	else if (has_operator(data->stack, REDIR_OUT))
-// 	{
-// 		split_redir = split_operator(&data->stack, REDIR_OUT);
-// 		if (!split_redir)
-// 			return ;
-// 		start_redirs(split_redir, data, 1);
-// 		if (has_operator(data->stack, APPEND))
-// 		{
-// 			while (split_redir[i])
-// 			{
-// 				inner_split = ft_split(split_redir[i], '>>');
-// 				i++;
-// 			}
-// 			start_redirs(inner_split, data, 0);
-// 		}
-// 	}
-// }

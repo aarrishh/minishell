@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/31 19:53:44 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/02 23:26:12 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,80 +70,7 @@ int	two_dim_len(char **str)
 	return (i);
 }
 
-// char	**fork_for_pipe(t_data *data, char **commands, int num_cmds)
-// {
-// 	int			i;
-// 	pid_t		pid;
-// 	t_pipe_fd	fds;
-// 	char		**main_cmd;
-// 	char		**failed_cmds;
-
-// 	i = 0;
-// 	fds.prev_fd = 0;
-// 	failed_cmds = malloc(sizeof(char *) * (num_cmds + 1));
-// 	if (!failed_cmds)
-// 		return (NULL);
-// 	while (i < num_cmds)
-// 	{
-// 		if (i < num_cmds - 1)
-// 			pipe(fds.pfd);
-// 		fds.last_cmd = (i == num_cmds - 1);
-// 		pid = fork();
-// 		if (pid == 0)
-// 			child(data, &fds, commands[i]);
-// 		else
-// 			parent(&fds);
-// 		main_cmd = ft_split(commands[i], ' ');
-// 		failed_cmds[i] = ft_strdup(main_cmd[0]);
-// 		free_array(main_cmd);
-// 		i++;
-// 	}
-// 	failed_cmds[i] = NULL;
-// 	return (failed_cmds);
-// }
-
-// void	execute_pipe(t_data *data)
-// {
-// 	char	**commands;
-// 	char	**failed_cmds;
-// 	int		num_cmds;
-// 	int		i;
-// 	int		status;
-// 	int		exit_codes[256];
-
-// 	commands = split_operator(&data->stack, PIPE);
-// 	num_cmds = two_dim_len(commands);
-// 	i = 0;
-// 	failed_cmds = fork_for_pipe(data, commands, num_cmds);
-// 	if (!failed_cmds)
-// 		return ;
-// 	while (i < num_cmds)
-// 	{
-// 		waitpid(-1, &status, 0);
-// 		if (WIFEXITED(status))
-// 		{
-// 			g_exit_status = WEXITSTATUS(status);
-// 			exit_codes[i] = g_exit_status;
-// 		}
-// 		else if (WIFSIGNALED(status))
-// 		{
-// 			g_exit_status = 128 + WTERMSIG(status);
-// 			exit_codes[i] = g_exit_status;
-// 		}
-// 		i++;
-// 	}
-// 	i = num_cmds - 1;
-// 	while (i >= 0)
-// 	{
-// 		if (exit_codes[i] == 127)
-// 			printf("%s: command not found\n", failed_cmds[i]);
-// 		i--;
-// 	}
-// 	free_array(commands);
-// 	free_array(failed_cmds);
-// }
-
-char	**make_arr_command(t_token *stack, t_token_type type)
+char	**make_arr_command(t_token *stack)
 {
 	t_token	*tmp;
 	char	**cmd;
@@ -153,14 +80,43 @@ char	**make_arr_command(t_token *stack, t_token_type type)
 	len = 0;
 	i = 0;
 	tmp = stack;
-	while (tmp && tmp->type != type)
+	while (tmp && tmp->type == WORD)
 	{
 		len++;
 		tmp = tmp->next;
 	}
 	cmd = (char **)malloc(sizeof(char *) * (len + 1));
 	tmp = stack;
-	while (i < len && tmp && tmp->type != type)
+	while (i < len && tmp && tmp->type == WORD)
+	{
+		cmd[i] = ft_strdup(tmp->string);
+		if (!cmd[i])
+			free_array(cmd);
+		tmp = tmp->next;
+		i++;
+	}
+	cmd[i] = NULL;
+	return (cmd);
+}
+
+char	**make_command_pipe(t_token *stack)
+{
+	t_token	*tmp;
+	char	**cmd;
+	int		len;
+	int		i;
+
+	len = 0;
+	i = 0;
+	tmp = stack;
+	while (tmp && tmp->type != PIPE)
+	{
+		len++;
+		tmp = tmp->next;
+	}
+	cmd = (char **)malloc(sizeof(char *) * (len + 1));
+	tmp = stack;
+	while (i < len && tmp && tmp->type != PIPE)
 	{
 		cmd[i] = ft_strdup(tmp->string);
 		if (!cmd[i])
@@ -195,7 +151,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds)
 			i++;
 			continue ;
 		}
-		commands = make_arr_command(tmp, PIPE);
+		commands = make_command_pipe(tmp);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
 		if (tmp && tmp->type == PIPE)
@@ -233,11 +189,11 @@ int	count_segments(t_token **stack, t_token_type type)
 
 void	execute_pipe(t_data *data)
 {
-	char **failed_cmds;
-	int num_cmds;
-	int i;
-	int status;
-	int exit_codes[256];
+	char	**failed_cmds;
+	int		num_cmds;
+	int		i;
+	int		status;
+	int		exit_codes[256];
 
 	num_cmds = count_segments(&data->stack, PIPE);
 	i = 0;
