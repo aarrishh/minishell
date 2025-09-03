@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/02 23:28:04 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/03 18:59:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 		}
 		built_in_functions(&data->stack, cmd_struct->cmd[0], &data->env,
 				data->split);
-		free_array(cmd_struct->cmd);
 		if (saved_in)
 		{
 			dup2(saved_in, 0);
@@ -98,7 +97,6 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 				perror(cmd_struct->cmd[0]);
 				exit(126);
 			}
-			free_array(cmd_struct->cmd);
 			free(path);
 		}
 		else
@@ -128,42 +126,4 @@ int	find_and_open(char *filename, int append)
 		exit(1);
 	}
 	return (fd);
-}
-
-void	redir_function(t_data *data, t_command *cmd_struct)
-{
-	t_token	*tmp;
-	char	**cmd;
-	int		fd;
-
-	tmp = data->stack;
-	cmd = NULL;
-	while (tmp && tmp->type != REDIR_OUT && tmp->type != APPEND)
-	{
-		cmd = add_arg_to_cmd(cmd, tmp->string);
-		tmp = tmp->next;
-	}
-	while (tmp && (tmp->type == WORD || tmp->type == REDIR_OUT
-			|| tmp->type == APPEND))
-	{
-		if (tmp && tmp->type == APPEND && tmp->next)
-			fd = find_and_open(tmp->next->string, 1);
-		else if (tmp && tmp->type == REDIR_OUT && tmp->next)
-			fd = find_and_open(tmp->next->string, 0);
-		else if (tmp && (tmp->type == REDIR_IN || tmp->type == APPEND)
-				&& tmp->next == NULL)
-		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
-			g_exit_status = 2;
-			return ;
-		}
-		else if (tmp && tmp->type != WORD && tmp->next->type != WORD)
-		{
-			printf("minishell: syntax error near unexpected token `%s'\n",
-					tmp->next->string);
-			g_exit_status = 2;
-			return ;
-		}
-		tmp = tmp->next;
-	}
 }

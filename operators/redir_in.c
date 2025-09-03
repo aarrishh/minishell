@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/02 23:34:23 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:07:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	open_rdirin(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		// perror("open");
+		perror(filename);
 		return (0);
 	}
 	return (fd);
@@ -31,24 +31,30 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	char	**new;
 	int		i;
 
+	if (!str)
+		return (cmd_arg);
 	len = 0;
 	i = 0;
 	new = NULL;
 	if (cmd_arg)
 	{
-		while (cmd_arg && cmd_arg[len])
+		while (cmd_arg[len])
 			len++;
 		new = (char **)malloc(sizeof(char *) * (len + 2));
 		if (!new)
 			return (NULL);
 		while (i < len)
 		{
-			new[i] = cmd_arg[i];
+			new[i] = ft_strdup(cmd_arg[i]);
+			if (!new[i])
+				return (free_array(new), NULL);
 			i++;
 		}
 		new[i] = ft_strdup(str);
+		if (!new[i])
+			return (free_array(new), NULL);
 		new[i + 1] = NULL;
-		free(cmd_arg);
+		// free_array(cmd_arg);
 	}
 	else
 	{
@@ -56,88 +62,86 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 		if (!new)
 			return (NULL);
 		new[0] = ft_strdup(str);
+		if (!new[0])
+		{
+			free(new);
+			return (NULL);
+		}
 		new[1] = NULL;
 	}
 	return (new);
 }
 
-void	redir_in(t_data *data, t_command *cmd_struct)
-{
-	t_token	*tmp;
-	int		fd;
-	int		i;
-
-	fd = 0;
-	tmp = data->stack;
-	cmd_struct->cmd = make_arr_command(data->stack);
-	while (tmp && tmp->type == WORD)
-		tmp = tmp->next;
-	while (tmp && (tmp->type == WORD || tmp->type == REDIR_IN))
-	{
-		if (tmp && tmp->type == REDIR_IN && tmp->next
-			&& tmp->next->type == WORD)
-		{
-			if (cmd_struct->cmd_input != 0)
-				close(cmd_struct->cmd_input);
-			cmd_struct->cmd_input = open_rdirin(tmp->next->string);
-			if (!cmd_struct->cmd_input)
-			{
-				printf("%s: No such file or directory\n", tmp->next->string);
-				return ;
-			}
-			tmp = tmp->next;
-		}
-		else if (tmp && tmp->type == REDIR_IN && (tmp->next == NULL
-					|| tmp->next->type == REDIR_IN))
-		{
-			error_nl_or_type(tmp->next->type);
-			g_exit_status = 2;
-			return ;
-		}
-		i = 2;
-		while (tmp && tmp->type == WORD && tmp->next && tmp->next->type == WORD)
-		{
-			cmd_struct->cmd = add_arg_to_cmd(cmd_struct->cmd,
-												tmp->next->string);
-			tmp = tmp->next;
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	close(fd);
-}
-
 void	operators(t_data *data)
 {
 	t_command	cmd_struct;
-	t_token		*tmp;
 
-	tmp = data->stack;
 	cmd_struct.cmd_input = 0;
 	cmd_struct.cmd_output = 1;
 	cmd_struct.cmd = NULL;
-	while (tmp && tmp->type == WORD)
-		tmp = tmp->next;
-	if (tmp->type == REDIR_IN)
-		redir_in(data, &cmd_struct);
-	else if (tmp->type == REDIR_OUT || tmp->type == APPEND)
-		redir_function(data, &cmd_struct);
-	else if (tmp->type == HEREDOC)
-		handle_heredoc(data, &cmd_struct);
-	execute_command(data, &cmd_struct);
+	ban_em_pordzum(data, &cmd_struct);
 }
 
 void	ban_em_pordzum(t_data *data, t_command *cmd_struct)
 {
-	t_token *tmp;
+	t_token	*tmp;
+	int		i;
+	char	**tmp_cmd;
 
+	i = 0;
 	tmp = data->stack;
-	cmd_struct->cmd = make_arr_command(data->stack);
+	cmd_struct->cmd = NULL;
 	while (tmp)
 	{
+		if (tmp->type == WORD)
+		{
+			tmp_cmd = add_arg_to_cmd(cmd_struct->cmd, tmp->string);
+			if (!tmp_cmd)
+			{
+				free_array(cmd_struct->cmd);
+				perror("malloc failed");
+				g_exit_status = 1;
+				return ;
+			}
+			cmd_struct->cmd = tmp_cmd;
+		}
+		else if (tmp->type == REDIR_IN && tmp->next && tmp->next->type == WORD)
+		{
+			if (cmd_struct->cmd_input != 0)
+				close(cmd_struct->cmd_input);
+			cmd_struct->cmd_input = open_rdirin(tmp->next->string);
+			tmp = tmp->next;
+		}
+		else if (tmp->type == REDIR_OUT && tmp->next && tmp->next->type == WORD)
+		{
+			cmd_struct->cmd_output = find_and_open(tmp->next->string, 0);
+			tmp = tmp->next;
+		}
+		else if (tmp->type == APPEND && tmp->next && tmp->next->type == WORD)
+		{
+			cmd_struct->cmd_output = find_and_open(tmp->next->string, 1);
+			tmp = tmp->next;
+		}
+		else if (tmp->type == HEREDOC && tmp->next && tmp->next->type == WORD)
+		{
+			handle_heredoc(data, cmd_struct, tmp, i);
+			i++;
+			tmp = tmp->next;
+		}
+		else
+		{
+			if (tmp->next)
+				error_nl_or_type(tmp->next->type);
+			else
+				error_nl_or_type(0);
+			return ;
+		}
 		tmp = tmp->next;
 	}
-	
+	execute_command(data, cmd_struct);
+	free_array(cmd_struct->cmd);
+	cmd_struct->cmd_input = 0;
+	cmd_struct->cmd_output = 1;
 }
 
 void	error_nl_or_type(t_token_type type)
@@ -156,4 +160,5 @@ void	error_nl_or_type(t_token_type type)
 	printf("minishell: syntax error near unexpected token `%s'\n",
 			str);
 	free(str);
+	g_exit_status = 2;
 }

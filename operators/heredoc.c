@@ -6,38 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/02 22:54:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/03 18:13:23 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// void	keep_delimiter(t_data *data)
-// {
-// 	t_token	*temp;
-
-// 	temp = data->stack;
-// 	while (temp && temp->next)
-// 	{
-// 		if (temp->type == HEREDOC)
-// 			temp->next->type = LIM;
-// 		temp = temp->next;
-// 	}
-// }
-
-// char	*get_lim_value(t_data *data)
-// {
-// 	t_token	*temp;
-
-// 	temp = data->stack;
-// 	while (temp)
-// 	{
-// 		if (temp->type == LIM)
-// 			return (temp->string);
-// 		temp = temp->next;
-// 	}
-// 	return (NULL);
-// }
 
 char	*create_file(int i, int *fd)
 {
@@ -142,53 +115,6 @@ int	check_dollar_hd(char *line)
 	return (0);
 }
 
-void	handle_heredoc(t_data *data, t_command *cmd_struct)
-{
-	int		status;
-	char	**split_hd;
-	char	**cmd;
-	pid_t	pid;
-	int		i;
-	char	*filename;
-	int		len;
-
-	// keep_delimiter(data);
-	split_hd = split_operator(&data->stack, HEREDOC);
-	if (!split_hd)
-		return ;
-	cmd = ft_split(split_hd[0], ' ');
-	len = two_dim_len(split_hd);
-	i = 0;
-	while (i < len)
-	{
-		if (i != 0)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (i == len - 1)
-				{
-					filename = read_heredoc_loop(&data->env, split_hd[i], i);
-					read_from_file(&data->env, filename, cmd);
-					// exit(0);
-				}
-				else
-				{
-					read_heredoc_loop(&data->env, split_hd[i], i);
-					exit(0);
-				}
-			}
-			else
-				parent_process_handling(pid, &status, cmd);
-		}
-		i++;
-	}
-	// Do I have to delete the temp files here?
-	free_array(split_hd);
-	free_array(cmd);
-}
-
-//TODO read from file
 void	read_from_file(t_env **env, char *filename, char **cmd)
 {
 	int	fd;
@@ -202,4 +128,16 @@ void	read_from_file(t_env **env, char *filename, char **cmd)
 	close(fd);
 	child_process_execution(env, cmd);
 	exit(0);
+}
+void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token *tmp, int i)
+{
+	char *filename;
+
+	filename = read_heredoc_loop(&data->env, tmp->next->string, i);
+	if (cmd_struct->cmd_input != 0)
+		close(cmd_struct->cmd_input);
+	cmd_struct->cmd_input = open(filename, O_RDONLY);
+	// optionally unlink(filename);
+	// so file disappears after shell exits
+	free(filename);
 }
