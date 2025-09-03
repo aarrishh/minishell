@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/22 21:26:45 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:32:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,58 @@ void	init_tokens_type(t_token **stack)
 	}
 }
 
+// int	check_string(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[0] == '>' && str[1] == '>')
+// 			return (-2);
+// 		if (str[i] == '<' && str[i + 1] == '<')
+// 			return (-2);
+// 		if (str[i] == '>' || str[i] == '<' || str[i] == '|' || str[i] == '&')
+// 			return (i);
+// 		i++;
+// 	}
+// 	return (-1);
+// }
+
 int	check_string(char *str)
 {
-	int	i;
+	int				i;
+	t_quote_state	state;
 
 	i = 0;
+	state = NO_QUOTE;
 	while (str[i])
 	{
-		if (str[0] == '>' && str[1] == '>')
-			return (-2);
-		if (str[i] == '<' && str[i + 1] == '<')
-			return (-2);
-		if (str[i] == '>' || str[i] == '<' || str[i] == '|' || str[i] == '&')
-			return (i);
+		state = quote_state(state, str[i]);
+		if (state == NO_QUOTE)
+		{
+			if (str[i] == '>' && str[i + 1] == '>')
+				return (-2);
+			if (str[i] == '<' && str[i + 1] == '<')
+				return (-2);
+			if (str[i] == '>' || str[i] == '<' || str[i] == '|'
+				|| str[i] == '&')
+				return (i);
+		}
 		i++;
 	}
 	return (-1);
 }
 
-void	validation(char **line, t_token **stack)
+void	validation(char **line, t_token **stack, t_env **env)
 {
 	t_token	*node;
 	int		cur_ind;
-	int		i;
-	int		j;
+	char	*substr;
+	char	*expanded;
 
+	int i, j;
 	i = 0;
-	cur_ind = 0;
 	while (line[i])
 	{
 		j = 0;
@@ -63,7 +88,10 @@ void	validation(char **line, t_token **stack)
 			cur_ind = check_string(line[i] + j);
 			if (cur_ind == -1)
 			{
-				node = create_node((ft_substr(line[i], j, ft_strlen(line[i]) - cur_ind)));
+				substr = ft_substr(line[i], j, ft_strlen(line[i]) - j);
+				expanded = expand_quotes(substr, env);
+				free(substr);
+				node = create_node(expanded);
 				add_back(node, stack);
 				break ;
 			}
@@ -71,10 +99,49 @@ void	validation(char **line, t_token **stack)
 				cur_ind = 2;
 			else if (cur_ind == 0)
 				cur_ind = 1;
-			node = create_node((ft_substr(line[i], j, cur_ind)));
+			substr = ft_substr(line[i], j, cur_ind);
+			expanded = expand_quotes(substr, env);
+			free(substr);
+			node = create_node(expanded);
 			add_back(node, stack);
 			j += cur_ind;
 		}
 		i++;
 	}
 }
+
+// void	validation(char **line, t_token **stack)
+// {
+// 	t_token	*node;
+// 	int		cur_ind;
+// 	int		i;
+// 	int		j;
+
+// 	i = 0;
+// 	cur_ind = 0;
+// 	while (line[i])
+// 	{
+// 		j = 0;
+// 		while (line[i][j])
+// 		{
+// 			cur_ind = check_string(line[i] + j);
+// 			if (cur_ind == -1)
+// 			{
+// 				node = create_node((ft_substr(line[i], j, ft_strlen(line[i])
+// 								- cur_ind)));
+// 				// node = create_node(ft_substr(line[i], j, ft_strlen(line[i])
+// 							// - j));
+// 				add_back(node, stack);
+// 				break ;
+// 			}
+// 			if (cur_ind == -2)
+// 				cur_ind = 2;
+// 			else if (cur_ind == 0)
+// 				cur_ind = 1;
+// 			node = create_node((ft_substr(line[i], j, cur_ind)));
+// 			add_back(node, stack);
+// 			j += cur_ind;
+// 		}
+// 		i++;
+// 	}
+// }

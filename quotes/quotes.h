@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/02 22:20:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:22:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ int					len_for_malloc(char *line, t_env **env);
 void				loop(char *line, char *new, t_quote_state state,
 						t_env **env_struct);
 char				*expand_quotes(char *line, t_env **env_struct);
-int					start_quotes(char *line, t_data *data);
+int					start_dquotes(char *line, t_data *data);
 char				*open_dquote(t_quote_state state, char *line);
 char				*cut_quotes(char *line, t_quote_state state);
+void				quotes(t_data *data);
 
 #endif

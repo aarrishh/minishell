@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/02 22:45:22 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:34:26 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		if (!start_quotes(line, &data))
+		if (!start_dquotes(line, &data))
 			continue ;
 		if (data.split)
-			validation(data.split, &data.stack);
+			validation(data.split, &data.stack, &data.env);
 		init_tokens_type(&data.stack);
 		handle_cmds(&data);
 		free_all(NULL, &data.stack, &data.split);

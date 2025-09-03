@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 18:13:56 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:36:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,17 @@ typedef struct s_command
 
 // Operations functions
 void		execute_pipe(t_data *data);
-char		**split_operator(t_token **stack, t_token_type type);
 void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
-void		redir_function(t_data *data, t_command *cmd_struct);
 void		execute_command(t_data *data, t_command *cmd_struct);
 int			two_dim_len(char **str);
-void		redir_in(t_data *data, t_command *cmd_struct);
 void		handle_heredoc(t_data *data, t_command *cmd_struct, t_token *tmp,
 				int i);
 void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
 char		*expand_heredoc(char *line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
-char		**make_arr_command(t_token *stack);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, int append);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
@@ -79,7 +75,7 @@ int			ft_strlen(const char *str);
 int			is_space(char *str);
 
 // Tokenization functions
-void		validation(char **line, t_token **stack);
+void		validation(char **line, t_token **stack, t_env **env);
 void		init_tokens_type(t_token **stack);
 void		check_type_pipe(char *str, t_token **stack);
 void		check_type_red_in(char *str, t_token **stack);
@@ -124,9 +120,8 @@ int			check_key(char *key);
 int			find_plus_equal(char *str);
 int			find_equal_for_export(char *str);
 int			check_sameness(char *str, t_env *env);
-void	check_i_have_value_after_equal_symbol_version_two(int index,
-														char *str,
-														t_env **env);
+void		check_i_have_value_after_equal_symbol_version_two(int index,
+				char *str, t_env **env);
 void		check_i_have_value_after_equal_symbol(int index, char *str,
 				t_env **node);
 void		change_value_for_plus_equal_case(char *str, t_env **env);

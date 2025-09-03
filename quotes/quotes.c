@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/31 17:08:47 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/03 20:27:55 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,14 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	return (new);
 }
 
-int	start_quotes(char *line, t_data *data)
+int	start_dquotes(char *line, t_data *data)
 {
 	int				i;
-	int				len;
 	t_quote_state	state;
-	char			**expanded;
 	char			*quote_line;
 
 	i = 0;
-	len = 0;
 	state = NO_QUOTE;
-	expanded = NULL;
 	while (line[i])
 	{
 		state = quote_state(state, line[i]);
@@ -83,25 +79,34 @@ int	start_quotes(char *line, t_data *data)
 		return (0);
 	}
 	else if (state == NO_QUOTE)
-	{
 		data->split = split_for_quotes(line, ' ');
-		len = two_dim_len(data->split);
-		i = 0;
-		expanded = (char **)malloc(sizeof(char *) * (len + 1));
-		if (!expanded)
-			return (0);
-		while (i < len)
-		{
-			expanded[i] = expand_quotes(data->split[i], &data->env);
-			free(data->split[i]);
-			i++;
-		}
-		expanded[i] = NULL;
-		free(data->split);
-		data->split = expanded;
-	}
 	return (1);
 }
+
+// void	quotes(t_data *data)
+// {
+// 	int		len;
+// 	int		i;
+// 	char	**expanded;
+
+// 	len = 0;
+// 	i = 0;
+// 	expanded = NULL;
+// 	len = two_dim_len(data->split);
+// 	i = 0;
+// 	expanded = (char **)malloc(sizeof(char *) * (len + 1));
+// 	if (!expanded)
+// 		return ;
+// 	while (i < len)
+// 	{
+// 		expanded[i] = expand_quotes(data->split[i], &data->env);
+// 		free(data->split[i]);
+// 		i++;
+// 	}
+// 	expanded[i] = NULL;
+// 	free(data->split);
+// 	data->split = expanded;
+// }
 
 char	*open_dquote(t_quote_state state, char *line)
 {
