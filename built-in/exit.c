@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/08/29 19:09:17 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/04 19:28:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	exit_command(t_token **stack, t_env **env, char **split)
 			write (2, &tmp->string, ft_strlen(tmp->string));
 			write (2, ": numeric argument required\n", 29);
 			g_exit_status = 2;
-			free_all(env, stack, &split);
+			free_all(env, stack, split);
 			rl_clear_history();
 			exit(2);
 		}

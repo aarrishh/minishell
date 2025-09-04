@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 14:49:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 19:22:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ char	*split_path(t_env **env, char *cmd) {
   return (NULL);
 }
 
-char	**env_arr_from_list(t_env *env) {
+char	**envp_from_list(t_env *env) {
   int len;
-  char **env_arr;
+  char **envp;
   t_env *tmp;
   int i;
   char *str;
@@ -69,58 +69,58 @@ char	**env_arr_from_list(t_env *env) {
     len++;
     tmp = tmp->next;
   }
-  env_arr = malloc(sizeof(char *) * (len + 1));
-  if (!env_arr)
+  envp = malloc(sizeof(char *) * (len + 1));
+  if (!envp)
     return (NULL);
   i = 0;
   tmp = env;
   while (tmp) {
     str = ft_strjoin(tmp->key, "=");
-    env_arr[i] = ft_strjoin(str, tmp->value);
+    envp[i] = ft_strjoin(str, tmp->value);
     free(str);
     i++;
     tmp = tmp->next;
   }
-  env_arr[i] = NULL;
-  return (env_arr);
+  envp[i] = NULL;
+  return (envp);
 }
 
-void	free_env_arr(char **env_arr) {
+void	free_envp(char **envp) {
   int i;
 
   i = 0;
-  if (!env_arr)
+  if (!envp)
     return ;
-  while (env_arr[i])
-    free(env_arr[i++]);
-  free(env_arr);
+  while (envp[i])
+    free(envp[i++]);
+  free(envp);
 }
 
 void	child_process_execution(t_env **env, char **cmd) {
   char *path;
-  char **env_arr;
+  char **envp;
 
   signal(SIGINT, SIG_DFL);
   signal(SIGQUIT, SIG_DFL);
   change_shlvl_value(env, cmd);
-  env_arr = env_to_env_arr(*env);
-  if (!env_arr)
+  envp = env_to_envp(*env);
+  if (!envp)
     exit(1);
   path = split_path(env, cmd[0]);
   if (!path) {
-    free_env_arr(env_arr);
+    free_envp(envp);
     exit(127);
   }
   if (!cmd[0] || is_builtin_cmd(cmd[0])) {
     free(path);
-    free_env_arr(env_arr);
+    free_envp(envp);
     printf("%s %s: command not found\n", cmd[0], cmd[1]);
     exit(126);
   }
-  if (execve(path, cmd, env_arr) == -1) {
+  if (execve(path, cmd, envp) == -1) {
     perror(cmd[0]);
     free(path);
-    free_env_arr(env_arr);
+    free_envp(envp);
     exit(126);
   }
 }

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/04 16:43:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 19:22:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ void	cd_command(t_data *data)
 		// write (2, "minishell: cd: too many arguments", 34);
 		g_exit_status = 1;
 	}
-	update_env_arr(data);
+	update_envp(data);
 }

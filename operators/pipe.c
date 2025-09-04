@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 16:26:44 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 19:22:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 {
 	char	*path;
-	char	**env_arr;
+	char	**envp;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -45,11 +45,11 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 	}
 	else
 	{
-		env_arr = env_to_env_arr(data->env);
+		envp = env_to_envp(data->env);
 		path = split_path(&data->env, cmd[0]);
 		if (!path)
 			exit(127);
-		execve(path, cmd, env_arr);
+		execve(path, cmd, envp);
 		free_array(cmd);
 		free(path);
 		exit(1);

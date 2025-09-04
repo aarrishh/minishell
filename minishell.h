@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 16:46:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 19:26:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ void		cd_command(t_data *data);
 void		built_in_functions(t_data *data, char *string);
 void		unset_command(t_data *data);
 int			is_builtin_cmd(char *cmd);
-void		update_env_arr(t_data *data);
+void		update_envp(t_data *data);
 
 // Free functions
 void		free_env(t_env **env);
 void		free_array(char **array);
 void		free_stack(t_token **stack);
-void		free_all(t_env **env, t_token **stack, char ***split);
+void		free_all(t_env **env, t_token **stack, char **split);
 
 // Env functions
 void		add_env_value(t_env **env, char *key, char *value);
@@ -108,10 +108,10 @@ void		env_add_back(t_env *node, t_env **head);
 void		change_shlvl_value(t_env **env, char **cmd);
 char		*get_env_value(t_env *env, char *key);
 t_env		*new_node(char *key, char *value);
-t_env		*add_env_to_list(char **env_arr);
+t_env		*add_env_to_list(char **envp);
 t_token		*create_node(char *res);
 t_env		*copy_env_for_print(t_env *env);
-char		**env_to_env_arr(t_env *env);
+char		**env_to_envp(t_env *env);
 
 // Export functions
 t_env		*sort_env(t_env *env);

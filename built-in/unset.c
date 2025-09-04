@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 07:00:52 by arina             #+#    #+#             */
-/*   Updated: 2025/09/04 16:50:00 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 19:22:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ void	unset_command(t_data *data)
 		tmp = tmp->next;
 	}
 	g_exit_status = 0;
-	update_env_arr(data);
+	update_envp(data);
 }
