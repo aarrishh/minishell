@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/08/29 19:06:36 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/04 16:43:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,33 +54,31 @@ void	update_env_new_and_old_pwd(t_env **env, char *old_pwd)
 	}
 }
 
-void	cd_command(t_token *stack, t_env **env)
+void	cd_command(t_data *data)
 {
 	char	*old_pwd;
 	char	*target;
 
-	old_pwd = get_env_value(*env, "PWD");
-	if (!stack->next)
-		target = get_env_value(*env, "HOME");
-	else if (ft_strcmp(stack->next->string, "-") == 0)
-		target = get_env_value(*env, "OLDPWD");
+	old_pwd = get_env_value(data->env, "PWD");
+	if (!data->stack->next)
+		target = get_env_value(data->env, "HOME");
+	else if (ft_strcmp(data->stack->next->string, "-") == 0)
+		target = get_env_value(data->env, "OLDPWD");
 	else
-		target = stack->next->string;
+		target = data->stack->next->string;
 	if (!target || chdir(target) != 0)
 	{
 		perror("minishell: cd");
 		g_exit_status = 1;
 		return ;
 	}
-	update_env_new_and_old_pwd(env, old_pwd);
+	update_env_new_and_old_pwd(&data->env, old_pwd);
 	g_exit_status = 0;
-	if (stack->next->next)
+	if (data->stack->next->next)
 	{
 		ft_putendl_fd("minishell: cd: too many arguments", 2);
 		// write (2, "minishell: cd: too many arguments", 34);
 		g_exit_status = 1;
 	}
+	update_env_arr(data);
 }
-
-
-

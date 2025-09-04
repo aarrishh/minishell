@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/08/29 16:52:06 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/04 16:30:23 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	we_find_only_equal_in_string(char *str, t_env **env, t_env **node)
 			(*node) = NULL;
 		else
 		{
-			(*node) = new_node(sub,
-					ft_strdup(ft_strchr(str, '=') + 1));
+			(*node) = new_node(sub, ft_strdup(ft_strchr(str, '=') + 1));
 			check_i_have_value_after_equal_symbol(find_equal(str), str, node);
 			return ;
 		}
@@ -38,7 +37,6 @@ void	we_find_only_equal_in_string(char *str, t_env **env, t_env **node)
 	}
 }
 
-
 void	we_find_equal_and_plus_in_string(char *str, t_env **env, t_env **node)
 {
 	if (check_sameness(str, *env) == 2)
@@ -48,31 +46,65 @@ void	we_find_equal_and_plus_in_string(char *str, t_env **env, t_env **node)
 				ft_strdup(ft_strchr(str, '=') + 1));
 }
 
-void	export_command(t_token *stack, t_env **env)
+void	export_command(t_data *data)
 {
 	t_env	*node;
 
 	node = NULL;
-	if (stack->next == NULL)
+	if (data->stack->next == NULL)
 	{
-		print_export(*env);
+		print_export(data->env);
 		return ;
 	}
-	while (stack->next)
+	while (data->stack->next)
 	{
-		stack = stack->next;
-		if (check_key(stack->string) == -2)
-			print_error_export(stack->string);
-		if (find_equal_for_export(stack->string) >= 0)
-			we_find_only_equal_in_string(stack->string, env, &node);
-		else if (find_equal_for_export(stack->string) == -2)
-			we_find_equal_and_plus_in_string(stack->string, env, &node);
+		data->stack = data->stack->next;
+		if (check_key(data->stack->string) == -2)
+			print_error_export(data->stack->string);
+		if (find_equal_for_export(data->stack->string) >= 0)
+			we_find_only_equal_in_string(data->stack->string, &data->env,
+				&node);
+		else if (find_equal_for_export(data->stack->string) == -2)
+			we_find_equal_and_plus_in_string(data->stack->string, &data->env,
+				&node);
 		else
 		{
-			if (check_sameness(stack->string, *env) == 0)
-				node = new_node(ft_strdup(stack->string), ft_strdup(""));
+			if (check_sameness(data->stack->string, data->env) == 0)
+				node = new_node(ft_strdup(data->stack->string), ft_strdup(""));
 		}
 		if (node)
-			env_add_back(node, env);
+			env_add_back(node, &data->env);
 	}
+	update_env_arr(data);
+}
+
+void	update_env_arr(t_data *data)
+{
+	t_env	*tmp;
+	char	**tmp_env;
+	int		len;
+	int		i;
+	char	*key;
+
+	len = 0;
+	tmp = data->env;
+	while (tmp)
+	{
+		len++;
+		tmp = tmp->next;
+	}
+	tmp = data->env;
+	tmp_env = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!tmp_env)
+		return ; // (NULL);
+	i = 0;
+	while (tmp)
+	{
+		key = ft_strjoin(tmp->key, "=");
+		tmp_env[i] = ft_strjoin(key, tmp->value);
+		i++;
+	}
+	if (data->env_arr)
+		free_array(data->env_arr);
+	data->env_arr = tmp_env;
 }

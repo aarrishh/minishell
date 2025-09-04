@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/04 12:45:47 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:26:16 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int		g_exit_status = 0;
 
-void	init_data(t_data *data, char **envp)
+void	init_data(t_data *data, char **env_arr)
 {
 	data->stack = NULL;
 	data->split = NULL;
-	data->envp = envp;
-	data->env = add_env_to_list(envp);
+	data->env_arr = env_arr;
+	data->env = add_env_to_list(env_arr);
 }
 
 void	handle_cmds(t_data *data)
@@ -27,21 +27,19 @@ void	handle_cmds(t_data *data)
 	if (data->stack && has_operator(data->stack, PIPE))
 		execute_pipe(data);
 	else if (data->stack && (has_operator(data->stack, REDIR_IN)
-				|| has_operator(data->stack, REDIR_OUT)
-				|| has_operator(data->stack, APPEND)
-				|| has_operator(data->stack, HEREDOC)))
+			|| has_operator(data->stack, REDIR_OUT) || has_operator(data->stack,
+				APPEND) || has_operator(data->stack, HEREDOC)))
 		operators(data, data->stack);
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string))
-			built_in_functions(&data->stack, (*data->stack).string, &data->env,
-					data->split);
+			built_in_functions(data, (*data->stack).string);
 		else
 			execute_else(&data->env, data->split);
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **env_arr)
 {
 	char	*line;
 	t_data	data;
@@ -49,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	setup_signals();
-	init_data(&data, envp);
+	init_data(&data, env_arr);
 	while (1)
 	{
 		line = readline("🌸 " PB "minishell" R " " W "✦" R " ");

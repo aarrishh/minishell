@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/08/21 17:01:11 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 14:49:34 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,30 @@ char	*join_key_value(char *key, char *value)
 	return (str);
 }
 
-char	**env_to_envp(t_env *env)
+char	**env_to_env_arr(t_env *env)
 {
-	char	**envp;
+	char	**env_arr;
 	int		i;
 
-	envp = malloc(sizeof(char *) * (env_size(env) + 1));
-	if (!envp)
+	env_arr = malloc(sizeof(char *) * (env_size(env) + 1));
+	if (!env_arr)
 		return (NULL);
 	i = 0;
 	while (env)
 	{
-		envp[i] = join_key_value(env->key, env->value);
-		if (!envp[i])
+		env_arr[i] = join_key_value(env->key, env->value);
+		if (!env_arr[i])
 		{
 			while (i > 0)
-				free(envp[--i]);
-			free(envp);
+				free(env_arr[--i]);
+			free(env_arr);
 			return (NULL);
 		}
 		i++;
 		env = env->next;
 	}
-	envp[i] = NULL;
-	return (envp);
+	env_arr[i] = NULL;
+	return (env_arr);
 }
 
 void	env_add_back(t_env *node, t_env **head)
@@ -109,7 +109,7 @@ int	find_equal(char *str)
 	return (-1);
 }
 
-t_env	*add_env_to_list(char **envp)
+t_env	*add_env_to_list(char **env_arr)
 {
 	t_env	*env;
 	t_env	*cur_node;
@@ -119,9 +119,9 @@ t_env	*add_env_to_list(char **envp)
 	i = 0;
 	str = NULL;
 	env = NULL;
-	while (envp[i])
+	while (env_arr[i])
 	{
-		str = ft_strdup(envp[i]);
+		str = ft_strdup(env_arr[i]);
 		cur_node = new_node(ft_substr(str, 0, find_equal(str)),
 				ft_strdup(ft_strchr(str, '=') + 1));
 		free(str);

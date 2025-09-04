@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 12:23:53 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:31:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 				return ;
 			}
 		}
-		built_in_functions(&data->stack, cmd_struct->cmd[0], &data->env,
-				data->split);
+		built_in_functions(data, cmd_struct->cmd[0]);
 		if (saved_in != -1)
 		{
 			dup2(saved_in, 0);
@@ -94,7 +93,7 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 			path = split_path(&data->env, cmd_struct->cmd[0]);
 			if (!path)
 				exit(127);
-			if (execve(path, cmd_struct->cmd, data->envp))
+			if (execve(path, cmd_struct->cmd, data->env_arr))
 			{
 				perror(cmd_struct->cmd[0]);
 				exit(126);

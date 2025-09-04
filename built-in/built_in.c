@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/08/28 16:52:03 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:44:28 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,20 @@ int	is_builtin_cmd(char *cmd)
 	return (0);
 }
 
-void	built_in_functions(t_token **stack, char *string, t_env **env,
-		char **split)
+void	built_in_functions(t_data *data, char *string)
 {
 	if (ft_strcmp(string, "echo") == 0)
-		echo_command(stack);
+		echo_command(&data->stack);
 	else if (ft_strcmp(string, "exit") == 0)
-		exit_command(stack, env, split);
+		exit_command(&data->stack, &data->env, data->split);
 	else if (ft_strcmp(string, "pwd") == 0)
 		pwd_command();
 	else if (ft_strcmp(string, "env") == 0)
-		env_command(*env, *stack);
+		env_command(data->env, data->stack);
 	else if (ft_strcmp(string, "cd") == 0)
-		cd_command(*stack, env);
+		cd_command(data);
 	else if (ft_strcmp(string, "export") == 0)
-		export_command(*stack, env);
+		export_command(data);
 	else if (ft_strcmp(string, "unset") == 0)
-		unset_command(*stack, env);
+		unset_command(data);
 }

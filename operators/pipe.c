@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 13:11:38 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:26:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 {
 	char	*path;
-	char	**envp;
+	char	**env_arr;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -39,17 +39,17 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 	}
 	else if (cmd[0] && is_builtin_cmd(cmd[0]))
 	{
-		built_in_functions(&data->stack, cmd[0], &data->env, data->split);
+		built_in_functions(data, cmd[0]);
 		free_array(cmd);
 		exit(0);
 	}
 	else
 	{
-		envp = env_to_envp(data->env);
+		env_arr = env_to_env_arr(data->env);
 		path = split_path(&data->env, cmd[0]);
 		if (!path)
 			exit(127);
-		execve(path, cmd, envp);
+		execve(path, cmd, env_arr);
 		free_array(cmd);
 		free(path);
 		exit(1);
@@ -124,11 +124,13 @@ char	**fork_for_pipe(t_data *data, int num_cmds)
 		return (NULL);
 	while (i < num_cmds && tmp)
 	{
+		if (tmp->type == PIPE && !tmp->next)
+			return (printf("minishell: syntax error\n"), NULL);
 		start = tmp;
 		commands = make_command_pipe(tmp);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
-		if (tmp && tmp->type == PIPE)
+		if (tmp && tmp->type == PIPE && tmp->next)
 			tmp = tmp->next;
 		if (i < num_cmds - 1)
 			pipe(fds.pfd);

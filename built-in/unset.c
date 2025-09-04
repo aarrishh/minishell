@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 07:00:52 by arina             #+#    #+#             */
-/*   Updated: 2025/08/21 15:42:16 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:50:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,26 @@ void	find_key_for_unset(char *str, t_env **env)
 	}
 }
 
-void	unset_command(t_token *stack, t_env **env)
+void	unset_command(t_data *data)
 {
-	if (!stack->next)
+	t_token	*tmp;
+
+	tmp = data->stack;
+	if (!tmp->next)
 		return ;
-	stack = stack->next;
-	while (stack)
+	tmp = tmp->next;
+	while (tmp)
 	{
-		if (check_key(stack->string) == -2)
+		if (check_key(tmp->string) == -2)
 		{
-			printf("minishell: unset: `%s': not a valid identifier\n", \
-			stack->string);
+			printf("minishell: unset: `%s': not a valid identifier\n",
+				tmp->string);
 			g_exit_status = 1;
 			return ;
 		}
-		find_key_for_unset(stack->string, env);
-		stack = stack->next;
+		find_key_for_unset(tmp->string, &data->env);
+		tmp = tmp->next;
 	}
 	g_exit_status = 0;
+	update_env_arr(data);
 }

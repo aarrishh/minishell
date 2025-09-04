@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 20:22:53 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 14:56:05 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_data
 {
 	t_token			*stack;
 	t_env			*env;
-	char			**envp;
+	char			**env_arr;
 	char			**split;
 }					t_data;
 
@@ -90,6 +90,5 @@ char				*expand_quotes(char *line, t_env **env_struct);
 int					start_dquotes(char *line, t_data *data);
 char				*open_dquote(t_quote_state state, char *line);
 char				*cut_quotes(char *line, t_quote_state state);
-void				quotes(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 12:44:47 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:56:14 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 		if (!new[i])
 			return (free_array(new), NULL);
 		new[i + 1] = NULL;
-		// free_array(cmd_arg);
 	}
 	else
 	{
@@ -157,8 +156,7 @@ void	error_nl_or_type(t_token_type type)
 		str = ft_strdup(">");
 	else if (type == APPEND)
 		str = ft_strdup(">>");
-	printf("minishell: syntax error near unexpected token `%s'\n",
-			str);
+	printf("minishell: syntax error near unexpected token `%s'\n", str);
 	free(str);
 	g_exit_status = 2;
 }
