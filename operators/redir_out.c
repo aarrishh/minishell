@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 18:59:53 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:23:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 	int		saved_in;
 	int		saved_out;
 
+	saved_in = -1;
+	saved_out = -1;
 	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{
 		if (cmd_struct->cmd_input != 0)
@@ -55,12 +57,12 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 		}
 		built_in_functions(&data->stack, cmd_struct->cmd[0], &data->env,
 				data->split);
-		if (saved_in)
+		if (saved_in != -1)
 		{
 			dup2(saved_in, 0);
 			close(saved_in);
 		}
-		if (saved_out)
+		if (saved_out != -1)
 		{
 			dup2(saved_out, 1);
 			close(saved_out);

@@ -6,13 +6,13 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 18:23:03 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 13:11:38 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	child(t_data *data, t_pipe_fd *fds, char **cmd)
+void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 {
 	char	*path;
 	char	**envp;
@@ -30,7 +30,14 @@ void	child(t_data *data, t_pipe_fd *fds, char **cmd)
 		dup2(fds->pfd[1], 1);
 		close(fds->pfd[1]);
 	}
-	if (cmd[0] && is_builtin_cmd(cmd[0]))
+	if (tmp && (has_operator(tmp, REDIR_IN) || has_operator(tmp, REDIR_OUT)
+			|| has_operator(tmp, APPEND) || has_operator(tmp, HEREDOC)))
+	{
+		operators(data, tmp);
+		free_array(cmd);
+		exit(0);
+	}
+	else if (cmd[0] && is_builtin_cmd(cmd[0]))
 	{
 		built_in_functions(&data->stack, cmd[0], &data->env, data->split);
 		free_array(cmd);
@@ -105,6 +112,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds)
 	pid_t		pid;
 	t_pipe_fd	fds;
 	t_token		*tmp;
+	t_token		*start;
 	char		**commands;
 	char		**failed_cmds;
 
@@ -116,12 +124,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds)
 		return (NULL);
 	while (i < num_cmds && tmp)
 	{
-		if (ft_strcmp(tmp->string, "|") == 0)
-		{
-			tmp = tmp->next;
-			i++;
-			continue ;
-		}
+		start = tmp;
 		commands = make_command_pipe(tmp);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
@@ -132,7 +135,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds)
 		fds.last_cmd = (i == num_cmds - 1);
 		pid = fork();
 		if (pid == 0)
-			child(data, &fds, commands);
+			child(data, &fds, start, commands);
 		else
 			parent(&fds);
 		failed_cmds[i] = ft_strdup(commands[0]);

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/03 20:34:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:45:47 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	handle_cmds(t_data *data)
 				|| has_operator(data->stack, REDIR_OUT)
 				|| has_operator(data->stack, APPEND)
 				|| has_operator(data->stack, HEREDOC)))
-		operators(data);
+		operators(data, data->stack);
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string))

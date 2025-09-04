@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 19:07:11 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:44:47 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,26 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	return (new);
 }
 
-void	operators(t_data *data)
+void	operators(t_data *data, t_token *stack)
 {
 	t_command	cmd_struct;
 
 	cmd_struct.cmd_input = 0;
 	cmd_struct.cmd_output = 1;
 	cmd_struct.cmd = NULL;
-	ban_em_pordzum(data, &cmd_struct);
+	ban_em_pordzum(data, stack, &cmd_struct);
 }
 
-void	ban_em_pordzum(t_data *data, t_command *cmd_struct)
+void	ban_em_pordzum(t_data *data, t_token *stack, t_command *cmd_struct)
 {
 	t_token	*tmp;
 	int		i;
 	char	**tmp_cmd;
 
 	i = 0;
-	tmp = data->stack;
+	tmp = stack;
 	cmd_struct->cmd = NULL;
-	while (tmp)
+	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == WORD)
 		{

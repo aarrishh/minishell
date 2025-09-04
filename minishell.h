@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 20:36:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:45:29 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, int append);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
-void		operators(t_data *data);
+void		operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_token_type type);
-void		ban_em_pordzum(t_data *data, t_command *cmd_struct);
+void		ban_em_pordzum(t_data *data, t_token *stack, t_command *cmd_struct);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
