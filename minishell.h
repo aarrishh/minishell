@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/05 18:05:32 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:25:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		pwd_command(void);
 void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
 void		export_command(t_data *data);
-void		cd_command(t_data *data);
+void		cd_command(t_token *stack, t_env **env);
 void		built_in_functions(t_data *data, char *string);
 void		unset_command(t_data *data);
 int			is_builtin_cmd(char *cmd);

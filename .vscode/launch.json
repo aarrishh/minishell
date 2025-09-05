@@ -1,4 +1,5 @@
 {
+  "version": "0.2.0",
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
@@ -8,7 +9,7 @@
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/root/minishell",
-      "program": "/root/minishell/minishell",
+      "program": "/root/minishell/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

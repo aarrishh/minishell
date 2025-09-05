@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/05 18:07:08 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:21:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 	int		status;
 	int		saved_in;
 	int		saved_out;
-	char **envp;
+	char	**envp;
 
 	saved_in = -1;
 	saved_out = -1;
