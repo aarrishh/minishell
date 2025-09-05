@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 19:26:58 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:05:32 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void		cd_command(t_data *data);
 void		built_in_functions(t_data *data, char *string);
 void		unset_command(t_data *data);
 int			is_builtin_cmd(char *cmd);
-void		update_envp(t_data *data);
 
 // Free functions
 void		free_env(t_env **env);
@@ -120,8 +119,9 @@ int			check_key(char *key);
 int			find_plus_equal(char *str);
 int			find_equal_for_export(char *str);
 int			check_sameness(char *str, t_env *env);
-void		check_i_have_value_after_equal_symbol_version_two(int index,
-				char *str, t_env **env);
+void	check_i_have_value_after_equal_symbol_version_two(int index,
+														char *str,
+														t_env **env);
 void		check_i_have_value_after_equal_symbol(int index, char *str,
 				t_env **node);
 void		change_value_for_plus_equal_case(char *str, t_env **env);

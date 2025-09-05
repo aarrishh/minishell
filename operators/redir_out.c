@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 19:22:53 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:07:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 	int		status;
 	int		saved_in;
 	int		saved_out;
+	char **envp;
 
 	saved_in = -1;
 	saved_out = -1;
@@ -93,7 +94,8 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 			path = split_path(&data->env, cmd_struct->cmd[0]);
 			if (!path)
 				exit(127);
-			if (execve(path, cmd_struct->cmd, data->envp))
+			envp = env_to_envp(data->env);
+			if (execve(path, cmd_struct->cmd, envp))
 			{
 				perror(cmd_struct->cmd[0]);
 				exit(126);

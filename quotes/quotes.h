@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 19:26:40 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/05 17:56:50 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ typedef struct s_data
 {
 	t_token			*stack;
 	t_env			*env;
-	char			**env_arr;
-	char			**envp;
 	char			**split;
 }					t_data;
 

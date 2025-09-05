@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 19:22:53 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:05:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,34 +56,34 @@ char	*split_path(t_env **env, char *cmd) {
   return (NULL);
 }
 
-char	**envp_from_list(t_env *env) {
-  int len;
-  char **envp;
-  t_env *tmp;
-  int i;
-  char *str;
+// char	**envp_from_list(t_env *env) {
+//   int len;
+//   char **envp;
+//   t_env *tmp;
+//   int i;
+//   char *str;
 
-  len = 0;
-  tmp = env;
-  while (tmp) {
-    len++;
-    tmp = tmp->next;
-  }
-  envp = malloc(sizeof(char *) * (len + 1));
-  if (!envp)
-    return (NULL);
-  i = 0;
-  tmp = env;
-  while (tmp) {
-    str = ft_strjoin(tmp->key, "=");
-    envp[i] = ft_strjoin(str, tmp->value);
-    free(str);
-    i++;
-    tmp = tmp->next;
-  }
-  envp[i] = NULL;
-  return (envp);
-}
+//   len = 0;
+//   tmp = env;
+//   while (tmp) {
+//     len++;
+//     tmp = tmp->next;
+//   }
+//   envp = malloc(sizeof(char *) * (len + 1));
+//   if (!envp)
+//     return (NULL);
+//   i = 0;
+//   tmp = env;
+//   while (tmp) {
+//     str = ft_strjoin(tmp->key, "=");
+//     envp[i] = ft_strjoin(str, tmp->value);
+//     free(str);
+//     i++;
+//     tmp = tmp->next;
+//   }
+//   envp[i] = NULL;
+//   return (envp);
+// }
 
 void	free_envp(char **envp) {
   int i;

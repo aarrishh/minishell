@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/09/04 19:32:31 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/05 18:08:01 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,54 +75,4 @@ void	export_command(t_data *data)
 		if (node)
 			env_add_back(node, &data->env);
 	}
-	update_envp(data);
-}
-
-void	update_envp(t_data *data)
-{
-	t_env	*tmp;
-	char	**tmp_env;
-	int		len;
-	int		i;
-	char	*key;
-
-	if (!data)
-		return ;
-	len = 0;
-	tmp = data->env;
-	while (tmp)
-	{
-		len++;
-		tmp = tmp->next;
-	}
-	tmp_env = (char **)malloc(sizeof(char *) * (len + 1));
-	if (!tmp_env)
-		return ;
-	tmp = data->env;
-	i = 0;
-	while (tmp)
-	{
-		if (!tmp->key || !tmp->value)
-		{
-			tmp->key = ft_strdup("");
-			tmp->value = ft_strdup("");
-		}
-		key = ft_strjoin(tmp->key, "=");
-		if (!key)
-			key = ft_strdup("");
-		tmp_env[i] = ft_strjoin(key, tmp->value);
-		free(key);
-		if (!tmp_env[i])
-		{
-			tmp_env[i] = NULL;
-			free_array(tmp_env);
-			return ;
-		}
-		i++;
-		tmp = tmp->next;
-	}
-	tmp_env[i] = NULL;
-	if (data->env_arr)
-		free_array(data->env_arr);
-	data->env_arr = tmp_env;
 }
