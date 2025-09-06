@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/06 17:02:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 18:47:15 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,12 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 		ij->i += key_len;
 	}
 	else
-		keep_char(line, new, ij);
+	{
+		if (line[ij->i] && line[ij->i] != '"' && line[ij->i] != '\'')
+			keep_char(line, new, ij);
+		else
+			ij->i++;
+	}
 }
 
 void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
