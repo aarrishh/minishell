@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/05 18:38:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 11:48:38 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,8 @@ void	execute_pipe(t_data *data)
 	num_cmds = count_segments(&data->stack, PIPE);
 	i = 0;
 	failed_cmds = fork_for_pipe(data, num_cmds);
-	if (!failed_cmds)
-		return ;
+	// if (!failed_cmds)
+		// return ;
 	while (i < num_cmds)
 	{
 		waitpid(-1, &status, 0);
