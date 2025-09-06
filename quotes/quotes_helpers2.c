@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/23 20:45:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 12:54:25 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,29 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 		expand_exit_status(new, ij);
 		return ;
 	}
+	// value = find_var_value(line + ij->i, env, &key_len);
+	// if (key_len == 1)
+	// {
+	// 	new[ij->j] = line[ij->i];
+	// 	(ij->i)++;
+	// 	(ij->j)++;
+	// }
+	// if (value)
+	// {
+	// 	keep_value(new, value, &ij->j);
+	// 	ij->i += key_len;
+	// }
+	// else
+	// 	keep_char(line, new, ij);
 	value = find_var_value(line + ij->i, env, &key_len);
-	if (key_len == 1)
+	if (value == NULL)
 	{
-		new[ij->j] = line[ij->i];
-		(ij->i)++;
-		(ij->j)++;
+		new[ij->j++] = line[ij->i++];
+		return ;
 	}
-	if (value)
-	{
+	if (value[0] != '\0')
 		keep_value(new, value, &ij->j);
-		ij->i += key_len;
-	}
-	else
-		keep_char(line, new, ij);
+	ij->i += key_len;
 }
 
 void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
@@ -81,22 +90,29 @@ void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
 	}
 }
 
-// int	check_valid_dollar(char chr)
-// {
-// 	return (chr == '_' || (chr >= 'A' && chr <= 'Z') || (chr >= 'a'
-// 			&& chr <= 'z') || (chr >= '0' && chr <= '9'));
-// }
-
 char	*find_var_value(char *str, t_env **env, int *key_length)
 {
 	t_env	*tmp;
 	int		len;
 
-	tmp = *env;
+	if (!str || *str != '$')
+	{
+		*key_length = 0;
+		return (NULL);
+	}
 	*key_length = 1;
+	tmp = *env;
 	str++;
-	// if (!str || !check_valid_dollar(*str))
-	// return ("");
+	if (!*str)
+	{
+		*key_length = 1;
+		return (NULL);
+	}
+	if (!check_valid_dollar(*str))
+	{
+		*key_length = 1;
+		return (NULL);
+	}
 	if (*str >= '0' && *str <= '9')
 	{
 		*key_length = 2;
@@ -105,7 +121,8 @@ char	*find_var_value(char *str, t_env **env, int *key_length)
 	len = key_len(str);
 	while (tmp)
 	{
-		if ((ft_strncmp(str, tmp->key, len) == 0) && tmp->key[len] == '\0')
+		if ((ft_strlen(tmp->key) == len) && (ft_strncmp(str, tmp->key,
+					len) == 0))
 		{
 			*key_length = len + 1;
 			return (tmp->value);

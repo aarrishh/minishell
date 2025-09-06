@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/26 13:42:27 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 12:48:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,14 @@ void	handle_len_dollar(char *line, int *i, int *len, t_env **env)
 	int		key_len;
 
 	value = find_var_value(line + *i, env, &key_len);
-	if (value)
-	{
-		*len += ft_strlen(value);
-		*i += key_len;
-	}
-	else
+	if (value == NULL)
 	{
 		(*len)++;
 		(*i)++;
+		return ;
 	}
+	*len += ft_strlen(value);
+	*i += key_len;
 }
 
 t_quote_state	handle_single_quote_len(char *line, int *i, int *len)
