@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/05 18:36:58 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:43:24 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,15 @@ void	handle_cmds(t_data *data)
 	if (data->stack && has_operator(data->stack, PIPE))
 		execute_pipe(data);
 	else if (data->stack && (has_operator(data->stack, REDIR_IN)
-				|| has_operator(data->stack, REDIR_OUT)
-				|| has_operator(data->stack, APPEND)
-				|| has_operator(data->stack, HEREDOC)))
+			|| has_operator(data->stack, REDIR_OUT) || has_operator(data->stack,
+				APPEND) || has_operator(data->stack, HEREDOC)))
 		operators(data, data->stack);
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string))
 			built_in_functions(data, (*data->stack).string);
 		else
-			execute_else(&data->env, data->split);
+			execute_else(&data->env, &data->stack->string);
 	}
 }
 

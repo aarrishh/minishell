@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/06 11:48:38 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 14:09:14 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,5 +198,6 @@ void	execute_pipe(t_data *data)
 			printf("%s: command not found\n", failed_cmds[i]);
 		i--;
 	}
+	if (failed_cmds)
 	free_array(failed_cmds);
 }

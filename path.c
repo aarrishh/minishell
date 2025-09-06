@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/05 18:35:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:26:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ void	child_process_execution(t_env **env, char **cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	change_shlvl_value(env, cmd);
+	if (!cmd[0] || is_builtin_cmd(cmd[0]))
+	{
+		printf("%s: command not found\n", cmd[0]); //, cmd[1]);
+		exit(126);
+	}
 	envp = env_to_envp(*env);
 	if (!envp)
 		exit(1);
@@ -78,13 +83,6 @@ void	child_process_execution(t_env **env, char **cmd)
 	{
 		free_array(envp);
 		exit(127);
-	}
-	if (!cmd[0] || is_builtin_cmd(cmd[0]))
-	{
-		free(path);
-		free_array(envp);
-		printf("%s %s: command not found\n", cmd[0], cmd[1]);
-		exit(126);
 	}
 	if (execve(path, cmd, envp) == -1)
 	{

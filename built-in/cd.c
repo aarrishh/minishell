@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/05 18:24:27 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 13:58:25 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,12 @@ void	cd_command(t_token *stack, t_env **env)
 	}
 	update_env_new_and_old_pwd(env, old_pwd);
 	g_exit_status = 0;
-	if (stack->next->next)
+	if (stack->next)
 	{
-		ft_putendl_fd("minishell: cd: too many arguments", 2);
-		g_exit_status = 1;
+		if (stack->next->next)
+		{
+			ft_putendl_fd("minishell: cd: too many arguments", 2);
+			g_exit_status = 1;
+		}
 	}
 }

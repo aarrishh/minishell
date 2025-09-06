@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/06 13:05:42 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:02:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,16 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 		expand_exit_status(new, ij);
 		return ;
 	}
-	// value = find_var_value(line + ij->i, env, &key_len);
-	// if (key_len == 1)
-	// {
-	// 	new[ij->j] = line[ij->i];
-	// 	(ij->i)++;
-	// 	(ij->j)++;
-	// }
-	// if (value)
-	// {
-	// 	keep_value(new, value, &ij->j);
-	// 	ij->i += key_len;
-	// }
-	// else
-	// 	keep_char(line, new, ij);
 	value = find_var_value(line + ij->i, env, &key_len);
-	if (value == NULL)
+	if (key_len == 1)
+		keep_char(line, new, ij);
+	if (value)
 	{
-		new[ij->j++] = line[ij->i++];
-		return ;
-	}
-	if (value[0] != '\0')
 		keep_value(new, value, &ij->j);
-	ij->i += key_len;
+		ij->i += key_len;
+	}
+	else
+		keep_char(line, new, ij);
 }
 
 void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
@@ -70,11 +57,7 @@ void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
 	if (state == IN_SINGLE)
 	{
 		while (str[ij->i] && str[ij->i] != '\'')
-		{
-			new[ij->j] = str[ij->i];
-			(ij->i)++;
-			(ij->j)++;
-		}
+			keep_char(str, new, ij);
 		if (str[ij->i] == '\'')
 			(ij->i)++;
 	}
@@ -106,23 +89,12 @@ char	*find_var_value(char *str, t_env **env, int *key_length)
 		*key_length = 0;
 		return (NULL);
 	}
-	*key_length = 1;
 	tmp = *env;
 	str++;
-	if (!*str)
+	if (!*str || !check_valid_dollar(*str))
 	{
 		*key_length = 1;
 		return (NULL);
-	}
-	if (!check_valid_dollar(*str))
-	{
-		*key_length = 1;
-		return (NULL);
-	}
-	if (*str >= '0' && *str <= '9')
-	{
-		*key_length = 2;
-		return ("");
 	}
 	len = key_len(str);
 	while (tmp)

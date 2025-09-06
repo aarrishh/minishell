@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 20:27:55 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:04:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,31 +82,6 @@ int	start_dquotes(char *line, t_data *data)
 		data->split = split_for_quotes(line, ' ');
 	return (1);
 }
-
-// void	quotes(t_data *data)
-// {
-// 	int		len;
-// 	int		i;
-// 	char	**expanded;
-
-// 	len = 0;
-// 	i = 0;
-// 	expanded = NULL;
-// 	len = two_dim_len(data->split);
-// 	i = 0;
-// 	expanded = (char **)malloc(sizeof(char *) * (len + 1));
-// 	if (!expanded)
-// 		return ;
-// 	while (i < len)
-// 	{
-// 		expanded[i] = expand_quotes(data->split[i], &data->env);
-// 		free(data->split[i]);
-// 		i++;
-// 	}
-// 	expanded[i] = NULL;
-// 	free(data->split);
-// 	data->split = expanded;
-// }
 
 char	*open_dquote(t_quote_state state, char *line)
 {

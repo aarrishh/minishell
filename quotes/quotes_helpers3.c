@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:14:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/08/28 16:42:30 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:32:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,44 +37,6 @@ static int	q_count_words(const char *str, char c)
 	}
 	return (count);
 }
-
-// char	**split_for_quotes(char const *s, char c)
-// {
-// 	const char		*new_s;
-// 	char			**arr;
-// 	int				words_count;
-// 	int				i;
-// 	t_quote_state	state;
-
-// 	state = NO_QUOTE;
-// 	if (!s)
-// 		return (NULL);
-// 	words_count = q_count_words(s, c);
-// 	arr = (char **)malloc((words_count + 1) * (sizeof(char *)));
-// 	if (!arr)
-// 		return (NULL);
-// 	i = -1;
-// 	while (++i < words_count)
-// 	{
-// 		while (*s == c && state == NO_QUOTE)
-// 			s++;
-// 		new_s = s;
-// 		state = NO_QUOTE;
-// 		while (*s && (*s != c || state != NO_QUOTE))
-// 		{
-// 			state = quote_state(state, *s);
-// 			s++;
-// 		}
-// 		arr[i] = ft_substr(new_s, 0, s - new_s);
-// 		if (!arr[i])
-// 		{
-// 			free_array(arr);
-// 			return (NULL);
-// 		}
-// 	}
-// 	arr[i] = NULL;
-// 	return (arr);
-// }
 
 char	**split_for_quotes(char const *s, char c)
 {
