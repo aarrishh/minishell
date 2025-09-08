@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/06 19:26:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:25:33 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	has_operator(t_token *stack, t_token_type type)
 {
 	while (stack)
 	{
-		printf("%u\n", stack->type);
 		if (stack->type == type)
 			return (1);
 		stack = stack->next;

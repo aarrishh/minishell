@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/05 17:56:50 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:37:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_token
 {
 	char			*string;
 	t_token_type	type;
+	int				quote;
 	struct s_token	*next;
 }					t_token;
 

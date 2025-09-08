@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/06 17:21:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/08 17:03:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,25 @@ void	init_tokens_type(t_token **stack)
 	tmp = *stack;
 	while (tmp)
 	{
-		check_type_pipe(tmp->string, &tmp);
-		check_type_red_in(tmp->string, &tmp);
-		check_type_red_out(tmp->string, &tmp);
-		check_type_heredoc(tmp->string, &tmp);
-		check_type_append(tmp->string, &tmp);
+		if (tmp->quote == 0)
+		{
+			check_type_pipe(tmp->string, &tmp);
+			check_type_red_in(tmp->string, &tmp);
+			check_type_red_out(tmp->string, &tmp);
+			check_type_heredoc(tmp->string, &tmp);
+			check_type_append(tmp->string, &tmp);
+		}
 		tmp = tmp->next;
 	}
 }
 
-int	check_string(char *str)
+int	check_string(char *str, t_quote_state state)
 {
-	int				i;
-	t_quote_state	state;
+	int	i;
 
 	i = 0;
-	state = NO_QUOTE;
 	while (str[i])
 	{
-		state = quote_state(state, str[i]);
 		if (state == NO_QUOTE)
 		{
 			if (str[i] == '>' && str[i + 1] == '>')
@@ -55,25 +55,29 @@ int	check_string(char *str)
 
 void	validation(char **line, t_token **stack, t_env **env)
 {
-	t_token	*node;
-	int		cur_ind;
-	char	*substr;
-	char	*expanded;
+	t_token			*node;
+	int				cur_ind;
+	char			*substr;
+	char			*expanded;
+	t_quote_state	state;
 
 	int i, j;
 	i = 0;
+	state = NO_QUOTE;
 	while (line[i])
 	{
 		j = 0;
 		while (line[i][j])
 		{
-			cur_ind = check_string(line[i] + j);
+			state = quote_state(state, line[i][j]);
+			cur_ind = check_string(line[i] + j, state);
 			if (cur_ind == -1)
 			{
 				substr = ft_substr(line[i], j, ft_strlen(line[i]) - j);
 				expanded = expand_quotes(substr, env);
 				free(substr);
 				node = create_node(expanded);
+				node->quote = 1;
 				add_back(node, stack);
 				break ;
 			}

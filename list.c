@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:18:44 by arina             #+#    #+#             */
-/*   Updated: 2025/09/06 17:20:15 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:51:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_token	*create_node(char *res)
 	new_node = malloc(sizeof(t_token));
 	new_node->string = res;
 	new_node->type = 0;
+	new_node->quote = 0;
 	new_node->next = NULL;
 	return (new_node);
 }
