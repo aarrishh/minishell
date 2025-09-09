@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/09/05 18:08:01 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:29:12 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,31 @@ void	we_find_equal_and_plus_in_string(char *str, t_env **env, t_env **node)
 				ft_strdup(ft_strchr(str, '=') + 1));
 }
 
-void	export_command(t_data *data)
+void	export_command(t_data *data, t_token *stack)
 {
 	t_env	*node;
 
 	node = NULL;
-	if (data->stack->next == NULL)
+	if (stack->next == NULL || stack->next->type != WORD)
 	{
 		print_export(data->env);
 		return ;
 	}
-	while (data->stack->next)
+	while (stack->next && stack->next->type == WORD)
 	{
-		data->stack = data->stack->next;
-		if (check_key(data->stack->string) == -2)
-			print_error_export(data->stack->string);
-		if (find_equal_for_export(data->stack->string) >= 0)
-			we_find_only_equal_in_string(data->stack->string, &data->env,
+		stack = stack->next;
+		if (check_key(stack->string) == -2)
+			print_error_export(stack->string);
+		if (find_equal_for_export(stack->string) >= 0)
+			we_find_only_equal_in_string(stack->string, &data->env,
 				&node);
-		else if (find_equal_for_export(data->stack->string) == -2)
-			we_find_equal_and_plus_in_string(data->stack->string, &data->env,
+		else if (find_equal_for_export(stack->string) == -2)
+			we_find_equal_and_plus_in_string(stack->string, &data->env,
 				&node);
 		else
 		{
-			if (check_sameness(data->stack->string, data->env) == 0)
-				node = new_node(ft_strdup(data->stack->string), ft_strdup(""));
+			if (check_sameness(stack->string, data->env) == 0)
+				node = new_node(ft_strdup(stack->string), ft_strdup(""));
 		}
 		if (node)
 			env_add_back(node, &data->env);

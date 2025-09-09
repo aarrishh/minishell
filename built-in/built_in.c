@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/09/05 18:26:11 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:22:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	built_in_functions(t_data *data, char *string)
 	else if (ft_strcmp(string, "cd") == 0)
 		cd_command(data->stack, &data->env);
 	else if (ft_strcmp(string, "export") == 0)
-		export_command(data);
+		export_command(data, data->stack);
 	else if (ft_strcmp(string, "unset") == 0)
 		unset_command(data);
 }

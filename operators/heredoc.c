@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/03 18:13:23 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:54:43 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,15 +129,16 @@ void	read_from_file(t_env **env, char *filename, char **cmd)
 	child_process_execution(env, cmd);
 	exit(0);
 }
-void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token *tmp, int i)
+void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
+		int i)
 {
 	char *filename;
 
-	filename = read_heredoc_loop(&data->env, tmp->next->string, i);
-	if (cmd_struct->cmd_input != 0)
-		close(cmd_struct->cmd_input);
-	cmd_struct->cmd_input = open(filename, O_RDONLY);
-	// optionally unlink(filename);
-	// so file disappears after shell exits
+	filename = read_heredoc_loop(&data->env, (*tmp)->next->string, i);
+	if (cmd_struct->input != 0)
+		close(cmd_struct->input);
+	cmd_struct->input = open(filename, O_RDONLY);
+	// delete after shell exits
 	free(filename);
+	*tmp = (*tmp)->next;
 }

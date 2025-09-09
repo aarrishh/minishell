@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 16:12:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:55:28 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,72 +59,65 @@ void	operators(t_data *data, t_token *stack)
 {
 	t_command	cmd_struct;
 
-	cmd_struct.cmd_input = 0;
-	cmd_struct.cmd_output = 1;
+	cmd_struct.input = 0;
+	cmd_struct.output = 1;
 	cmd_struct.cmd = NULL;
 	loop_over_execute(data, stack, &cmd_struct);
+	execute_command(data, &cmd_struct);
+	free_array(cmd_struct.cmd);
+	cmd_struct.input = 0;
+	cmd_struct.output = 1;
 }
 
-void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_struct)
+char	**add_cmd(t_command *cmd_struct, t_token *tmp)
+{
+	char	**tmp_cmd;
+
+	tmp_cmd = add_arg_to_cmd(cmd_struct->cmd, tmp->string);
+	if (!tmp_cmd)
+	{
+		free_array(cmd_struct->cmd);
+		perror("malloc failed");
+		g_exit_status = 1;
+		return (NULL);
+	}
+	return (tmp_cmd);
+}
+
+void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_s)
 {
 	t_token	*tmp;
 	int		i;
-	char	**tmp_cmd;
 
 	i = 0;
 	tmp = stack;
-	cmd_struct->cmd = NULL;
 	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == WORD)
-		{
-			tmp_cmd = add_arg_to_cmd(cmd_struct->cmd, tmp->string);
-			if (!tmp_cmd)
-			{
-				free_array(cmd_struct->cmd);
-				perror("malloc failed");
-				g_exit_status = 1;
-				return ;
-			}
-			cmd_struct->cmd = tmp_cmd;
-		}
+			cmd_s->cmd = add_cmd(cmd_s, tmp);
 		else if (tmp->type == REDIR_IN && tmp->next && tmp->next->type == WORD)
 		{
-			if (cmd_struct->cmd_input != 0)
-				close(cmd_struct->cmd_input);
-			cmd_struct->cmd_input = open_rdirin(tmp->next->string);
+			if (cmd_s->input != 0)
+				close(cmd_s->input);
+			cmd_s->input = open_rdirin(tmp->next->string);
 			tmp = tmp->next;
 		}
-		else if (tmp->type == REDIR_OUT && tmp->next && tmp->next->type == WORD)
+		else if ((tmp->type == REDIR_OUT || tmp->type == APPEND) && tmp->next
+			&& tmp->next->type == WORD)
 		{
-			cmd_struct->cmd_output = find_and_open(tmp->next->string, 0);
-			tmp = tmp->next;
-		}
-		else if (tmp->type == APPEND && tmp->next && tmp->next->type == WORD)
-		{
-			cmd_struct->cmd_output = find_and_open(tmp->next->string, 1);
+			cmd_s->output = find_and_open(tmp->next->string, tmp->type);
 			tmp = tmp->next;
 		}
 		else if (tmp->type == HEREDOC && tmp->next && tmp->next->type == WORD)
-		{
-			handle_heredoc(data, cmd_struct, tmp, i);
-			i++;
-			tmp = tmp->next;
-		}
+			handle_heredoc(data, cmd_s, &tmp, i++);
 		else
 		{
 			if (tmp->next)
 				error_nl_or_type(tmp->next->type);
-			else
-				error_nl_or_type(0);
 			return ;
 		}
 		tmp = tmp->next;
 	}
-	execute_command(data, cmd_struct);
-	free_array(cmd_struct->cmd);
-	cmd_struct->cmd_input = 0;
-	cmd_struct->cmd_output = 1;
 }
 
 void	error_nl_or_type(t_token_type type)

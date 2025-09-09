@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 15:28:42 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:21:41 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef struct s_pipe_fd
 typedef struct s_command
 {
 	char	**cmd;
-	int		cmd_input;
-	int		cmd_output;
+	int		input;
+	int		output;
 }			t_command;
 
 // Operations functions
@@ -50,14 +50,14 @@ char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
 void		execute_command(t_data *data, t_command *cmd_struct);
 int			two_dim_len(char **str);
-void		handle_heredoc(t_data *data, t_command *cmd_struct, t_token *tmp,
+void		handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 				int i);
 void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
 char		*expand_heredoc(char *line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
-int			find_and_open(char *filename, int append);
+int			find_and_open(char *filename, t_token_type type);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
 void		operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_token_type type);
@@ -95,7 +95,7 @@ int			find_equal(char *str);
 void		pwd_command(void);
 void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
-void		export_command(t_data *data);
+void		export_command(t_data *data, t_token *stack);
 void		cd_command(t_token *stack, t_env **env);
 void		built_in_functions(t_data *data, char *string);
 void		unset_command(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/09 15:17:57 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:31:57 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		if (!line)
 		{
-			// free_all(&data.env, &data.stack, data.split);
+			free_all(&data.env, NULL, NULL);
 			handle_ctrl_d();
 		}
 		if (line[0] == '\0')

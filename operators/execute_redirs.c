@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 15:10:18 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:43:24 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,22 +91,22 @@ void	redirs_child(t_data *data, t_command *cmd_struct)
 
 void	builtin_redirs(t_command *cmd_struct, int *saved_in, int *saved_out)
 {
-	if (cmd_struct->cmd_input != 0)
+	if (cmd_struct->input != 0)
 	{
 		*saved_in = dup(0);
-		if (dup2(cmd_struct->cmd_input, 0) == -1)
+		if (dup2(cmd_struct->input, 0) == -1)
 		{
-			close(cmd_struct->cmd_input);
+			close(cmd_struct->input);
 			perror("dup2 input");
 			return ;
 		}
 	}
-	if (cmd_struct->cmd_output != 1)
+	if (cmd_struct->output != 1)
 	{
 		*saved_out = dup(1);
-		if (dup2(cmd_struct->cmd_output, 1) == -1)
+		if (dup2(cmd_struct->output, 1) == -1)
 		{
-			close(cmd_struct->cmd_output);
+			close(cmd_struct->output);
 			perror("dup2 output");
 			return ;
 		}
@@ -115,31 +115,31 @@ void	builtin_redirs(t_command *cmd_struct, int *saved_in, int *saved_out)
 
 void	dup_for_redirs(t_command *cmd_struct)
 {
-	if (cmd_struct->cmd_input != 0)
+	if (cmd_struct->input != 0)
 	{
-		if (dup2(cmd_struct->cmd_input, 0) == -1)
+		if (dup2(cmd_struct->input, 0) == -1)
 		{
 			// do we need error check?
-			close(cmd_struct->cmd_input);
+			close(cmd_struct->input);
 			return ;
 		}
 	}
-	if (cmd_struct->cmd_output != 1)
+	if (cmd_struct->output != 1)
 	{
-		if (dup2(cmd_struct->cmd_output, 1) == -1)
+		if (dup2(cmd_struct->output, 1) == -1)
 		{
 			// do we need error check?
-			close(cmd_struct->cmd_output);
+			close(cmd_struct->output);
 			return ;
 		}
 	}
 }
 
-int	find_and_open(char *filename, int append)
+int	find_and_open(char *filename, t_token_type type)
 {
 	int	fd;
 
-	if (append)
+	if (type == APPEND)
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
