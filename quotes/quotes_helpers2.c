@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 12:09:24 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 19:23:54 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 	{
 		if (line[ij->i] && line[ij->i] != '"' && line[ij->i] != '\'')
 			keep_char(line, new, ij);
-		else
-			ij->i++;
 	}
 }
 
@@ -68,20 +66,19 @@ void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
 	}
 	else if (state == IN_DOUBLE)
 	{
-		while (str[ij->i] && str[ij->i] != '"')
-			if (str[ij->i] == '$')
-				handle_dollar(str, new, ij, env);
-			else
-				keep_char(str, new, ij);
-		if (str[ij->i] == '"')
-			(ij->i)++;
+		if (str[ij->i] == '$')
+			handle_dollar(str, new, ij, env);
+		else
+			keep_char(str, new, ij);
+		// if (str[ij->i] == '"')
+		// (ij->/i)++;
 	}
 }
 
 int	check_valid_dollar(char chr)
 {
 	return (chr == '_' || (chr >= 'A' && chr <= 'Z') || (chr >= 'a'
-			&& chr <= 'z') || (chr >= '0' && chr <= '9'));
+			&& chr <= 'z'));
 }
 
 char	*find_var_value(char *str, t_env **env, int *key_length)
