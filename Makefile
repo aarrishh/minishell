@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/09 12:11:15 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/09 12:37:19 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,25 +31,25 @@ SRCS = main.c list.c functions.c path.c \
 		built-in/export/print.c free.c signal.c  \
 		operators/redir_in.c operators/redir_out.c operators/heredoc.c
 		
-# SRCS = $(shell find . -name "*.c" ! -path "./libft/*")
-OBJS = $(SRCS:.c=.o)
+OBJDIR = obj
+OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
-GREEN = \033[1;28;5;32m
-BLUE = \033[1;34m
+#GREEN = \033[1;28;5;32m
+#BLUE = \033[1;34m
 YELLOW = \033[0;33m
-BABY_PINK := \033[38;2;244;194;194m
-LIGHT_PINK  := \033[38;2;255;182;193m
+#BABY_PINK := \033[38;2;244;194;194m
+#LIGHT_PINK  := \033[38;2;255;182;193m
 PB := \033[38;2;255;204;213m
 HOT_PINK    := \033[1;38;2;255;105;180m
 DEEP_PINK   := \033[1;38;2;255;20;147m
-IDK = \033[1;38;5;34m
+#IDK = \033[1;38;5;34m
 RESET = \033[0m
 
-MINT_GREEN     := \033[38;2;152;255;152m
-SAGE_GREEN     := \033[38;2;178;172;136m
+#MINT_GREEN     := \033[38;2;152;255;152m
+#SAGE_GREEN     := \033[38;2;178;172;136m
 EMERALD_GREEN  := \033[1;38;2;80;200;120m
-FOREST_GREEN   := \033[1;38;2;34;139;34m
-OLIVE_GREEN    := \033[38;2;128;128;0m
+#FOREST_GREEN   := \033[1;38;2;34;139;34m
+#OLIVE_GREEN    := \033[38;2;128;128;0m
 
 all: $(NAME)
 
@@ -63,13 +63,14 @@ $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@echo "$(HOT_PINK) [OK]$(RESET) libft done."
 
-%.o: %.c minishell.h Makefile
+$(OBJDIR)/%.o: %.c minishell.h Makefile
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@echo "$(YELLOW)[CLEAN]$(RESET) Removing object files..."
 	@make --no-print-directory -C $(LIBFT_DIR) clean
-	@rm -f $(OBJS)
+	@rm -rf $(OBJDIR)
 	@echo "$(HOT_PINK) [OK]$(RESET) Clean done."
 
 fclean: clean
