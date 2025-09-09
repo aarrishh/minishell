@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/06 17:26:58 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 11:47:23 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,14 @@ void	child_process_execution(t_env **env, char **cmd)
 	if (!path)
 	{
 		free_array(envp);
+		free_array(cmd);
 		exit(127);
 	}
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror(cmd[0]);
 		free(path);
+		free_array(cmd);
 		free_array(envp);
 		exit(126);
 	}

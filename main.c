@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/08 17:02:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 11:46:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_data(t_data *data, char **envp)
 
 void	handle_cmds(t_data *data)
 {
+	char **split;
 	if (data->stack && has_operator(data->stack, PIPE))
 		execute_pipe(data);
 	else if (data->stack && (has_operator(data->stack, REDIR_IN)
@@ -34,7 +35,10 @@ void	handle_cmds(t_data *data)
 		if (is_builtin_cmd((*data->stack).string))
 			built_in_functions(data, (*data->stack).string);
 		else
-			execute_else(&data->env, &data->stack->string);
+		{
+			split = ft_split(data->stack->string, ' ');
+			execute_else(&data->env, split);
+		}
 	}
 }
 
