@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/09 11:46:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:17:57 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ void	init_data(t_data *data, char **envp)
 
 void	handle_cmds(t_data *data)
 {
-	char **split;
+	char	**cmd;
+	t_token	*tmp;
+
+	tmp = data->stack;
+	cmd = NULL;
 	if (data->stack && has_operator(data->stack, PIPE))
 		execute_pipe(data);
 	else if (data->stack && (has_operator(data->stack, REDIR_IN)
@@ -36,8 +40,13 @@ void	handle_cmds(t_data *data)
 			built_in_functions(data, (*data->stack).string);
 		else
 		{
-			split = ft_split(data->stack->string, ' ');
-			execute_else(&data->env, split);
+			while (tmp)
+			{
+				cmd = add_arg_to_cmd(cmd, tmp->string);
+				tmp = tmp->next;
+			}
+			execute_else(&data->env, cmd);
+			free_array(cmd);
 		}
 	}
 }
@@ -73,7 +82,8 @@ int	main(int argc, char **argv, char **envp)
 		init_tokens_type(&data.stack);
 		handle_cmds(&data);
 		free_all(NULL, &data.stack, data.split);
-		free(line);
+		// if (line)
+		// free(line);
 	}
 	return (0);
 }

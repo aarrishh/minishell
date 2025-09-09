@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/09 12:37:19 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/09 14:47:20 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 LDFLAGS = -lreadline
 
 SRCS = main.c list.c functions.c path.c \
@@ -29,7 +29,7 @@ SRCS = main.c list.c functions.c path.c \
 		built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
 		built-in/export/print.c free.c signal.c  \
-		operators/redir_in.c operators/redir_out.c operators/heredoc.c
+		operators/redir_in.c operators/execute_redirs.c operators/heredoc.c
 		
 OBJDIR = obj
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)

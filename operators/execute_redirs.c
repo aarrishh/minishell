@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir_out.c                                        :+:      :+:    :+:   */
+/*   execute_redirs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/08 14:25:33 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:10:18 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,83 +25,24 @@ int	has_operator(t_token *stack, t_token_type type)
 
 void	execute_command(t_data *data, t_command *cmd_struct)
 {
-	char	*path;
 	pid_t	pid;
 	int		status;
 	int		saved_in;
 	int		saved_out;
-	char	**envp;
 
 	saved_in = -1;
 	saved_out = -1;
 	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{
-		if (cmd_struct->cmd_input != 0)
-		{
-			saved_in = dup(0);
-			if (dup2(cmd_struct->cmd_input, 0) == -1)
-			{
-				// do we need error check?
-				close(cmd_struct->cmd_input);
-				return ;
-			}
-		}
-		if (cmd_struct->cmd_output != 1)
-		{
-			saved_out = dup(1);
-			if (dup2(cmd_struct->cmd_output, 1) == -1)
-			{
-				// do we need error check?
-				close(cmd_struct->cmd_output);
-				return ;
-			}
-		}
+		builtin_redirs(cmd_struct, &saved_in, &saved_out);
 		built_in_functions(data, cmd_struct->cmd[0]);
-		if (saved_in != -1)
-		{
-			dup2(saved_in, 0);
-			close(saved_in);
-		}
-		if (saved_out != -1)
-		{
-			dup2(saved_out, 1);
-			close(saved_out);
-		}
+		restore_fd(&saved_in, &saved_out);
 	}
 	else
 	{
 		pid = fork();
 		if (pid == 0)
-		{
-			if (cmd_struct->cmd_input != 0)
-			{
-				if (dup2(cmd_struct->cmd_input, 0) == -1)
-				{
-					// do we need error check?
-					close(cmd_struct->cmd_input);
-					return ;
-				}
-			}
-			if (cmd_struct->cmd_output != 1)
-			{
-				if (dup2(cmd_struct->cmd_output, 1) == -1)
-				{
-					// do we need error check?
-					close(cmd_struct->cmd_output);
-					return ;
-				}
-			}
-			path = split_path(&data->env, cmd_struct->cmd[0]);
-			if (!path)
-				exit(127);
-			envp = env_to_envp(data->env);
-			if (execve(path, cmd_struct->cmd, envp))
-			{
-				perror(cmd_struct->cmd[0]);
-				exit(126);
-			}
-			free(path);
-		}
+			redirs_child(data, cmd_struct);
 		else
 		{
 			waitpid(-1, &status, 0);
@@ -111,6 +52,85 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 				g_exit_status = 128 + WTERMSIG(status);
 			// g_exit_status = 127;
 			// wait(NULL);
+		}
+	}
+}
+
+void	restore_fd(int *saved_in, int *saved_out)
+{
+	if (*saved_in != -1)
+	{
+		dup2(*saved_in, 0);
+		close(*saved_in);
+	}
+	if (*saved_out != -1)
+	{
+		dup2(*saved_out, 1);
+		close(*saved_out);
+	}
+}
+
+void	redirs_child(t_data *data, t_command *cmd_struct)
+{
+	char	*path;
+	char	**envp;
+
+	dup_for_redirs(cmd_struct);
+	path = split_path(&data->env, cmd_struct->cmd[0]);
+	if (!path)
+		exit(127);
+	envp = env_to_envp(data->env);
+	if (execve(path, cmd_struct->cmd, envp) == -1)
+	{
+		perror(cmd_struct->cmd[0]);
+		exit(126);
+	}
+	free(path);
+	exit(1);
+}
+
+void	builtin_redirs(t_command *cmd_struct, int *saved_in, int *saved_out)
+{
+	if (cmd_struct->cmd_input != 0)
+	{
+		*saved_in = dup(0);
+		if (dup2(cmd_struct->cmd_input, 0) == -1)
+		{
+			close(cmd_struct->cmd_input);
+			perror("dup2 input");
+			return ;
+		}
+	}
+	if (cmd_struct->cmd_output != 1)
+	{
+		*saved_out = dup(1);
+		if (dup2(cmd_struct->cmd_output, 1) == -1)
+		{
+			close(cmd_struct->cmd_output);
+			perror("dup2 output");
+			return ;
+		}
+	}
+}
+
+void	dup_for_redirs(t_command *cmd_struct)
+{
+	if (cmd_struct->cmd_input != 0)
+	{
+		if (dup2(cmd_struct->cmd_input, 0) == -1)
+		{
+			// do we need error check?
+			close(cmd_struct->cmd_input);
+			return ;
+		}
+	}
+	if (cmd_struct->cmd_output != 1)
+	{
+		if (dup2(cmd_struct->cmd_output, 1) == -1)
+		{
+			// do we need error check?
+			close(cmd_struct->cmd_output);
+			return ;
 		}
 	}
 }

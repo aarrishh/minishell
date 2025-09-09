@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/04 15:56:14 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:12:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,46 +28,30 @@ int	open_rdirin(char *filename)
 char	**add_arg_to_cmd(char **cmd_arg, char *str)
 {
 	int		len;
-	char	**new;
 	int		i;
+	char	**new;
 
-	if (!str)
-		return (cmd_arg);
 	len = 0;
 	i = 0;
-	new = NULL;
+	if (!str)
+		return (cmd_arg);
 	if (cmd_arg)
-	{
 		while (cmd_arg[len])
 			len++;
-		new = (char **)malloc(sizeof(char *) * (len + 2));
-		if (!new)
-			return (NULL);
-		while (i < len)
-		{
-			new[i] = ft_strdup(cmd_arg[i]);
-			if (!new[i])
-				return (free_array(new), NULL);
-			i++;
-		}
-		new[i] = ft_strdup(str);
+	new = malloc(sizeof(char *) * (len + 2));
+	if (!new)
+		return (NULL);
+	while (i < len)
+	{
+		new[i] = ft_strdup(cmd_arg[i]);
 		if (!new[i])
 			return (free_array(new), NULL);
-		new[i + 1] = NULL;
+		i++;
 	}
-	else
-	{
-		new = (char **)malloc(sizeof(char *) * 2);
-		if (!new)
-			return (NULL);
-		new[0] = ft_strdup(str);
-		if (!new[0])
-		{
-			free(new);
-			return (NULL);
-		}
-		new[1] = NULL;
-	}
+	new[i] = ft_strdup(str);
+	if (!new[i])
+		return (free_array(new), NULL);
+	new[i + 1] = NULL;
 	return (new);
 }
 
@@ -78,10 +62,10 @@ void	operators(t_data *data, t_token *stack)
 	cmd_struct.cmd_input = 0;
 	cmd_struct.cmd_output = 1;
 	cmd_struct.cmd = NULL;
-	ban_em_pordzum(data, stack, &cmd_struct);
+	loop_over_execute(data, stack, &cmd_struct);
 }
 
-void	ban_em_pordzum(t_data *data, t_token *stack, t_command *cmd_struct)
+void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_struct)
 {
 	t_token	*tmp;
 	int		i;
@@ -145,7 +129,7 @@ void	ban_em_pordzum(t_data *data, t_token *stack, t_command *cmd_struct)
 
 void	error_nl_or_type(t_token_type type)
 {
-	char *str;
+	char	*str;
 
 	str = NULL;
 	if (!type)

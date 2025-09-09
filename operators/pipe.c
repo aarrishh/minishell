@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/08 17:14:03 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 13:57:14 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,11 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 			|| has_operator(tmp, APPEND) || has_operator(tmp, HEREDOC)))
 	{
 		operators(data, tmp);
-		free_array(cmd);
 		exit(0);
 	}
 	else if (cmd[0] && is_builtin_cmd(cmd[0]))
 	{
 		built_in_functions(data, cmd[0]);
-		free_array(cmd);
 		exit(0);
 	}
 	else
@@ -50,7 +48,6 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 		if (!path)
 			exit(127);
 		execve(path, cmd, envp);
-		free_array(cmd);
 		free(path);
 		exit(1);
 	}
@@ -143,6 +140,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds)
 		failed_cmds[i] = ft_strdup(commands[0]);
 		i++;
 	}
+	free_array(commands);
 	failed_cmds[i] = NULL;
 	return (failed_cmds);
 }
@@ -174,8 +172,8 @@ void	execute_pipe(t_data *data)
 	num_cmds = count_segments(&data->stack, PIPE);
 	i = 0;
 	failed_cmds = fork_for_pipe(data, num_cmds);
-	// if (!failed_cmds)
-	// return ;
+	if (!failed_cmds)
+	return ;
 	while (i < num_cmds)
 	{
 		waitpid(-1, &status, 0);

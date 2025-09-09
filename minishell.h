@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/05 18:25:06 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:28:42 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,13 @@ int			find_and_open(char *filename, int append);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
 void		operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_token_type type);
-void		ban_em_pordzum(t_data *data, t_token *stack, t_command *cmd_struct);
+void		loop_over_execute(t_data *data, t_token *stack,
+				t_command *cmd_struct);
+void		redirs_child(t_data *data, t_command *cmd_struct);
+void		builtin_redirs(t_command *cmd_struct, int *saved_in,
+				int *saved_out);
+void		restore_fd(int *saved_in, int *saved_out);
+void		dup_for_redirs(t_command *cmd_struct);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -119,9 +125,8 @@ int			check_key(char *key);
 int			find_plus_equal(char *str);
 int			find_equal_for_export(char *str);
 int			check_sameness(char *str, t_env *env);
-void	check_i_have_value_after_equal_symbol_version_two(int index,
-														char *str,
-														t_env **env);
+void		check_i_have_value_after_equal_symbol_version_two(int index,
+				char *str, t_env **env);
 void		check_i_have_value_after_equal_symbol(int index, char *str,
 				t_env **node);
 void		change_value_for_plus_equal_case(char *str, t_env **env);
