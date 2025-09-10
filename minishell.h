@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 18:21:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/10 21:19:22 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@
 # define R "\001\033[0m\002"                   // reset
 
 extern int	g_exit_status;
+
+typedef struct s_val
+{
+	char	*substr;
+	char	*expanded;
+	int		cur_ind;
+	int		i;
+	int		j;
+}			t_val;
+
 
 typedef struct s_pipe_fd
 {
@@ -90,12 +100,12 @@ void		check_type_heredoc(char *str, t_token **stack);
 void		check_type_append(char *str, t_token **stack);
 
 // Built-in functions
-int			exit_command(t_token **stack, t_env **env, char **split);
+void		exit_command(t_token **stack, t_env **env, char **split);
 int			find_equal(char *str);
 void		pwd_command(void);
 void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
-void		export_command(t_data *data, t_token *stack);
+void		*export_command(t_data *data, t_token *stack);
 void		cd_command(t_token *stack, t_env **env);
 void		built_in_functions(t_data *data, char *string);
 void		unset_command(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/04 19:22:53 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/10 20:34:11 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,89 +66,6 @@ char	**env_to_envp(t_env *env)
 	}
 	envp[i] = NULL;
 	return (envp);
-}
-
-void	env_add_back(t_env *node, t_env **head)
-{
-	t_env	*tmp;
-
-	if (*head == NULL)
-	{
-		*head = node;
-		return ;
-	}
-	tmp = *head;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = node;
-}
-
-t_env	*new_node(char *key, char *value)
-{
-	t_env	*new_node;
-
-	new_node = malloc(sizeof(t_env));
-	new_node->key = key;
-	new_node->value = value;
-	new_node->flag = 0;
-	new_node->next = NULL;
-	return (new_node);
-}
-
-int	find_equal(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-t_env	*add_env_to_list(char **envp)
-{
-	t_env	*env;
-	t_env	*cur_node;
-	char	*str;
-	int		i;
-
-	i = 0;
-	str = NULL;
-	env = NULL;
-	while (envp[i])
-	{
-		str = ft_strdup(envp[i]);
-		cur_node = new_node(ft_substr(str, 0, find_equal(str)),
-				ft_strdup(ft_strchr(str, '=') + 1));
-		free(str);
-		env_add_back(cur_node, &env);
-		i++;
-	}
-	return (env);
-}
-
-void	add_env_value(t_env **env, char *key, char *value)
-{
-	t_env	*tmp;
-	t_env	*node;
-
-	tmp = *env;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, key) == 0)
-		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
-			return ;
-		}
-		tmp = tmp->next;
-	}
-	node = new_node(ft_strdup(key), ft_strdup(value));
-	env_add_back(node, env);
 }
 
 void	env_command(t_env *env, t_token *stack)

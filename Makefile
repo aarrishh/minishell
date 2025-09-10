@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: arina <arina@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/09 14:47:20 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/10 20:41:09 by arina            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS = main.c list.c functions.c path.c \
 		quotes/quotes.c quotes/quotes_len.c operators/pipe.c \
 		quotes/quotes_helpers1.c quotes/quotes_helpers2.c quotes/quotes_helpers3.c \
 		built-in/built_in.c built-in/exit.c built-in/cd.c built-in/pwd.c \
-		built-in/echo.c built-in/unset.c built-in/env.c \
+		built-in/echo.c built-in/unset.c built-in/env.c built-in/create_env.c\
 		built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
 		built-in/export/print.c free.c signal.c  \

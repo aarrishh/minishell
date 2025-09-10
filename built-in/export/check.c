@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:30:26 by arina             #+#    #+#             */
-/*   Updated: 2025/09/04 17:32:19 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/10 20:38:25 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	check_sameness(char *str, t_env *env)
 	return (0);
 }
 
-
 void	check_i_have_value_after_equal_symbol(int index,
 			char *str, t_env **node)
 {
@@ -50,7 +49,6 @@ void	check_i_have_value_after_equal_symbol(int index,
 	}
 	free(sub);
 }
-
 
 void	check_i_have_value_after_equal_symbol_version_two(int index,
 			char *str, t_env **env)
@@ -75,7 +73,6 @@ void	check_i_have_value_after_equal_symbol_version_two(int index,
 		tmp = tmp->next;
 	}
 }
-
 
 int	check_key(char *key)
 {
