@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 13:13:12 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 21:32:38 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,40 +26,44 @@ t_env	*find_path(t_env **env)
 	return (NULL);
 }
 
-char	*split_path(t_env **env, char *cmd)
+static char	*try_paths(char **splitted_path, char *cmd)
 {
 	int		i;
+	char	*joined;
+	char	*full;
+
+	i = 0;
+	while (splitted_path[i])
+	{
+		joined = ft_strjoin(splitted_path[i], "/");
+		full = ft_strjoin(joined, cmd);
+		free(joined);
+		if (access(full, X_OK) == 0)
+		{
+			free_array(splitted_path);
+			return (full);
+		}
+		free(full);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*split_path(t_env **env, char *cmd)
+{
 	t_env	*path;
 	char	**splitted_path;
-	char	*idk;
-	char	*tmp;
 
 	path = find_path(env);
 	if (!path)
 		return (NULL);
 	splitted_path = ft_split(path->value, ':');
-	i = 0;
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)
 			return (cmd);
 	}
-	while (splitted_path[i])
-	{
-		idk = ft_strjoin(splitted_path[i], "/");
-		tmp = ft_strjoin(idk, cmd);
-		free(idk);
-		idk = tmp;
-		if (access(idk, X_OK) == 0)
-		{
-			free_array(splitted_path);
-			return (idk);
-		}
-		free(idk);
-		i++;
-	}
-	free_array(splitted_path);
-	return (NULL);
+	return (try_paths(splitted_path, cmd));
 }
 
 void	child_process_execution(t_env **env, char **cmd)
@@ -71,10 +75,7 @@ void	child_process_execution(t_env **env, char **cmd)
 	signal(SIGQUIT, SIG_DFL);
 	change_shlvl_value(env, cmd);
 	if (!cmd[0] || is_builtin_cmd(cmd[0]))
-	{
-		printf("%s: command not found\n", cmd[0]);
-		exit(126);
-	}
+		exit(126 && printf("%s: command not found\n", cmd[0]));
 	envp = env_to_envp(*env);
 	if (!envp)
 		exit(1);
@@ -116,21 +117,4 @@ void	parent_process_handling(pid_t pid, int *status, char **cmd)
 	}
 	if (g_exit_status == 127)
 		printf("%s: command not found\n", cmd[0]);
-}
-
-void	execute_else(t_env **env, char **cmd)
-{
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		return ;
-	}
-	if (pid == 0)
-		child_process_execution(env, cmd);
-	else
-		parent_process_handling(pid, &status, cmd);
 }
