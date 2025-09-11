@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 19:23:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:12:34 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
 	}
 	else
 	{
-		if (line[ij->i] && line[ij->i] != '"' && line[ij->i] != '\'')
+		if (line[ij->i] && line[ij->i] != '"')
 			keep_char(line, new, ij);
 	}
 }
@@ -59,19 +59,22 @@ void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
 	(ij->i)++;
 	if (state == IN_SINGLE)
 	{
-		while (str[ij->i] && str[ij->i] != '\'')
+		while (str && str[ij->i] && str[ij->i] != '\'')
 			keep_char(str, new, ij);
 		if (str[ij->i] == '\'')
 			(ij->i)++;
 	}
 	else if (state == IN_DOUBLE)
 	{
-		if (str[ij->i] == '$')
-			handle_dollar(str, new, ij, env);
-		else
-			keep_char(str, new, ij);
-		// if (str[ij->i] == '"')
-		// (ij->/i)++;
+		while (str && str[ij->i] && str[ij->i] != '"')
+		{
+			if (str[ij->i] == '$')
+				handle_dollar(str, new, ij, env);
+			else
+				keep_char(str, new, ij);
+		}
+		if (str[ij->i] == '"')
+			(ij->i)++;
 	}
 }
 

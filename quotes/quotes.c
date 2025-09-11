@@ -6,12 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 19:25:29 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:04:34 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include "quotes.h"
 
 void	loop(char *line, char *new, t_quote_state state, t_env **env_struct)
 {
