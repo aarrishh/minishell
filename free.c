@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 12:36:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/05 18:29:24 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:01:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	free_array(char **array)
 	int	i;
 
 	i = 0;
-
 	while (array[i])
 	{
 		free(array[i]);
@@ -66,18 +65,15 @@ void	free_all(t_env **env, t_token **stack, char **split)
 	{
 		free_env(env);
 		*env = NULL;
-		// env = NULL;
 	}
 	if (stack && *stack)
 	{
 		free_stack(stack);
 		*stack = NULL;
-		// stack = NULL;
 	}
 	if (split)
 	{
 		free_array(split);
 		split = NULL;
-		// split = NULL;
 	}
 }

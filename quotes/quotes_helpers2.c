@@ -6,14 +6,14 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 17:12:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:46:15 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "quotes.h"
 
-void	expand_exit_status(char *new, t_iter *ij)
+void	expand_exit_status(t_new_line *line_struct)
 {
 	char	*status_str;
 	int		a;
@@ -23,58 +23,61 @@ void	expand_exit_status(char *new, t_iter *ij)
 		return ;
 	a = 0;
 	while (status_str[a])
-		new[ij->j++] = status_str[a++];
+		line_struct->new[line_struct->j++] = status_str[a++];
 	free(status_str);
-	ij->i += 2;
+	line_struct->i += 2;
 }
 
-void	handle_dollar(char *line, char *new, t_iter *ij, t_env **env)
+void	handle_dollar(t_new_line *line_struct, t_env **env)
 {
 	char	*value;
 	int		key_len;
 
-	if (line[ij->i] == '$' && line[ij->i + 1] == '?')
+	if (line_struct->line[line_struct->i] == '$'
+		&& line_struct->line[line_struct->i + 1] == '?')
 	{
-		expand_exit_status(new, ij);
+		expand_exit_status(line_struct);
 		return ;
 	}
-	value = find_var_value(line + ij->i, env, &key_len);
+	value = find_var_value(line_struct->line + line_struct->i, env, &key_len);
 	if (key_len == 1)
-		keep_char(line, new, ij);
+		keep_char(line_struct);
 	if (value)
 	{
-		keep_value(new, value, &ij->j);
-		ij->i += key_len;
+		keep_value(line_struct->new, value, &line_struct->j);
+		line_struct->i += key_len;
 	}
 	else
 	{
-		if (line[ij->i] && line[ij->i] != '"')
-			keep_char(line, new, ij);
+		if (line_struct->line[line_struct->i]
+			&& line_struct->line[line_struct->i] != '"')
+			keep_char(line_struct);
 	}
 }
 
-void	exp_help_loop(t_quote_state state, char *str, char *new, t_iter *ij,
-		t_env **env)
+void	exp_help_loop(t_quote_state state, t_new_line *line_struct, t_env **env)
 {
-	(ij->i)++;
+	(line_struct->i)++;
 	if (state == IN_SINGLE)
 	{
-		while (str && str[ij->i] && str[ij->i] != '\'')
-			keep_char(str, new, ij);
-		if (str[ij->i] == '\'')
-			(ij->i)++;
+		while (line_struct->line && line_struct->line[line_struct->i]
+			&& line_struct->line[line_struct->i] != '\'')
+			keep_char(line_struct);
+		if (line_struct->line[line_struct->i] == '\'')
+			(line_struct->i)++;
 	}
 	else if (state == IN_DOUBLE)
 	{
-		while (str && str[ij->i] && str[ij->i] != '"')
+		while (line_struct->line && line_struct->line[line_struct->i]
+			&& line_struct->line[line_struct->i] != '"')
 		{
-			if (str[ij->i] == '$')
-				handle_dollar(str, new, ij, env);
+			if (line_struct->line[line_struct->i] == '$')
+				handle_dollar(line_struct, env);
 			else
-				keep_char(str, new, ij);
+				keep_char(line_struct);
 		}
-		if (str[ij->i] == '"')
-			(ij->i)++;
+		if (line_struct->line[line_struct->i] == '"')
+			(line_struct->i)++;
 	}
 }
 
@@ -84,17 +87,30 @@ int	check_valid_dollar(char chr)
 			&& chr <= 'z'));
 }
 
+char	*search_env_for_key(char *str, int len, t_env *env)
+{
+	while (env)
+	{
+		if ((ft_strlen(env->key) == len) && (ft_strncmp(str, env->key,
+					len) == 0))
+		{
+			return (env->value);
+		}
+		env = env->next;
+	}
+	return (NULL);
+}
+
 char	*find_var_value(char *str, t_env **env, int *key_length)
 {
-	t_env	*tmp;
 	int		len;
+	char	*value;
 
 	if (!str || *str != '$')
 	{
 		*key_length = 0;
 		return (NULL);
 	}
-	tmp = *env;
 	str++;
 	if (!*str || !check_valid_dollar(*str))
 	{
@@ -102,16 +118,9 @@ char	*find_var_value(char *str, t_env **env, int *key_length)
 		return (NULL);
 	}
 	len = key_len(str);
-	while (tmp)
-	{
-		if ((ft_strlen(tmp->key) == len) && (ft_strncmp(str, tmp->key,
-					len) == 0))
-		{
-			*key_length = len + 1;
-			return (tmp->value);
-		}
-		tmp = tmp->next;
-	}
 	*key_length = len + 1;
+	value = search_env_for_key(str, len, *env);
+	if (value)
+		return (value);
 	return ("");
 }

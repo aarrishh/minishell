@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 13:14:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/06 16:32:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:18:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,43 +38,51 @@ static int	q_count_words(const char *str, char c)
 	return (count);
 }
 
+static const char	*skip_chars(const char *s, char c, t_quote_state *state)
+{
+	while (*s == c && *state == NO_QUOTE)
+	{
+		*state = quote_state(*state, *s);
+		s++;
+	}
+	return (s);
+}
+
+static const char	*find_end(const char *s, char c, t_quote_state *state)
+{
+	*state = NO_QUOTE;
+	while (*s && (*s != c || *state != NO_QUOTE))
+	{
+		*state = quote_state(*state, *s);
+		s++;
+	}
+	return (s);
+}
+
 char	**split_for_quotes(char const *s, char c)
 {
-	const char		*new_s;
 	char			**arr;
+	const char		*start;
 	int				words_count;
 	int				i;
 	t_quote_state	state;
 
-	state = NO_QUOTE;
 	if (!s)
 		return (NULL);
 	words_count = q_count_words(s, c);
-	arr = (char **)malloc((words_count + 1) * (sizeof(char *)));
+	arr = (char **)malloc((words_count + 1) * sizeof(char *));
 	if (!arr)
 		return (NULL);
 	i = -1;
+	state = NO_QUOTE;
 	while (++i < words_count)
 	{
-		state = quote_state(state, *s);
-		while (*s == c && state == NO_QUOTE)
-		{
-			state = quote_state(state, *s);
-			s++;
-		}
-		new_s = s;
-		state = NO_QUOTE;
-		while (*s && (*s != c || (*s == c && state != NO_QUOTE)))
-		{
-			state = quote_state(state, *s);
-			s++;
-		}
-		arr[i] = ft_substr(new_s, 0, s - new_s);
+		s = skip_chars(s, c, &state);
+		start = s;
+		s = find_end(s, c, &state);
+		arr[i] = ft_substr(start, 0, s - start);
 		if (!arr[i])
-		{
-			free_array(arr);
-			return (NULL);
-		}
+			return (free_array(arr), NULL);
 	}
 	arr[i] = NULL;
 	return (arr);

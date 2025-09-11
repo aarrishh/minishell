@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 18:21:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:56:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_pipe_fd
 typedef struct s_command
 {
 	char	**cmd;
+	int		execute;
 	int		input;
 	int		output;
 }			t_command;
@@ -60,7 +61,7 @@ char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
 void		operators(t_data *data, t_token *stack);
-void		error_nl_or_type(t_token_type type);
+void		error_nl_or_type(t_token *tmp);
 void		loop_over_execute(t_data *data, t_token *stack,
 				t_command *cmd_struct);
 void		redirs_child(t_data *data, t_command *cmd_struct);

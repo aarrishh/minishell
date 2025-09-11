@@ -6,40 +6,37 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 17:04:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:31:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	loop(char *line, char *new, t_quote_state state, t_env **env_struct)
+void	loop(t_new_line *line_struct, t_quote_state state, t_env **env_struct)
 {
-	t_iter	ij;
-
-	ij.i = 0;
-	ij.j = 0;
-	while (line[ij.i])
+	while (line_struct->line[line_struct->i])
 	{
-		state = quote_state(state, line[ij.i]);
+		state = quote_state(state, line_struct->line[line_struct->i]);
 		if (state != NO_QUOTE)
 		{
-			exp_help_loop(state, line, new, &ij, env_struct);
+			exp_help_loop(state, line_struct, env_struct);
 			state = NO_QUOTE;
 			continue ;
 		}
 		else
 		{
-			if (line[ij.i] == '$')
-				handle_dollar(line, new, &ij, env_struct);
+			if (line_struct->line[line_struct->i] == '$')
+				handle_dollar(line_struct, env_struct);
 			else
-				keep_char(line, new, &ij);
+				keep_char(line_struct);
 		}
 	}
-	new[ij.j] = '\0';
+	line_struct->new[line_struct->j] = '\0';
 }
 
 char	*expand_quotes(char *line, t_env **env_struct)
 {
+	t_new_line		line_struct;
 	int				len;
 	char			*new;
 	t_quote_state	state;
@@ -49,7 +46,11 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
-	loop(line, new, state, env_struct);
+	line_struct.line = line;
+	line_struct.new = new;
+	line_struct.i = 0;
+	line_struct.j = 0;
+	loop(&line_struct, state, env_struct);
 	return (new);
 }
 
@@ -62,10 +63,7 @@ int	start_dquotes(char *line, t_data *data)
 	i = 0;
 	state = NO_QUOTE;
 	while (line[i])
-	{
-		state = quote_state(state, line[i]);
-		i++;
-	}
+		state = quote_state(state, line[i++]);
 	if (state != NO_QUOTE)
 	{
 		quote_line = open_dquote(state, line);

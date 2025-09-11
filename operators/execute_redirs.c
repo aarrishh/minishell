@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 16:43:24 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:57:32 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 
 	saved_in = -1;
 	saved_out = -1;
+	if (cmd_struct->execute == 0)
+		return ;
 	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{
 		builtin_redirs(cmd_struct, &saved_in, &saved_out);
@@ -137,6 +139,7 @@ void	dup_for_redirs(t_command *cmd_struct)
 
 int	find_and_open(char *filename, t_token_type type)
 {
+	char *error;
 	int	fd;
 
 	if (type == APPEND)
@@ -145,8 +148,10 @@ int	find_and_open(char *filename, t_token_type type)
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		perror("open");
-		exit(1);
+		error = ft_strjoin("minishell: ", filename);
+		perror(error);
+		free(error);
+		return (-1);
 	}
 	return (fd);
 }

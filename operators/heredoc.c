@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 16:54:43 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:54:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,24 +80,26 @@ int	heredoc_expand_len(char *line, t_env **env)
 
 char	*expand_heredoc(char *line, t_env **env)
 {
-	char	*new;
-	t_iter	ij;
-	int		len;
+	char		*new;
+	t_new_line	line_struct;
+	int			len;
 
-	ij.i = 0;
-	ij.j = 0;
 	len = heredoc_expand_len(line, env);
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
-	while (line[ij.i])
+	line_struct.line = line;
+	line_struct.new = new;
+	line_struct.i = 0;
+	line_struct.j = 0;
+	while (line_struct.line[line_struct.i])
 	{
-		if (line[ij.i] == '$')
-			handle_dollar(line, new, &ij, env);
+		if (line_struct.line[line_struct.i] == '$')
+			handle_dollar(&line_struct, env);
 		else
-			keep_char(line, new, &ij);
+			keep_char(&line_struct);
 	}
-	free(line);
+	free(line_struct.line);
 	return (new);
 }
 

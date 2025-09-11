@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 16:55:28 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:56:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 
 int	open_rdirin(char *filename)
 {
-	int	fd;
+	char	*error;
+	int		fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		perror(filename);
-		return (0);
+		error = ft_strjoin("minishell: ", filename);
+		perror(error);
+		free(error);
+		g_exit_status = 1;
+		return (-1);
 	}
 	return (fd);
 }
@@ -61,6 +65,7 @@ void	operators(t_data *data, t_token *stack)
 
 	cmd_struct.input = 0;
 	cmd_struct.output = 1;
+	cmd_struct.execute = 1;
 	cmd_struct.cmd = NULL;
 	loop_over_execute(data, stack, &cmd_struct);
 	execute_command(data, &cmd_struct);
@@ -100,12 +105,22 @@ void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_s)
 			if (cmd_s->input != 0)
 				close(cmd_s->input);
 			cmd_s->input = open_rdirin(tmp->next->string);
+			if (cmd_s->input == -1)
+			{
+				cmd_s->execute = 0;
+				return ;
+			}
 			tmp = tmp->next;
 		}
 		else if ((tmp->type == REDIR_OUT || tmp->type == APPEND) && tmp->next
 			&& tmp->next->type == WORD)
 		{
 			cmd_s->output = find_and_open(tmp->next->string, tmp->type);
+			if (cmd_s->input == -1)
+			{
+				cmd_s->execute = 0;
+				return ;
+			}
 			tmp = tmp->next;
 		}
 		else if (tmp->type == HEREDOC && tmp->next && tmp->next->type == WORD)
@@ -113,25 +128,25 @@ void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_s)
 		else
 		{
 			if (tmp->next)
-				error_nl_or_type(tmp->next->type);
+				error_nl_or_type(tmp->next);
 			return ;
 		}
 		tmp = tmp->next;
 	}
 }
 
-void	error_nl_or_type(t_token_type type)
+void	error_nl_or_type(t_token *tmp)
 {
 	char	*str;
 
 	str = NULL;
-	if (!type)
+	if (!tmp)
 		str = ft_strdup("newline");
-	else if (type == REDIR_IN)
+	else if (tmp->type == REDIR_IN)
 		str = ft_strdup("<");
-	else if (type == REDIR_OUT)
+	else if (tmp->type == REDIR_OUT)
 		str = ft_strdup(">");
-	else if (type == APPEND)
+	else if (tmp->type == APPEND)
 		str = ft_strdup(">>");
 	printf("minishell: syntax error near unexpected token `%s'\n", str);
 	free(str);

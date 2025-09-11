@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/11 16:50:25 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:55:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	init_tokens_type(t_token **stack)
 	t_token	*tmp;
 
 	tmp = *stack;
+	if (!tmp)
+		return ;
 	while (tmp)
 	{
 		if (tmp->quote == 0)
