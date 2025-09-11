@@ -6,27 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 18:54:58 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 20:47:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*create_file(int i, int *fd)
-{
-	int		fd_0;
-	char	*num;
-	char	*filename;
-
-	fd_0 = 0;
-	filename = NULL;
-	num = ft_itoa(i);
-	filename = ft_strjoin("/tmp/arish_manan_heredoc_", num);
-	free(num);
-	fd_0 = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	*fd = fd_0;
-	return (filename);
-}
 
 char	*read_heredoc_loop(t_env **env, char *delimiter, int i)
 {
@@ -50,8 +34,7 @@ char	*read_heredoc_loop(t_env **env, char *delimiter, int i)
 			free(line);
 			break ;
 		}
-		else
-			ft_putendl_fd(line, fd);
+		ft_putendl_fd(line, fd);
 		free(line);
 	}
 	close(fd);
@@ -99,7 +82,6 @@ char	*expand_heredoc(char *line, t_env **env)
 		else
 			keep_char(&line_struct);
 	}
-	free(line_struct.line);
 	return (new);
 }
 
@@ -117,24 +99,10 @@ int	check_dollar_hd(char *line)
 	return (0);
 }
 
-void	read_from_file(t_env **env, char *filename, char **cmd)
-{
-	int	fd;
-
-	fd = open(filename, O_RDONLY);
-	if (dup2(fd, 0) == -1)
-	{
-		// perror("minishell: dup2");
-		exit(127);
-	}
-	close(fd);
-	child_process_execution(env, cmd);
-	exit(0);
-}
 void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 		int i)
 {
-	char *filename;
+	char	*filename;
 
 	filename = read_heredoc_loop(&data->env, (*tmp)->next->string, i);
 	if (cmd_struct->input != 0)
