@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/09 18:24:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:50:25 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@ void	init_tokens_type(t_token **stack)
 	}
 }
 
-int	check_string(char *str, t_quote_state state)
+int	check_string(char *str)
 {
-	int	i;
+	int				i;
+	t_quote_state	state;
 
 	i = 0;
+	state = NO_QUOTE;
 	while (str[i])
 	{
+		state = quote_state(state, str[i]);
 		if (state == NO_QUOTE)
 		{
 			if (str[i] == '>' && str[i + 1] == '>')
@@ -55,22 +58,19 @@ int	check_string(char *str, t_quote_state state)
 
 void	validation(char **line, t_token **stack, t_env **env)
 {
-	t_token			*node;
-	int				cur_ind;
-	char			*substr;
-	char			*expanded;
-	t_quote_state	state;
+	t_token	*node;
+	int		cur_ind;
+	char	*substr;
+	char	*expanded;
 
 	int i, j;
 	i = 0;
-	state = NO_QUOTE;
 	while (line[i])
 	{
 		j = 0;
 		while (line[i][j])
 		{
-			state = quote_state(state, line[i][j]);
-			cur_ind = check_string(line[i] + j, state);
+			cur_ind = check_string(line[i] + j);
 			if (cur_ind == -1)
 			{
 				substr = ft_substr(line[i], j, ft_strlen(line[i]) - j);
