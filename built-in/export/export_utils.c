@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:39:22 by arina             #+#    #+#             */
-/*   Updated: 2025/08/23 21:19:46 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/10 20:38:49 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	change_value(char *str, t_env **env)
 	free(key);
 }
 
-
 void	change_value_for_plus_equal_case(char *str, t_env **env)
 {
 	t_env	*tmp;
@@ -92,4 +91,3 @@ void	change_value_for_plus_equal_case(char *str, t_env **env)
 	}
 	free(key);
 }
-

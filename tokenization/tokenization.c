@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/09 18:24:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:39:20 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	init_tokens_type(t_token **stack)
 	t_token	*tmp;
 
 	tmp = *stack;
+	if (!tmp)
+		return ;
 	while (tmp)
 	{
 		if (tmp->quote == 0)
@@ -31,13 +33,16 @@ void	init_tokens_type(t_token **stack)
 	}
 }
 
-int	check_string(char *str, t_quote_state state)
+int	check_string(char *str)
 {
-	int	i;
+	int				i;
+	t_quote_state	state;
 
 	i = 0;
+	state = NO_QUOTE;
 	while (str[i])
 	{
+		state = quote_state(state, str[i]);
 		if (state == NO_QUOTE)
 		{
 			if (str[i] == '>' && str[i + 1] == '>')
@@ -53,45 +58,66 @@ int	check_string(char *str, t_quote_state state)
 	return (-1);
 }
 
+t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
+{
+	t_token	*node;
+
+	val->substr = ft_substr(line[val->i], val->j, ft_strlen(line[val->i])
+			- val->j);
+	val->expanded = expand_quotes(val->substr, env);
+	free(val->substr);
+	node = create_node(val->expanded);
+	node->quote = 1;
+	return (node);
+}
+
+void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
+{
+	t_token	*node;
+
+	val->substr = ft_substr(line[val->i], val->j, val->cur_ind);
+	val->expanded = expand_quotes(val->substr, env);
+	free(val->substr);
+	node = create_node(val->expanded);
+	add_back(node, stack);
+	val->j += val->cur_ind;
+}
+
 void	validation(char **line, t_token **stack, t_env **env)
 {
-	t_token			*node;
-	int				cur_ind;
-	char			*substr;
-	char			*expanded;
-	t_quote_state	state;
+	t_val	val;
 
-	int i, j;
-	i = 0;
-	state = NO_QUOTE;
-	while (line[i])
+	val.i = 0;
+	while (line[val.i])
 	{
-		j = 0;
-		while (line[i][j])
+		val.j = 0;
+		while (line[val.i][val.j])
 		{
-			state = quote_state(state, line[i][j]);
-			cur_ind = check_string(line[i] + j, state);
-			if (cur_ind == -1)
+			val.cur_ind = check_string(line[val.i] + val.j);
+			if (val.cur_ind == -1)
 			{
-				substr = ft_substr(line[i], j, ft_strlen(line[i]) - j);
-				expanded = expand_quotes(substr, env);
-				free(substr);
-				node = create_node(expanded);
-				node->quote = 1;
-				add_back(node, stack);
+				// val.substr = ft_substr(line[val.i], val.j,
+				// ft_strlen(line[val.i] - val.j);
+				// val.expanded = expand_quotes(val.substr, env);
+				// free(val.substr);
+				// node = create_node(val.expanded);
+				// node->quote = 1;
+				// add_back(node, stack);
+				add_back(if_cur_ind_equal_minus_one(&val, line, env), stack);
 				break ;
 			}
-			if (cur_ind == -2)
-				cur_ind = 2;
-			else if (cur_ind == 0)
-				cur_ind = 1;
-			substr = ft_substr(line[i], j, cur_ind);
-			expanded = expand_quotes(substr, env);
-			free(substr);
-			node = create_node(expanded);
-			add_back(node, stack);
-			j += cur_ind;
+			if (val.cur_ind == -2)
+				val.cur_ind = 2;
+			else if (val.cur_ind == 0)
+				val.cur_ind = 1;
+			for_all_cases(&val, line, env, stack);
+			// val.substr = ft_substr(line[val.i], val.j, val.cur_ind);
+			// val.expanded = expand_quotes(val.substr, env);
+			// free(val.substr);
+			// node = create_node(val.expanded);
+			// add_back(node, stack);
+			// val.j += val.cur_ind;
 		}
-		i++;
+		val.i++;
 	}
 }

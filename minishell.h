@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 18:21:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:31:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@
 
 extern int	g_exit_status;
 
+typedef struct s_val
+{
+	char	*substr;
+	char	*expanded;
+	int		cur_ind;
+	int		i;
+	int		j;
+}			t_val;
+
+
 typedef struct s_pipe_fd
 {
 	int		prev_fd;
@@ -39,12 +49,17 @@ typedef struct s_pipe_fd
 typedef struct s_command
 {
 	char	**cmd;
+	int		execute;
 	int		input;
 	int		output;
 }			t_command;
 
 // Operations functions
+char		*create_file(int i, int *fd);
 void		execute_pipe(t_data *data);
+char		*get_first_word(t_token *tmp);
+void		fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp);
+char		**make_command_pipe(t_token *stack);
 void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
@@ -60,14 +75,15 @@ char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
 void		operators(t_data *data, t_token *stack);
-void		error_nl_or_type(t_token_type type);
-void		loop_over_execute(t_data *data, t_token *stack,
-				t_command *cmd_struct);
+void		error_nl_or_type(t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
 void		builtin_redirs(t_command *cmd_struct, int *saved_in,
 				int *saved_out);
 void		restore_fd(int *saved_in, int *saved_out);
 void		dup_for_redirs(t_command *cmd_struct);
+void		exec_external_command(t_data *data, char **cmd);
+int			open_rdirin(char *filename);
+char		**add_cmd(t_command *cmd_struct, t_token *tmp);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -90,12 +106,12 @@ void		check_type_heredoc(char *str, t_token **stack);
 void		check_type_append(char *str, t_token **stack);
 
 // Built-in functions
-int			exit_command(t_token **stack, t_env **env, char **split);
+void		exit_command(t_token **stack, t_env **env, char **split);
 int			find_equal(char *str);
 void		pwd_command(void);
 void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
-void		export_command(t_data *data, t_token *stack);
+void		*export_command(t_data *data, t_token *stack);
 void		cd_command(t_token *stack, t_env **env);
 void		built_in_functions(t_data *data, char *string);
 void		unset_command(t_data *data);

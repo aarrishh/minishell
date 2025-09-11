@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   quotes_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/27 13:32:01 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 20:39:45 by mabaghda         ###   ########.fr       */
+/*   Created: 2025/09/11 22:53:41 by mabaghda          #+#    #+#             */
+/*   Updated: 2025/09/11 22:56:35 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_putendl_fd(char *s, int fd)
+int	check_valid_dollar(char chr)
 {
-	int	a;
+	return (chr == '_' || (chr >= 'A' && chr <= 'Z') || (chr >= 'a'
+			&& chr <= 'z'));
+}
 
-	a = 0;
-	while (s[a])
-	{
-		write(fd, &s[a], 1);
-		a++;
-	}
-	write(fd, "\n", 1);
+void	error_msg(char *quote_line)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin(quote_line, ": command not found\n");
+	ft_putstr_fd(tmp, 2);
+	free(tmp);
+	g_exit_status = 127;
 }

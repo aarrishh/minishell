@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/09/04 19:28:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/10 21:03:43 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int	exit_command_print_function(t_token *tmp, long long num)
 	if (tmp->next)
 	{
 		g_exit_status = 127;
-		return (ft_putendl_fd("exit\nminishell: exit: too many arguments", 2), 1);
+		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		return (1);
 	}
 	else
 	{
@@ -29,14 +31,12 @@ int	exit_command_print_function(t_token *tmp, long long num)
 	return (0);
 }
 
-int	exit_command(t_token **stack, t_env **env, char **split)
+void	exit_command(t_token **stack, t_env **env, char **split)
 {
 	t_token		*tmp;
 	long long	num;
 	int			flag;
 
-	(void)split;
-	(void)env;
 	num = 0;
 	flag = 0;
 	tmp = (*stack);
@@ -47,18 +47,13 @@ int	exit_command(t_token **stack, t_env **env, char **split)
 		if (flag == -1)
 		{
 			write (2, "exit\nminishell: exit: ", 23);
-			write (2, &tmp->string, ft_strlen(tmp->string));
+			write (2, tmp->string, ft_strlen(tmp->string));
 			write (2, ": numeric argument required\n", 29);
 			g_exit_status = 2;
 			free_all(env, stack, split);
-			rl_clear_history();
 			exit(2);
 		}
 	}
 	if (exit_command_print_function(tmp, num) == 1)
-	{
 		g_exit_status = 1;
-		return (1);
-	}
-	return (0);
 }

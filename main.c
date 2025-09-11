@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/09 18:31:57 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 21:31:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,23 @@ void	init_data(t_data *data, char **envp)
 	data->stack = NULL;
 	data->split = NULL;
 	data->env = add_env_to_list(envp);
+}
+
+void	execute_else(t_env **env, char **cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return ;
+	}
+	if (pid == 0)
+		child_process_execution(env, cmd);
+	else
+		parent_process_handling(pid, &status, cmd);
 }
 
 void	handle_cmds(t_data *data)

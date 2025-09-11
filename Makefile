@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/09 14:47:20 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/11 22:58:25 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,17 +19,18 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c path.c \
-		tokenization/tokenization.c \
-		tokenization/init_tokens_type.c \
-		quotes/quotes.c quotes/quotes_len.c operators/pipe.c \
-		quotes/quotes_helpers1.c quotes/quotes_helpers2.c quotes/quotes_helpers3.c \
-		built-in/built_in.c built-in/exit.c built-in/cd.c built-in/pwd.c \
-		built-in/echo.c built-in/unset.c built-in/env.c \
-		built-in/export/check.c built-in/export/find_and_return.c \
+SRCS = main.c list.c functions.c path.c tokenization/tokenization.c \
+		tokenization/init_tokens_type.c quotes/quotes.c quotes/quotes_len.c \
+		quotes/quotes_helpers.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
+		quotes/quotes_split.c built-in/built_in.c built-in/exit.c \
+		built-in/cd.c built-in/pwd.c built-in/echo.c built-in/unset.c \
+		built-in/env.c built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
-		built-in/export/print.c free.c signal.c  \
-		operators/redir_in.c operators/execute_redirs.c operators/heredoc.c
+		built-in/export/print.c free.c signal.c built-in/create_env.c  \
+		operators/redirs/redir_cmd.c operators/redirs/execute_redirs.c \
+		operators/redirs/redir_helpers.c operators/heredoc.c \
+		operators/pipe/pipe.c operators/pipe/pipe_fork.c operators/pipe/pipe_helper.c \
+		operators/file.c
 		
 OBJDIR = obj
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)

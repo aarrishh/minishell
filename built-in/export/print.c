@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:35:34 by arina             #+#    #+#             */
-/*   Updated: 2025/09/09 18:09:42 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/10 20:39:56 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 void	print_error_export(char *str)
 {
 	(void)str;
-	g_exit_status = 1; // het poxel 1
+	g_exit_status = 1;
 	write (2, "minishell: export: `", 21);
 	write (2, str, ft_strlen(str));
 	write (2, "': not a valid identifier\n", 27);
-	// printf("minishell: export: `%s': not a valid identifier\n", str);
 }
 
 t_env	*new_node_for_export(char *key, char *value, int flag)
@@ -36,9 +35,10 @@ t_env	*new_node_for_export(char *key, char *value, int flag)
 
 t_env	*copy_env_for_print(t_env *env)
 {
-	t_env	*tmp = NULL;
+	t_env	*tmp;
 	t_env	*cur_node;
 
+	tmp = NULL;
 	while (env)
 	{
 		cur_node = new_node_for_export(ft_strdup(env->key),
@@ -82,4 +82,3 @@ void	print_export(t_env *env)
 	}
 	free_list(&head);
 }
-
