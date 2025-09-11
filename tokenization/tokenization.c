@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/11 22:39:20 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 23:20:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,6 @@ void	validation(char **line, t_token **stack, t_env **env)
 			else if (val.cur_ind == 0)
 				val.cur_ind = 1;
 			for_all_cases(&val, line, env, stack);
-			// val.substr = ft_substr(line[val.i], val.j, val.cur_ind);
-			// val.expanded = expand_quotes(val.substr, env);
-			// free(val.substr);
-			// node = create_node(val.expanded);
-			// add_back(node, stack);
-			// val.j += val.cur_ind;
 		}
 		val.i++;
 	}

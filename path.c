@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 23:00:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 23:22:34 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,13 @@ char	*split_path(t_env **env, char *cmd)
 	return (try_paths(splitted_path, cmd));
 }
 
+void	execve_case(char *cmd, char **path, char **envp)
+{
+	perror(cmd);
+	free(*path);
+	free_array(envp);
+}
+
 void	child_process_execution(t_env **env, char **cmd)
 {
 	char	*path;
@@ -90,6 +97,7 @@ void	child_process_execution(t_env **env, char **cmd)
 	}
 	if (execve(path, cmd, envp) == -1)
 	{
+		// execve_case(cmd[0], &path, envp);
 		perror(cmd[0]);
 		free(path);
 		free_array(envp);
