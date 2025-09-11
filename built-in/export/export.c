@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:50:14 by arina             #+#    #+#             */
-/*   Updated: 2025/09/09 18:29:12 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/10 21:08:58 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,13 @@ void	we_find_equal_and_plus_in_string(char *str, t_env **env, t_env **node)
 				ft_strdup(ft_strchr(str, '=') + 1));
 }
 
-void	export_command(t_data *data, t_token *stack)
+void	*export_command(t_data *data, t_token *stack)
 {
 	t_env	*node;
 
 	node = NULL;
 	if (stack->next == NULL || stack->next->type != WORD)
-	{
-		print_export(data->env);
-		return ;
-	}
+		return (print_export(data->env), NULL);
 	while (stack->next && stack->next->type == WORD)
 	{
 		stack = stack->next;
@@ -75,4 +72,5 @@ void	export_command(t_data *data, t_token *stack)
 		if (node)
 			env_add_back(node, &data->env);
 	}
+	return (NULL);
 }

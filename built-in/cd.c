@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/09 12:10:40 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/10 22:01:29 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	cd_command(t_token *stack, t_env **env)
 	old_pwd = get_env_value(*env, "PWD");
 	if (!stack->next)
 		target = get_env_value(*env, "HOME");
-	else if (ft_strcmp(stack->next->string, "-") == 0) 
+	else if (ft_strcmp(stack->next->string, "-") == 0)
 		target = get_env_value(*env, "OLDPWD");
 	else if (stack->next->string[0] == '~')
 		target = change_tsilda_to_home(stack->next->string, *env);
@@ -86,7 +86,11 @@ void	cd_command(t_token *stack, t_env **env)
 		target = stack->next->string;
 	if (!target || chdir(target) != 0)
 	{
-		perror("minishell: cd");
+		// perror("minishell: cd");
+		printf("minishell: cd %s No such file or directory\n", target);
+//es printfy kisel 3 masi ft_endl_fd-ov
+		
+
 		g_exit_status = 1;
 		return ;
 	}

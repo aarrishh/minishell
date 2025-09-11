@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 18:40:02 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:57:26 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char				**split_for_quotes(char const *s, char c);
 void				handle_dollar(t_new_line *line_struct, t_env **env);
 void				keep_char(t_new_line *line_struct);
 int					key_len(char *str);
+void				error_msg(char *quote_line);
+int					check_valid_dollar(char chr);
 t_quote_state		quote_state(t_quote_state state, char c);
 int					is_quote_closed(char *line);
 void				keep_value(char *new, char *value, int *j);

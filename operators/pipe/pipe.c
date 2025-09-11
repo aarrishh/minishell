@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 21:00:59 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:59:40 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	execute_pipe(t_data *data)
 	while (i < num_cmds)
 	{
 		if (exit_codes[i] == 127)
-			printf("%s: command not found\n", failed_cmds[i]);
+			error_msg(failed_cmds[i]);
 		i++;
 	}
 	free_array(failed_cmds);

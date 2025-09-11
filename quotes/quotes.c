@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 18:31:08 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:56:26 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	start_dquotes(char *line, t_data *data)
 		quote_line = open_dquote(state, line);
 		if (!quote_line)
 			return (0);
-		printf("%s: command not found\n", quote_line);
+		error_msg(quote_line);
 		g_exit_status = 127;
 		free(line);
 		free(quote_line);

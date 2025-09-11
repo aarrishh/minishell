@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 18:46:15 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:55:57 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,6 @@ void	exp_help_loop(t_quote_state state, t_new_line *line_struct, t_env **env)
 		if (line_struct->line[line_struct->i] == '"')
 			(line_struct->i)++;
 	}
-}
-
-int	check_valid_dollar(char chr)
-{
-	return (chr == '_' || (chr >= 'A' && chr <= 'Z') || (chr >= 'a'
-			&& chr <= 'z'));
 }
 
 char	*search_env_for_key(char *str, int len, t_env *env)

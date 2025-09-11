@@ -6,12 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:24 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 18:35:05 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:53:52 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include "quotes.h"
 
 void	keep_char(t_new_line *line_struct)
 {
