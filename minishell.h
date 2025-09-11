@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 19:40:51 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/11 23:23:27 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,17 @@ typedef struct s_pipe_fd
 typedef struct s_command
 {
 	char	**cmd;
+	int		execute;
 	int		input;
 	int		output;
 }			t_command;
 
 // Operations functions
+char		*create_file(int i, int *fd);
 void		execute_pipe(t_data *data);
+char		*get_first_word(t_token *tmp);
+void		fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp);
+char		**make_command_pipe(t_token *stack);
 void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
@@ -70,14 +75,15 @@ char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
 void		operators(t_data *data, t_token *stack);
-void		error_nl_or_type(t_token_type type);
-void		loop_over_execute(t_data *data, t_token *stack,
-				t_command *cmd_struct);
+void		error_nl_or_type(t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
 void		builtin_redirs(t_command *cmd_struct, int *saved_in,
 				int *saved_out);
 void		restore_fd(int *saved_in, int *saved_out);
 void		dup_for_redirs(t_command *cmd_struct);
+void		exec_external_command(t_data *data, char **cmd);
+int			open_rdirin(char *filename);
+char		**add_cmd(t_command *cmd_struct, t_token *tmp);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);

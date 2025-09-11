@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/11 19:43:27 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/11 23:20:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	init_tokens_type(t_token **stack)
 	t_token	*tmp;
 
 	tmp = *stack;
+	if (!tmp)
+		return ;
 	while (tmp)
 	{
 		if (tmp->quote == 0)
@@ -31,13 +33,16 @@ void	init_tokens_type(t_token **stack)
 	}
 }
 
-int	check_string(char *str, t_quote_state state)
+int	check_string(char *str)
 {
-	int	i;
+	int				i;
+	t_quote_state	state;
 
 	i = 0;
+	state = NO_QUOTE;
 	while (str[i])
 	{
+		state = quote_state(state, str[i]);
 		if (state == NO_QUOTE)
 		{
 			if (str[i] == '>' && str[i + 1] == '>')
@@ -57,8 +62,8 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 {
 	t_token	*node;
 
-	val->substr = ft_substr(line[val->i], val->j, \
-	ft_strlen(line[val->i]) - val->j);
+	val->substr = ft_substr(line[val->i], val->j, ft_strlen(line[val->i])
+			- val->j);
 	val->expanded = expand_quotes(val->substr, env);
 	free(val->substr);
 	node = create_node(val->expanded);
@@ -80,20 +85,24 @@ void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
 
 void	validation(char **line, t_token **stack, t_env **env)
 {
-	t_val			val;
-	t_quote_state	state;
+	t_val	val;
 
 	val.i = 0;
-	state = NO_QUOTE;
 	while (line[val.i])
 	{
 		val.j = 0;
 		while (line[val.i][val.j])
 		{
-			state = quote_state(state, line[val.i][val.j]);
-			val.cur_ind = check_string(line[val.i] + val.j, state);
+			val.cur_ind = check_string(line[val.i] + val.j);
 			if (val.cur_ind == -1)
 			{
+				// val.substr = ft_substr(line[val.i], val.j,
+				// ft_strlen(line[val.i] - val.j);
+				// val.expanded = expand_quotes(val.substr, env);
+				// free(val.substr);
+				// node = create_node(val.expanded);
+				// node->quote = 1;
+				// add_back(node, stack);
 				add_back(if_cur_ind_equal_minus_one(&val, line, env), stack);
 				break ;
 			}

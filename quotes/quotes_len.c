@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 19:04:35 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:05:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,12 @@ int	len_for_malloc(char *line, t_env **env)
 			state = handle_single_quote_len(line, &i, &len);
 		else if (state == IN_DOUBLE)
 			state = handle_double_quote_len(line, &i, &len, env);
+		else if (line[i] == '$')
+			handle_len_dollar(line, &i, &len, env);
 		else
 		{
-			if (line[i] == '$')
-				handle_len_dollar(line, &i, &len, env);
-			else
-			{
-				len++;
-				i++;
-			}
+			len++;
+			i++;
 		}
 	}
 	return (len);

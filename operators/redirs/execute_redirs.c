@@ -6,32 +6,35 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 16:43:24 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 21:09:02 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int	has_operator(t_token *stack, t_token_type type)
+void	handle_wait_status(void)
 {
-	while (stack)
-	{
-		if (stack->type == type)
-			return (1);
-		stack = stack->next;
-	}
-	return (0);
+	int	status;
+
+	waitpid(-1, &status, 0);
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+	// g_exit_status = 127;
+	// wait(NULL);
 }
 
 void	execute_command(t_data *data, t_command *cmd_struct)
 {
 	pid_t	pid;
-	int		status;
 	int		saved_in;
 	int		saved_out;
 
 	saved_in = -1;
 	saved_out = -1;
+	if (cmd_struct->execute == 0)
+		return ;
 	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{
 		builtin_redirs(cmd_struct, &saved_in, &saved_out);
@@ -44,15 +47,7 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 		if (pid == 0)
 			redirs_child(data, cmd_struct);
 		else
-		{
-			waitpid(-1, &status, 0);
-			if (WIFEXITED(status))
-				g_exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				g_exit_status = 128 + WTERMSIG(status);
-			// g_exit_status = 127;
-			// wait(NULL);
-		}
+			handle_wait_status();
 	}
 }
 
@@ -133,20 +128,4 @@ void	dup_for_redirs(t_command *cmd_struct)
 			return ;
 		}
 	}
-}
-
-int	find_and_open(char *filename, t_token_type type)
-{
-	int	fd;
-
-	if (type == APPEND)
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-	{
-		perror("open");
-		exit(1);
-	}
-	return (fd);
 }
