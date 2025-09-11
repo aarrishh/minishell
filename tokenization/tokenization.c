@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/10 21:40:25 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/11 19:43:27 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ int	check_string(char *str, t_quote_state state)
 
 t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 {
-	t_token			*node;
+	t_token	*node;
 
-	val->substr = ft_substr(line[val->i], val->j, ft_strlen(line[val->i]) - val->j);
+	val->substr = ft_substr(line[val->i], val->j, \
+	ft_strlen(line[val->i]) - val->j);
 	val->expanded = expand_quotes(val->substr, env);
 	free(val->substr);
 	node = create_node(val->expanded);
@@ -67,7 +68,7 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 
 void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
 {
-	t_token			*node;
+	t_token	*node;
 
 	val->substr = ft_substr(line[val->i], val->j, val->cur_ind);
 	val->expanded = expand_quotes(val->substr, env);
@@ -93,12 +94,6 @@ void	validation(char **line, t_token **stack, t_env **env)
 			val.cur_ind = check_string(line[val.i] + val.j, state);
 			if (val.cur_ind == -1)
 			{
-				// val.substr = ft_substr(line[val.i], val.j, ft_strlen(line[val.i]) - val.j);
-				// val.expanded = expand_quotes(val.substr, env);
-				// free(val.substr);
-				// node = create_node(val.expanded);
-				// node->quote = 1;
-				// add_back(node, stack);
 				add_back(if_cur_ind_equal_minus_one(&val, line, env), stack);
 				break ;
 			}
@@ -107,12 +102,6 @@ void	validation(char **line, t_token **stack, t_env **env)
 			else if (val.cur_ind == 0)
 				val.cur_ind = 1;
 			for_all_cases(&val, line, env, stack);
-			// val.substr = ft_substr(line[val.i], val.j, val.cur_ind);
-			// val.expanded = expand_quotes(val.substr, env);
-			// free(val.substr);
-			// node = create_node(val.expanded);
-			// add_back(node, stack);
-			// val.j += val.cur_ind;
 		}
 		val.i++;
 	}

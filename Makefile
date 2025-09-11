@@ -6,7 +6,7 @@
 #    By: arina <arina@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/10 20:41:09 by arina            ###   ########.fr        #
+#    Updated: 2025/09/11 19:39:47 by arina            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,37 +19,26 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c path.c \
-		tokenization/tokenization.c \
-		tokenization/init_tokens_type.c \
-		quotes/quotes.c quotes/quotes_len.c operators/pipe.c \
-		quotes/quotes_helpers1.c quotes/quotes_helpers2.c quotes/quotes_helpers3.c \
-		built-in/built_in.c built-in/exit.c built-in/cd.c built-in/pwd.c \
-		built-in/echo.c built-in/unset.c built-in/env.c built-in/create_env.c\
+SRCS = main.c list.c functions.c path.c tokenization/tokenization.c \
+		tokenization/init_tokens_type.c quotes/quotes.c quotes/quotes_len.c \
+		operators/pipe.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
+		quotes/quotes_helpers3.c built-in/built_in.c built-in/exit.c \
+		built-in/cd.c built-in/pwd.c built-in/cd_utils.c built-in/echo.c \
+		built-in/unset.c built-in/env.c built-in/create_env.c \
 		built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
-		built-in/export/print.c free.c signal.c  \
-		operators/redir_in.c operators/execute_redirs.c operators/heredoc.c
+		built-in/export/print.c free.c signal.c operators/redir_in.c \
+		operators/execute_redirs.c operators/heredoc.c
 		
 OBJDIR = obj
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
-#GREEN = \033[1;28;5;32m
-#BLUE = \033[1;34m
 YELLOW = \033[0;33m
-#BABY_PINK := \033[38;2;244;194;194m
-#LIGHT_PINK  := \033[38;2;255;182;193m
 PB := \033[38;2;255;204;213m
 HOT_PINK    := \033[1;38;2;255;105;180m
 DEEP_PINK   := \033[1;38;2;255;20;147m
-#IDK = \033[1;38;5;34m
 RESET = \033[0m
-
-#MINT_GREEN     := \033[38;2;152;255;152m
-#SAGE_GREEN     := \033[38;2;178;172;136m
 EMERALD_GREEN  := \033[1;38;2;80;200;120m
-#FOREST_GREEN   := \033[1;38;2;34;139;34m
-#OLIVE_GREEN    := \033[38;2;128;128;0m
 
 all: $(NAME)
 

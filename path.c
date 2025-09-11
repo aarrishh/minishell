@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/09 13:13:12 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/11 22:05:56 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,13 @@ char	*split_path(t_env **env, char *cmd)
 	return (NULL);
 }
 
+void	execve_case(char *cmd, char **path, char **envp)
+{
+	perror(cmd);
+	free(*path);
+	free_array(envp);
+}
+
 void	child_process_execution(t_env **env, char **cmd)
 {
 	char	*path;
@@ -86,6 +93,7 @@ void	child_process_execution(t_env **env, char **cmd)
 	}
 	if (execve(path, cmd, envp) == -1)
 	{
+		// execve_case(cmd[0], &path, envp);
 		perror(cmd[0]);
 		free(path);
 		free_array(envp);

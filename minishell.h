@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/10 21:19:22 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/11 19:40:51 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
 void		*export_command(t_data *data, t_token *stack);
 void		cd_command(t_token *stack, t_env **env);
+void		update_env_new_and_old_pwd(t_env **env, char *old_pwd);
+void		print_cd_error(char *target);
 void		built_in_functions(t_data *data, char *string);
 void		unset_command(t_data *data);
 int			is_builtin_cmd(char *cmd);
