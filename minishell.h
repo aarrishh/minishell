@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 23:23:27 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 18:26:29 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 
@@ -37,7 +38,6 @@ typedef struct s_val
 	int		i;
 	int		j;
 }			t_val;
-
 
 typedef struct s_pipe_fd
 {
@@ -159,5 +159,10 @@ void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
 void		parent_process_handling(pid_t pid, int *status, char **cmd);
 void		child_process_execution(t_env **env, char **cmd);
+
+// Path functions
+void		execve_case(char *cmd, char **path, char **envp);
+int			is_directory(const char *path);
+void		dir_error(char **path, char **envp, char **cmd);
 
 #endif

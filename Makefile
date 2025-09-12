@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/11 23:28:43 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/12 18:25:22 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c path.c tokenization/tokenization.c \
+SRCS = main.c list.c functions.c path/path.c path/path_utils.c tokenization/tokenization.c \
 		tokenization/init_tokens_type.c quotes/quotes.c quotes/quotes_len.c \
 		quotes/quotes_helpers.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
 		quotes/quotes_split.c built-in/built_in.c built-in/exit.c built-in/cd_utils.c \
