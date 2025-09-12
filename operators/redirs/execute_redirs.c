@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 21:09:02 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 21:21:16 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 
 	saved_in = -1;
 	saved_out = -1;
-	if (cmd_struct->execute == 0)
+	if (cmd_struct->execute == -1)
 		return ;
 	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 21:01:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 23:51:28 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,20 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	child_fd_setup(fds);
+	// printf(tmp[0]-> %s\n", (tmp)->string);
+	// printf("cmd[0]-> %s\n", cmd[0]);
+	// printf("cmd[1]-> %s\n", cmd[2]);
+	// printf("cmd[2]-> %s\n", cmd[3]);
 	if (tmp && (has_operator(tmp, REDIR_IN) || has_operator(tmp, REDIR_OUT)
 			|| has_operator(tmp, APPEND) || has_operator(tmp, HEREDOC)))
 	{
-		operators(data, tmp);
+		if (operators(data, tmp) == -1)
+			exit(0);
 		exit(0);
 	}
-	else if (cmd[0] && is_builtin_cmd(cmd[0]))
+	else if (cmd[0] && is_builtin_cmd((tmp)->string))
 	{
-		built_in_functions(data, cmd[0]);
+		built_in_functions(data, (tmp)->string);
 		exit(0);
 	}
 	else
@@ -58,26 +63,29 @@ void	parent(t_pipe_fd *fds)
 	}
 }
 
-void	fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp)
+void	fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **stack)
 {
 	pid_t	pid;
-	t_token	*start;
-	char	**commands;
+	t_token	*tmp;
+	char	**command;
 
-	start = *tmp;
-	commands = make_command_pipe(*tmp);
-	while (*tmp && (*tmp)->type != PIPE)
-		*tmp = (*tmp)->next;
+	tmp = *stack;
+	command = NULL;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (tmp->type != WORD && tmp->next)
+			tmp = tmp->next;
+		else
+			command = add_arg_to_cmd(command, tmp->string);
+		tmp = tmp->next;
+	}
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork");
-		free_array(commands);
-		return ;
-	}
+		return (perror("fork"));
 	if (pid == 0)
-		child(data, fds, start, commands);
+		child(data, fds, *stack, command);
 	else
 		parent(fds);
-	free_array(commands);
+	while ((*stack) && (*stack)->type != PIPE)
+		(*stack) = (*stack)->next;
 }

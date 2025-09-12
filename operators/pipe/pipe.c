@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 22:59:40 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 23:51:04 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 			pipe(fds.pfd);
 		fds.last_cmd = (i == num_cmds - 1);
 		fork_and_get_cmd(data, &fds, &tmp);
-		if (tmp && tmp->type == PIPE)
+		if (tmp && tmp->next && tmp->type == PIPE)
 			tmp = tmp->next;
 		i++;
 	}
@@ -80,8 +80,11 @@ void	execute_pipe(t_data *data)
 	i = 0;
 	while (i < num_cmds)
 	{
-		if (exit_codes[i] == 127)
-			error_msg(failed_cmds[i]);
+		if (failed_cmds)
+		{
+			if (exit_codes[i] == 127)
+				error_msg(failed_cmds[i]);
+		}
 		i++;
 	}
 	free_array(failed_cmds);
