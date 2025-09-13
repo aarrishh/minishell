@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 21:05:26 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 14:54:18 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:55:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	if (!new[i])
 		return (free_array(new), NULL);
 	new[i + 1] = NULL;
+	if (cmd_arg)
+		free_array(cmd_arg);
 	return (new);
 }
 

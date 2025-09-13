@@ -6,11 +6,12 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 14:03:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:58:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 void	handle_wait_status(void)
 {
@@ -78,6 +79,7 @@ void	redirs_child(t_data *data, t_command *cmd_struct)
 	if (execve(path, cmd_struct->cmd, envp) == -1)
 	{
 		perror(cmd_struct->cmd[0]);
+		free(path);
 		exit(126);
 	}
 	free(path);
