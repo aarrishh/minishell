@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/13 14:02:38 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:53:02 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ int	main(int argc, char **argv, char **envp)
 		init_tokens_type(&data.stack);
 		handle_cmds(&data);
 		free_all(NULL, &data.stack, data.split);
-		// if (line)
-		// free(line);
 	}
 	return (0);
 }

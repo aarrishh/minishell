@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 18:33:08 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:06:29 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,17 @@ void	child_process_execution(t_env **env, char **cmd)
 		execve_case(cmd[0], &path, envp);
 }
 
+int	in_set(char *s, char c)
+{
+	while (*s)
+	{
+		if (*s == c)
+			return (1);
+		s++;
+	}
+	return (0);
+}
+
 void	parent_process_handling(pid_t pid, int *status, char **cmd)
 {
 	int	sig;
@@ -116,5 +127,10 @@ void	parent_process_handling(pid_t pid, int *status, char **cmd)
 			write(1, "Quit: 3\n", 8);
 	}
 	if (g_exit_status == 127)
-		error_msg(cmd[0]);
+	{
+		if (in_set(cmd[0], '/'))
+			error_msg_dir(cmd[0]);
+		else
+			error_msg(cmd[0]);
+	}
 }

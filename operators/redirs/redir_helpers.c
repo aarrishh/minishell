@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 21:05:26 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 12:25:58 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 14:54:18 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	has_operator(t_token *stack, t_token_type type)
 {
-	// t_token	*tmp;
-
-	// tmp = *stack;
 	while (stack)
 	{
 		if (stack->type == type)
@@ -56,7 +53,7 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	if (cmd_arg)
 		while (cmd_arg[len])
 			len++;
-	new = malloc(sizeof(char *) * (len + 2));
+	new = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new)
 		return (NULL);
 	while (++i < len)

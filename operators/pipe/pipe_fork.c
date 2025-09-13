@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 14:04:02 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:13:23 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **stack)
 	}
 	pid = fork();
 	if (pid == -1)
-		return (perror("fork"));
-	if (pid == 0)
+		return (perror("fork"), free_array(command));
+	else if (pid == 0)
 		child(data, fds, start, command);
 	else
 		parent(fds);

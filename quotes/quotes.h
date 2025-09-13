@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 19:19:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:15:09 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void				error_msg(char *quote_line);
 int					check_valid_dollar(char chr);
 t_quote_state		quote_state(t_quote_state state, char c);
 int					is_quote_closed(char *line);
-void				keep_value(char *new, char *value, int *j);
+void				keep_value(char *new_line, char *value, int *j);
 void				exp_help_loop(t_quote_state state, t_new_line *line_st,
 						t_env **env);
 char				*find_var_value(char *str, t_env **env, int *key_len);

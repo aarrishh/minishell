@@ -6,11 +6,19 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 14:05:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 14:27:42 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+// static char	**malloc_help(char **f_cmd, int len)
+// {
+// 	f_cmd = (char **)malloc(sizeof(char *) * (len + 1));
+// 	if (!f_cmd)
+// 		return (NULL);
+// 	return (f_cmd);
+// }
 
 char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 {

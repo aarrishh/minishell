@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 18:23:55 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 18:29:50 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:41:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_directory(const char *path)
 void	dir_error(char **path, char **envp, char **cmd)
 {
 	ft_putstr_fd(cmd[0], 2);
-	ft_putstr_fd(": is a directory\n", 2);
+	ft_putstr_fd(": Is a directory\n", 2);
 	free(*path);
 	free_array(envp);
 	exit(126);
