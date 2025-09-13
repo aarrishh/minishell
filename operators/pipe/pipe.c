@@ -6,12 +6,26 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 19:57:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 23:10:54 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdio.h>
+
+static char	**malloc_help(int len)
+{
+	char	**f_cmd;
+	int		i;
+
+	i = 0;
+	f_cmd = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!f_cmd)
+		return (NULL);
+	while (i < len)
+		f_cmd[i++] = NULL;
+	return (f_cmd);
+}
 
 char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 {
@@ -21,22 +35,18 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 
 	i = 0;
 	tmp = data->stack;
-	f_cmd = malloc(sizeof(char *) * (num_cmds + 1));
+	f_cmd = malloc_help(num_cmds);
 	if (!f_cmd)
 		return (NULL);
 	while (i < num_cmds)
 	{
 		if (tmp->type == PIPE)
 		{
-			if (!tmp->next)
-            {
-				//ft_putstr_fd
-                printf("minishell: syntax error\n");
-                for (int k = 0; k < i; k++)
-                    free(f_cmd[k]);
-                free(f_cmd);
-                return (NULL);
-            }
+			if (!tmp->next || tmp->next->type == PIPE)
+			{
+				return (ft_putstr_fd("minishell: syntax error\n", 2),
+					free_array(f_cmd), NULL);
+			}
 			tmp = tmp->next;
 		}
 		f_cmd[i] = ft_strdup(get_first_word(tmp));
@@ -91,7 +101,7 @@ void	execute_pipe(t_data *data)
 	fds.prev_fd = 0;
 	num_cmds = count_segments(&data->stack, PIPE);
 	failed_cmds = fork_for_pipe(data, num_cmds, fds);
-	if (!failed_cmds)
+	if (!failed_cmds || !*failed_cmds)
 		return ;
 	wait_for_children(num_cmds, exit_codes);
 	i = 0;
