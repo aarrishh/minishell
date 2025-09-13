@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 16:06:29 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 17:38:22 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static char	*try_paths(char **splitted_path, char *cmd)
 		free(full);
 		i++;
 	}
+	free_array(splitted_path);
 	return (NULL);
 }
 
@@ -57,12 +58,12 @@ char	*split_path(t_env **env, char *cmd)
 	path = find_path(env);
 	if (!path)
 		return (NULL);
-	splitted_path = ft_split(path->value, ':');
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)
 			return (cmd);
 	}
+	splitted_path = ft_split(path->value, ':');
 	return (try_paths(splitted_path, cmd));
 }
 

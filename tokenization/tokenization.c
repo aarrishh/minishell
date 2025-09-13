@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/12 19:09:13 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 17:43:16 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 	val->expanded = expand_quotes(val->substr, env);
 	if (ft_strcmp(val->expanded, "") == 0)
 	{
+		free(val->substr);
 		free(val->expanded);
 		val->j += val->cur_ind;
 		return (NULL);
@@ -83,13 +84,14 @@ void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
 
 	val->substr = ft_substr(line[val->i], val->j, val->cur_ind);
 	val->expanded = expand_quotes(val->substr, env);
-	free(val->substr);
 	if (ft_strcmp(val->expanded, "") == 0)
 	{
+		free(val->substr);
 		free(val->expanded);
 		val->j += val->cur_ind;
 		return ;
 	}
+	free(val->substr);
 	node = create_node(val->expanded);
 	add_back(node, stack);
 	val->j += val->cur_ind;

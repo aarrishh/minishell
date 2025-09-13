@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:31:18 by arina             #+#    #+#             */
-/*   Updated: 2025/09/11 19:32:28 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/13 17:52:40 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	print_cd_error(char *target)
 {
-	ft_putendl_fd("minishell: cd ", 2);
-	ft_putendl_fd(target, 2);
-	ft_putendl_fd("No such file or directory\n", 2);
+	ft_putstr_fd("minishell: cd ", 2);
+	ft_putstr_fd(target, 2);
+	ft_putstr_fd("No such file or directory\n", 2);
 }
 
 char	*get_env_value(t_env *env, char *key)

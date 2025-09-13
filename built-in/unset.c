@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 07:00:52 by arina             #+#    #+#             */
-/*   Updated: 2025/09/05 18:07:35 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 17:51:14 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void	unset_command(t_data *data)
 	{
 		if (check_key(tmp->string) == -2)
 		{
-			printf("minishell: unset: `%s': not a valid identifier\n",
-				tmp->string);
+			ft_putstr_fd("minishell: unset: `", 2);
+			ft_putstr_fd(tmp->string, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			g_exit_status = 1;
 			return ;
 		}
