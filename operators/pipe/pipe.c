@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 02:43:59 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 03:34:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,10 @@ static char	**malloc_help(int len)
 	return (f_cmd);
 }
 
-static int	validate_cmd(t_token **tmp, char **f_cmd, int i,
-		int num_cmds)
+static int	validate_cmd(t_token **tmp, char **f_cmd, int i, int num_cmds)
 {
 	if (!*tmp)
 		return (0);
-	if ((*tmp)->type == WORD && (*tmp)->next && (*tmp)->next->type == PIPE
-		&& (*tmp)->next->next && (*tmp)->next->next->type == PIPE)
-		return (-1);
-	if ((*tmp)->type == PIPE)
-	{
-		if (!(*tmp)->next || (*tmp)->next->type == PIPE)
-			return (ft_putstr_fd("minishell: syntax error\n", 2), free_array(f_cmd), -1);
-		*tmp = (*tmp)->next;
-	}
 	f_cmd[i] = ft_strdup(get_first_word(*tmp));
 	if (!f_cmd[i])
 		return (-1);
@@ -54,7 +44,6 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 	t_token	*tmp;
 	char	**f_cmd;
 	int		i;
-	int		check;
 
 	tmp = data->stack;
 	f_cmd = malloc_help(num_cmds);
@@ -63,8 +52,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 	i = 0;
 	while (i < num_cmds)
 	{
-		check = validate_cmd(&tmp, f_cmd, i, num_cmds);
-		if (check == -1)
+		if (validate_cmd(&tmp, f_cmd, i, num_cmds) == -1)
 			return (free_array(f_cmd), NULL);
 		if (pipe(fds.pfd) == -1)
 			return (perror("pipe"), free_array(f_cmd), NULL);
@@ -102,6 +90,34 @@ static void	wait_for_children(int num_cmds, int *exit_codes)
 	}
 }
 
+int	check_syntax(t_token *stack)
+{
+	if (!stack)
+		return (0);
+	if (stack->type == PIPE)
+	{
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+		return (-1);
+	}
+	while (stack)
+	{
+		if ((stack->type == REDIR_IN || stack->type == REDIR_OUT
+				|| stack->type == APPEND || stack->type == HEREDOC)
+			&& (!stack->next || stack->next->type != WORD))
+		{
+			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+			return (-1);
+		}
+		if (stack->type == PIPE && (!stack->next || stack->next->type == PIPE))
+		{
+			ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+			return (-1);
+		}
+		stack = stack->next;
+	}
+	return (0);
+}
+
 void	execute_pipe(t_data *data)
 {
 	t_pipe_fd	fds;
@@ -112,6 +128,13 @@ void	execute_pipe(t_data *data)
 
 	fds.prev_fd = 0;
 	num_cmds = count_segments(&data->stack, PIPE);
+	if (num_cmds >= 1024)
+		return ;
+	if (check_syntax(data->stack) == -1)
+	{
+		g_exit_status = 2;
+		return ;
+	}
 	failed_cmds = fork_for_pipe(data, num_cmds, fds);
 	if (!failed_cmds || !*failed_cmds)
 		return ;

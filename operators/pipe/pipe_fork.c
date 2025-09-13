@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 01:52:28 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 03:26:27 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,6 @@ void	child_fd_setup(t_pipe_fd *fds)
 		dup2(fds->pfd[1], 1);
 		close(fds->pfd[1]);
 	}
-}
-
-int	check_pipe(t_token **stack)
-{
-	t_token	*tmp;
-
-	tmp = *stack;
-	while (tmp)
-	{
-		if (tmp->type != WORD && tmp->next->type == PIPE)
-		{
-			ft_putstr_fd("minishell", 2);
-			ft_putstr_fd(": syntax error near unexpected token `|'\n", 2);
-			return (-1);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
 }
 
 void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
