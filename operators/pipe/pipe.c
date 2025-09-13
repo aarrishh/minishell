@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 23:10:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 01:56:34 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,38 +27,50 @@ static char	**malloc_help(int len)
 	return (f_cmd);
 }
 
+static int	validate_cmd(t_token **tmp, char **f_cmd, int i,
+		int num_cmds)
+{
+	if (!*tmp)
+		return (0);
+	if ((*tmp)->type == WORD && (*tmp)->next && (*tmp)->next->type == PIPE
+		&& (*tmp)->next->next && (*tmp)->next->next->type == PIPE)
+		return (-1);
+	if ((*tmp)->type == PIPE)
+	{
+		if (!(*tmp)->next || (*tmp)->next->type == PIPE)
+			return (ft_putstr_fd("minishell: syntax error\n", 2), -1);
+		*tmp = (*tmp)->next;
+	}
+	f_cmd[i] = ft_strdup(get_first_word(*tmp));
+	if (!f_cmd[i])
+		return (-1);
+	if (i == num_cmds - 1)
+		return (1);
+	return (0);
+}
+
 char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 {
 	t_token	*tmp;
 	char	**f_cmd;
 	int		i;
+	int		check;
 
-	i = 0;
 	tmp = data->stack;
 	f_cmd = malloc_help(num_cmds);
 	if (!f_cmd)
 		return (NULL);
+	i = 0;
 	while (i < num_cmds)
 	{
-		if (tmp->type == PIPE)
-		{
-			if (!tmp->next || tmp->next->type == PIPE)
-			{
-				return (ft_putstr_fd("minishell: syntax error\n", 2),
-					free_array(f_cmd), NULL);
-			}
-			tmp = tmp->next;
-		}
-		f_cmd[i] = ft_strdup(get_first_word(tmp));
-		if (i < num_cmds - 1)
-			pipe(fds.pfd);
+		check = validate_cmd(&tmp, f_cmd, i, num_cmds);
+		if (check == -1)
+			return (free_array(f_cmd), NULL);
+		if (pipe(fds.pfd) == -1)
+			return (perror("pipe"), free_array(f_cmd), NULL);
 		fds.last_cmd = (i == num_cmds - 1);
 		if (fork_and_get_cmd(data, &fds, &tmp) == -1)
-		{
-			if (f_cmd)
-				free_array(f_cmd);
-			return (NULL);
-		}
+			return (free_array(f_cmd), NULL);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
 		i++;
