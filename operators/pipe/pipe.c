@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 01:56:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 02:43:59 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	validate_cmd(t_token **tmp, char **f_cmd, int i,
 	if ((*tmp)->type == PIPE)
 	{
 		if (!(*tmp)->next || (*tmp)->next->type == PIPE)
-			return (ft_putstr_fd("minishell: syntax error\n", 2), -1);
+			return (ft_putstr_fd("minishell: syntax error\n", 2), free_array(f_cmd), -1);
 		*tmp = (*tmp)->next;
 	}
 	f_cmd[i] = ft_strdup(get_first_word(*tmp));
