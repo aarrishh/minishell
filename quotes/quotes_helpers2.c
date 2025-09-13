@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 19:19:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 18:13:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ void	expand_exit_status(t_new_line *line_st)
 		return ;
 	a = 0;
 	while (status_str[a])
-		line_st->new[line_st->j++] = status_str[a++];
+	{
+		line_st->new[line_st->j] = status_str[a];
+		line_st->j++;
+		a++;
+	}
 	free(status_str);
 	line_st->i += 2;
 }
@@ -33,8 +37,8 @@ void	handle_dollar(t_new_line *line_st, t_env **env)
 	char	*value;
 	int		key_len;
 
-	if (line_st->line[line_st->i] == '$'
-		&& line_st->line[line_st->i + 1] == '?')
+	if (line_st->line[line_st->i] == '$' && line_st->line[line_st->i
+		+ 1] == '?')
 	{
 		expand_exit_status(line_st);
 		return ;
@@ -49,8 +53,7 @@ void	handle_dollar(t_new_line *line_st, t_env **env)
 	}
 	else
 	{
-		if (line_st->line[line_st->i]
-			&& line_st->line[line_st->i] != '"')
+		if (line_st->line[line_st->i] && line_st->line[line_st->i] != '"')
 			keep_char(line_st);
 	}
 }
