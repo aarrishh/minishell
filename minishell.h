@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 23:23:27 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:56:19 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 
@@ -37,7 +38,6 @@ typedef struct s_val
 	int		i;
 	int		j;
 }			t_val;
-
 
 typedef struct s_pipe_fd
 {
@@ -59,7 +59,6 @@ char		*create_file(int i, int *fd);
 void		execute_pipe(t_data *data);
 char		*get_first_word(t_token *tmp);
 void		fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp);
-char		**make_command_pipe(t_token *stack);
 void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
@@ -74,7 +73,7 @@ int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
-void		operators(t_data *data, t_token *stack);
+int			operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
 void		builtin_redirs(t_command *cmd_struct, int *saved_in,
@@ -115,7 +114,7 @@ void		*export_command(t_data *data, t_token *stack);
 void		cd_command(t_token *stack, t_env **env);
 void		update_env_new_and_old_pwd(t_env **env, char *old_pwd);
 void		print_cd_error(char *target);
-void		built_in_functions(t_data *data, char *string);
+void		built_in_functions(t_data *data, t_token **stack, char *string);
 void		unset_command(t_data *data);
 int			is_builtin_cmd(char *cmd);
 
@@ -159,5 +158,11 @@ void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
 void		parent_process_handling(pid_t pid, int *status, char **cmd);
 void		child_process_execution(t_env **env, char **cmd);
+
+// Path functions
+void		execve_case(char *cmd, char **path, char **envp);
+int			is_directory(const char *path);
+void		error_msg_dir(char *quote_line);
+void		dir_error(char **path, char **envp, char **cmd);
 
 #endif

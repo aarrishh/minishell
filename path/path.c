@@ -6,11 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 23:22:34 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:06:29 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_env	*find_path(t_env **env)
 {
@@ -66,13 +66,6 @@ char	*split_path(t_env **env, char *cmd)
 	return (try_paths(splitted_path, cmd));
 }
 
-void	execve_case(char *cmd, char **path, char **envp)
-{
-	perror(cmd);
-	free(*path);
-	free_array(envp);
-}
-
 void	child_process_execution(t_env **env, char **cmd)
 {
 	char	*path;
@@ -95,14 +88,21 @@ void	child_process_execution(t_env **env, char **cmd)
 		free_array(envp);
 		exit(127);
 	}
+	if (is_directory(path))
+		dir_error(&path, envp, cmd);
 	if (execve(path, cmd, envp) == -1)
+		execve_case(cmd[0], &path, envp);
+}
+
+int	in_set(char *s, char c)
+{
+	while (*s)
 	{
-		// execve_case(cmd[0], &path, envp);
-		perror(cmd[0]);
-		free(path);
-		free_array(envp);
-		exit(126);
+		if (*s == c)
+			return (1);
+		s++;
 	}
+	return (0);
 }
 
 void	parent_process_handling(pid_t pid, int *status, char **cmd)
@@ -127,5 +127,10 @@ void	parent_process_handling(pid_t pid, int *status, char **cmd)
 			write(1, "Quit: 3\n", 8);
 	}
 	if (g_exit_status == 127)
-		error_msg(cmd[0]);
+	{
+		if (in_set(cmd[0], '/'))
+			error_msg_dir(cmd[0]);
+		else
+			error_msg(cmd[0]);
+	}
 }

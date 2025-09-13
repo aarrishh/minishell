@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 21:05:26 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 21:08:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:55:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	if (cmd_arg)
 		while (cmd_arg[len])
 			len++;
-	new = malloc(sizeof(char *) * (len + 2));
+	new = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new)
 		return (NULL);
 	while (++i < len)
@@ -66,6 +66,8 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	if (!new[i])
 		return (free_array(new), NULL);
 	new[i + 1] = NULL;
+	if (cmd_arg)
+		free_array(cmd_arg);
 	return (new);
 }
 

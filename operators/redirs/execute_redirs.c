@@ -6,11 +6,12 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 21:09:02 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:58:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 void	handle_wait_status(void)
 {
@@ -33,12 +34,12 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 
 	saved_in = -1;
 	saved_out = -1;
-	if (cmd_struct->execute == 0)
+	if (cmd_struct->execute == -1)
 		return ;
 	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{
 		builtin_redirs(cmd_struct, &saved_in, &saved_out);
-		built_in_functions(data, cmd_struct->cmd[0]);
+		built_in_functions(data, &data->stack, cmd_struct->cmd[0]);
 		restore_fd(&saved_in, &saved_out);
 	}
 	else
@@ -78,6 +79,7 @@ void	redirs_child(t_data *data, t_command *cmd_struct)
 	if (execve(path, cmd_struct->cmd, envp) == -1)
 	{
 		perror(cmd_struct->cmd[0]);
+		free(path);
 		exit(126);
 	}
 	free(path);

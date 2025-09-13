@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 21:01:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:29:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 	if (tmp && (has_operator(tmp, REDIR_IN) || has_operator(tmp, REDIR_OUT)
 			|| has_operator(tmp, APPEND) || has_operator(tmp, HEREDOC)))
 	{
-		operators(data, tmp);
+		if (operators(data, tmp) == -1)
+			exit(1);
 		exit(0);
 	}
-	else if (cmd[0] && is_builtin_cmd(cmd[0]))
+	else if (cmd[0] && is_builtin_cmd(tmp->string))
 	{
-		built_in_functions(data, cmd[0]);
+		built_in_functions(data, &tmp, tmp->string);
 		exit(0);
 	}
 	else
@@ -58,26 +59,30 @@ void	parent(t_pipe_fd *fds)
 	}
 }
 
-void	fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp)
+void	fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **stack)
 {
 	pid_t	pid;
+	t_token	*tmp;
 	t_token	*start;
-	char	**commands;
+	char	**command;
 
-	start = *tmp;
-	commands = make_command_pipe(*tmp);
-	while (*tmp && (*tmp)->type != PIPE)
-		*tmp = (*tmp)->next;
+	tmp = *stack;
+	start = *stack;
+	command = NULL;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (tmp->type != WORD && tmp->next)
+			tmp = tmp->next;
+		else
+			command = add_arg_to_cmd(command, tmp->string);
+		tmp = tmp->next;
+	}
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork");
-		free_array(commands);
-		return ;
-	}
-	if (pid == 0)
-		child(data, fds, start, commands);
+		return (perror("fork"), free_array(command));
+	else if (pid == 0)
+		child(data, fds, start, command);
 	else
 		parent(fds);
-	free_array(commands);
+	free_array(command);
 }

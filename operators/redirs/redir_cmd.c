@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 21:09:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 21:25:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	handle_redir_in(t_command *cmd_s, t_token **tmp)
 	cmd_s->input = open_rdirin((*tmp)->next->string);
 	if (cmd_s->input == -1)
 	{
-		cmd_s->execute = 0;
+		cmd_s->execute = -1;
+		g_exit_status = 1;
 		return (-1);
 	}
 	*tmp = (*tmp)->next;
@@ -31,7 +32,8 @@ int	handle_redir_out(t_command *cmd_s, t_token **tmp)
 	cmd_s->output = find_and_open((*tmp)->next->string, (*tmp)->type);
 	if (cmd_s->output == -1)
 	{
-		cmd_s->execute = 0;
+		cmd_s->execute = -1;
+		g_exit_status = 1;
 		return (-1);
 	}
 	*tmp = (*tmp)->next;
@@ -74,7 +76,7 @@ void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_s)
 	}
 }
 
-void	operators(t_data *data, t_token *stack)
+int	operators(t_data *data, t_token *stack)
 {
 	t_command	cmd_struct;
 
@@ -83,8 +85,22 @@ void	operators(t_data *data, t_token *stack)
 	cmd_struct.execute = 1;
 	cmd_struct.cmd = NULL;
 	loop_over_execute(data, stack, &cmd_struct);
+	if (cmd_struct.execute == -1)
+	{
+		if (cmd_struct.input != 0)
+			close(cmd_struct.input);
+		if (cmd_struct.output != 1)
+			close(cmd_struct.output);
+		if (cmd_struct.cmd)
+			free_array(cmd_struct.cmd);
+		return (-1);
+	}
 	execute_command(data, &cmd_struct);
-	free_array(cmd_struct.cmd);
-	cmd_struct.input = 0;
-	cmd_struct.output = 1;
+	if (cmd_struct.input != 0)
+		close(cmd_struct.input);
+	if (cmd_struct.output != 1)
+		close(cmd_struct.output);
+	if (cmd_struct.cmd)
+		free_array(cmd_struct.cmd);
+	return (0);
 }

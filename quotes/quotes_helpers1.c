@@ -6,17 +6,17 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:24 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 22:53:52 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:19:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	keep_char(t_new_line *line_struct)
+void	keep_char(t_new_line *line_st)
 {
-	line_struct->new[line_struct->j] = line_struct->line[line_struct->i];
-	(line_struct->i)++;
-	(line_struct->j)++;
+	line_st->new[line_st->j] = line_st->line[line_st->i];
+	(line_st->i)++;
+	(line_st->j)++;
 }
 
 int	key_len(char *str)

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/11 23:20:21 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:09:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 	val->substr = ft_substr(line[val->i], val->j, ft_strlen(line[val->i])
 			- val->j);
 	val->expanded = expand_quotes(val->substr, env);
+	if (ft_strcmp(val->expanded, "") == 0)
+	{
+		free(val->expanded);
+		val->j += val->cur_ind;
+		return (NULL);
+	}
 	free(val->substr);
 	node = create_node(val->expanded);
 	node->quote = 1;
@@ -78,6 +84,12 @@ void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
 	val->substr = ft_substr(line[val->i], val->j, val->cur_ind);
 	val->expanded = expand_quotes(val->substr, env);
 	free(val->substr);
+	if (ft_strcmp(val->expanded, "") == 0)
+	{
+		free(val->expanded);
+		val->j += val->cur_ind;
+		return ;
+	}
 	node = create_node(val->expanded);
 	add_back(node, stack);
 	val->j += val->cur_ind;
@@ -96,13 +108,6 @@ void	validation(char **line, t_token **stack, t_env **env)
 			val.cur_ind = check_string(line[val.i] + val.j);
 			if (val.cur_ind == -1)
 			{
-				// val.substr = ft_substr(line[val.i], val.j,
-				// ft_strlen(line[val.i] - val.j);
-				// val.expanded = expand_quotes(val.substr, env);
-				// free(val.substr);
-				// node = create_node(val.expanded);
-				// node->quote = 1;
-				// add_back(node, stack);
 				add_back(if_cur_ind_equal_minus_one(&val, line, env), stack);
 				break ;
 			}

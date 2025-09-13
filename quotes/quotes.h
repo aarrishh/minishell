@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 22:57:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:15:09 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,15 @@ typedef struct s_new_line
 }					t_new_line;
 
 char				**split_for_quotes(char const *s, char c);
-void				handle_dollar(t_new_line *line_struct, t_env **env);
-void				keep_char(t_new_line *line_struct);
+void				handle_dollar(t_new_line *line_st, t_env **env);
+void				keep_char(t_new_line *line_st);
 int					key_len(char *str);
 void				error_msg(char *quote_line);
 int					check_valid_dollar(char chr);
 t_quote_state		quote_state(t_quote_state state, char c);
 int					is_quote_closed(char *line);
-void				keep_value(char *new, char *value, int *j);
-void				exp_help_loop(t_quote_state state, t_new_line *line_struct,
+void				keep_value(char *new_line, char *value, int *j);
+void				exp_help_loop(t_quote_state state, t_new_line *line_st,
 						t_env **env);
 char				*find_var_value(char *str, t_env **env, int *key_len);
 t_quote_state		handle_double_quote_len(char *line, int *i, int *len,
@@ -87,7 +87,7 @@ void				handle_len_dollar(char *line, int *i, int *len,
 						t_env **env);
 t_quote_state		handle_single_quote_len(char *line, int *i, int *len);
 int					len_for_malloc(char *line, t_env **env);
-void				loop(t_new_line *line_struct, t_quote_state state,
+void				loop(t_new_line *line_st, t_quote_state state,
 						t_env **env_struct);
 char				*expand_quotes(char *line, t_env **env_struct);
 int					start_dquotes(char *line, t_data *data);

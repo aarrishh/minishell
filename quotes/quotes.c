@@ -6,37 +6,37 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/11 22:56:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:19:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	loop(t_new_line *line_struct, t_quote_state state, t_env **env_struct)
+void	loop(t_new_line *line_st, t_quote_state state, t_env **env_struct)
 {
-	while (line_struct->line[line_struct->i])
+	while (line_st->line[line_st->i])
 	{
-		state = quote_state(state, line_struct->line[line_struct->i]);
+		state = quote_state(state, line_st->line[line_st->i]);
 		if (state != NO_QUOTE)
 		{
-			exp_help_loop(state, line_struct, env_struct);
+			exp_help_loop(state, line_st, env_struct);
 			state = NO_QUOTE;
 			continue ;
 		}
 		else
 		{
-			if (line_struct->line[line_struct->i] == '$')
-				handle_dollar(line_struct, env_struct);
+			if (line_st->line[line_st->i] == '$')
+				handle_dollar(line_st, env_struct);
 			else
-				keep_char(line_struct);
+				keep_char(line_st);
 		}
 	}
-	line_struct->new[line_struct->j] = '\0';
+	line_st->new[line_st->j] = '\0';
 }
 
 char	*expand_quotes(char *line, t_env **env_struct)
 {
-	t_new_line		line_struct;
+	t_new_line		line_st;
 	int				len;
 	char			*new;
 	t_quote_state	state;
@@ -46,11 +46,11 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
-	line_struct.line = line;
-	line_struct.new = new;
-	line_struct.i = 0;
-	line_struct.j = 0;
-	loop(&line_struct, state, env_struct);
+	line_st.line = line;
+	line_st.new = new;
+	line_st.i = 0;
+	line_st.j = 0;
+	loop(&line_st, state, env_struct);
 	return (new);
 }
 
