@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:50:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 22:13:15 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 11:14:47 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,35 +42,6 @@ int	two_dim_len(char **str)
 		i++;
 	return (i);
 }
-
-// char	**make_command_pipe(t_token *stack)
-// {
-// 	t_token	*tmp;
-// 	char	**cmd;
-// 	int		len;
-// 	int		i;
-
-// 	len = 0;
-// 	i = 0;
-// 	tmp = stack;
-// 	while (tmp && tmp->type != PIPE)
-// 	{
-// 		len++;
-// 		tmp = tmp->next;
-// 	}
-// 	cmd = (char **)malloc(sizeof(char *) * (len + 1));
-// 	tmp = stack;
-// 	while (i < len && tmp && tmp->type != PIPE)
-// 	{
-// 		cmd[i] = ft_strdup(tmp->string);
-// 		if (!cmd[i])
-// 			free_array(cmd);
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	cmd[i] = NULL;
-// 	return (cmd);
-// }
 
 char	*get_first_word(t_token *tmp)
 {

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 21:21:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 14:03:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
 	{
 		builtin_redirs(cmd_struct, &saved_in, &saved_out);
-		built_in_functions(data, cmd_struct->cmd[0]);
+		built_in_functions(data, &data->stack, cmd_struct->cmd[0]);
 		restore_fd(&saved_in, &saved_out);
 	}
 	else

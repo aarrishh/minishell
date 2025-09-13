@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 17:42:23 by arina             #+#    #+#             */
-/*   Updated: 2025/09/11 21:31:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 14:02:38 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	handle_cmds(t_data *data)
 	else if (data->stack)
 	{
 		if (is_builtin_cmd((*data->stack).string))
-			built_in_functions(data, (*data->stack).string);
+			built_in_functions(data, &data->stack, (*data->stack).string);
 		else
 		{
 			while (tmp)

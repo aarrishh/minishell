@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 23:51:04 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 14:05:26 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,18 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 		return (NULL);
 	while (i < num_cmds)
 	{
-		if (tmp->type == PIPE && !tmp->next)
-			return (printf("minishell: syntax error\n"), free(f_cmd), NULL);
+		if (tmp->type == PIPE)
+		{
+			if (!tmp->next)
+				return (printf("minishell: syntax error\n"), free(f_cmd), NULL);
+			tmp = tmp->next;
+		}
 		f_cmd[i] = ft_strdup(get_first_word(tmp));
 		if (i < num_cmds - 1)
 			pipe(fds.pfd);
 		fds.last_cmd = (i == num_cmds - 1);
 		fork_and_get_cmd(data, &fds, &tmp);
-		if (tmp && tmp->next && tmp->type == PIPE)
+		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
 		i++;
 	}
