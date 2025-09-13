@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 21:25:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 19:16:24 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	handle_token(t_data *data, t_token **tmp, t_command *cmd_s, int *i)
 		handle_heredoc(data, cmd_s, tmp, (*i)++);
 	else
 	{
-		error_nl_or_type((*tmp)->next);
+		error_nl_or_type(cmd_s, (*tmp)->next);
 		return (-1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 16:56:19 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 19:34:57 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_command
 char		*create_file(int i, int *fd);
 void		execute_pipe(t_data *data);
 char		*get_first_word(t_token *tmp);
-void		fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp);
+int			fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp);
 void		execute_else(t_env **env, char **cmd);
 char		*split_path(t_env **env, char *cmd);
 int			has_operator(t_token *stack, t_token_type type);
@@ -74,7 +74,7 @@ char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
 char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
 int			operators(t_data *data, t_token *stack);
-void		error_nl_or_type(t_token *tmp);
+void		error_nl_or_type(t_command *cmd_s, t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
 void		builtin_redirs(t_command *cmd_struct, int *saved_in,
 				int *saved_out);

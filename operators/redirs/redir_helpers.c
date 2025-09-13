@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 21:05:26 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 16:55:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 19:17:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	**add_cmd(t_command *cmd_struct, t_token *tmp)
 	return (tmp_cmd);
 }
 
-void	error_nl_or_type(t_token *tmp)
+void	error_nl_or_type(t_command *cmd_s, t_token *tmp)
 {
 	char	*str;
 
@@ -102,4 +102,5 @@ void	error_nl_or_type(t_token *tmp)
 	printf("minishell: syntax error near unexpected token `%s'\n", str);
 	free(str);
 	g_exit_status = 2;
+	cmd_s->execute = -1;
 }

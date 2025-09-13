@@ -6,19 +6,12 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 14:27:42 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/13 19:57:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-// static char	**malloc_help(char **f_cmd, int len)
-// {
-// 	f_cmd = (char **)malloc(sizeof(char *) * (len + 1));
-// 	if (!f_cmd)
-// 		return (NULL);
-// 	return (f_cmd);
-// }
+#include <stdio.h>
 
 char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 {
@@ -36,14 +29,26 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 		if (tmp->type == PIPE)
 		{
 			if (!tmp->next)
-				return (printf("minishell: syntax error\n"), free(f_cmd), NULL);
+            {
+				//ft_putstr_fd
+                printf("minishell: syntax error\n");
+                for (int k = 0; k < i; k++)
+                    free(f_cmd[k]);
+                free(f_cmd);
+                return (NULL);
+            }
 			tmp = tmp->next;
 		}
 		f_cmd[i] = ft_strdup(get_first_word(tmp));
 		if (i < num_cmds - 1)
 			pipe(fds.pfd);
 		fds.last_cmd = (i == num_cmds - 1);
-		fork_and_get_cmd(data, &fds, &tmp);
+		if (fork_and_get_cmd(data, &fds, &tmp) == -1)
+		{
+			if (f_cmd)
+				free_array(f_cmd);
+			return (NULL);
+		}
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
 		i++;
