@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 21:05:26 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:46:52 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 12:30:15 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	i = -1;
 	if (!str)
 		return (cmd_arg);
-	// if (cmd_arg)
 	len = two_dim_len(cmd_arg);
 	new = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new)
