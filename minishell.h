@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:43:27 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:18:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int			ft_atol(const char *str, long long *result);
 int			ft_strcmp(char *s1, char *s2);
 int			ft_strlen(const char *str);
 int			is_space(char *str);
+int			length(int n);
 
 // Tokenization functions
 void		validation(char **line, t_token **stack, t_env **env);
@@ -159,6 +160,7 @@ void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
 void		parent_process_handling(pid_t pid, int *status, char **cmd);
 void		child_process_execution(t_env **env, char **cmd);
+void		handle_wait_status(void);
 
 // Path functions
 void		execve_case(char *cmd, char **path, char **envp);

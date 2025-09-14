@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/13 17:43:16 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 13:12:25 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void	validation(char **line, t_token **stack, t_env **env)
 	t_val	val;
 
 	val.i = 0;
+	if (!line || !(*line))
+		return ;
 	while (line[val.i])
 	{
 		val.j = 0;

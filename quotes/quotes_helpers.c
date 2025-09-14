@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:53:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 15:58:00 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 12:57:54 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	error_msg(char *quote_line)
 
 void	error_msg_dir(char *quote_line)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = ft_strjoin(quote_line, ": No such file or directory\n");
 	if (!tmp)

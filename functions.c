@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 18:28:46 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/06 17:16:50 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 13:01:58 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,22 @@ int	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+int	length(int n)
+{
+	int	count;
+
+	count = 0;
+	if (n < 10)
+		return (1);
+	count = 1;
+	while (n > 0)
+	{
+		n /= 10;
+		count++;
+	}
+	return (count);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -170,18 +186,4 @@ char	*ft_strcpy(char *dest, char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
-}
-
-int	is_space(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
 }

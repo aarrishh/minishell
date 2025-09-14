@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 18:13:22 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 12:59:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	handle_dollar(t_new_line *line_st, t_env **env)
 	int		key_len;
 
 	if (line_st->line[line_st->i] == '$' && line_st->line[line_st->i
-		+ 1] == '?')
+			+ 1] == '?')
 	{
 		expand_exit_status(line_st);
 		return ;

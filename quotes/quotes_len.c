@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 18:47:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 12:59:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,6 @@ int	len_without_quote(char *line, t_quote_state state)
 		}
 	}
 	return (len);
-}
-
-static int	length(int n)
-{
-	int	count;
-
-	count = 0;
-	if (n < 10)
-		return (1);
-	count = 1;
-	while (n > 0)
-	{
-		n /= 10;
-		count++;
-	}
-	return (count);
 }
 
 void	handle_len_dollar(char *line, int *i, int *len, t_env **env)

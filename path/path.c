@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 17:38:22 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 13:04:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,7 @@ void	parent_process_handling(pid_t pid, int *status, char **cmd)
 	if (g_exit_status == 127)
 	{
 		if (in_set(cmd[0], '/'))
-			error_msg_dir(cmd[0]);
-		else
-			error_msg(cmd[0]);
+			return (error_msg_dir(cmd[0]));
+		error_msg(cmd[0]);
 	}
 }

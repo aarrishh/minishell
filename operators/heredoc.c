@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 19:19:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:21:01 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 	if (cmd_struct->input != 0)
 		close(cmd_struct->input);
 	cmd_struct->input = open(filename, O_RDONLY);
-	// delete after shell exits
 	free(filename);
 	*tmp = (*tmp)->next;
 }
