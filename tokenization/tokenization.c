@@ -6,19 +6,19 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/13 17:43:16 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 09:53:51 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	init_tokens_type(t_token **stack)
+int	init_tokens_type(t_token **stack, char **split)
 {
 	t_token	*tmp;
 
 	tmp = *stack;
 	if (!tmp)
-		return ;
+		return (0);
 	while (tmp)
 	{
 		if (tmp->quote == 0)
@@ -31,6 +31,12 @@ void	init_tokens_type(t_token **stack)
 		}
 		tmp = tmp->next;
 	}
+	if (check_syntax(*stack))
+	{
+		free_all(NULL, stack, split);
+		return (2);
+	}
+	return (0);
 }
 
 int	check_string(char *str)

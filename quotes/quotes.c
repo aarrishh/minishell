@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 18:21:01 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 09:43:23 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	return (new);
 }
 
-int	start_dquotes(char *line, t_data *data)
+int	start_dquotes(char **line, t_data *data)
 {
 	int				i;
 	t_quote_state	state;
@@ -62,23 +62,26 @@ int	start_dquotes(char *line, t_data *data)
 
 	i = 0;
 	state = NO_QUOTE;
-	while (line[i])
-		state = quote_state(state, line[i++]);
+	while ((*line)[i])
+		state = quote_state(state, (*line)[i++]);
 	if (state != NO_QUOTE)
 	{
-		quote_line = open_dquote(state, line);
+		quote_line = open_dquote(state, *line);
 		if (!quote_line)
 			return (0);
 		error_msg(quote_line);
 		g_exit_status = 127;
-		free(line);
+		free(*line);
+		*line = NULL;
 		free(quote_line);
 		return (0);
 	}
 	else if (state == NO_QUOTE)
 	{
-		data->split = split_for_quotes(line, ' ');
-		free(line);
+		data->split = split_for_quotes(*line, ' ');
+		free(*line);
+		*line = NULL;
+
 	}
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 19:34:57 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 09:54:14 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,13 @@ int			is_space(char *str);
 
 // Tokenization functions
 void		validation(char **line, t_token **stack, t_env **env);
-void		init_tokens_type(t_token **stack);
+int			init_tokens_type(t_token **stack, char **split);
 void		check_type_pipe(char *str, t_token **stack);
 void		check_type_red_in(char *str, t_token **stack);
 void		check_type_red_out(char *str, t_token **stack);
 void		check_type_heredoc(char *str, t_token **stack);
 void		check_type_append(char *str, t_token **stack);
+int			check_syntax(t_token *stack);
 
 // Built-in functions
 void		exit_command(t_token **stack, t_env **env, char **split);

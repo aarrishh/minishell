@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: arina <arina@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/13 22:51:56 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/14 10:04:54 by arina            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 LDFLAGS = -lreadline
 
 SRCS = main.c list.c functions.c path/path.c path/path_utils.c tokenization/tokenization.c \
@@ -30,7 +30,7 @@ SRCS = main.c list.c functions.c path/path.c path/path_utils.c tokenization/toke
 		operators/redirs/redir_cmd.c operators/redirs/execute_redirs.c \
 		operators/redirs/redir_helpers.c operators/heredoc.c \
 		operators/pipe/pipe.c operators/pipe/pipe_fork.c operators/pipe/pipe_helper.c \
-		operators/file.c
+		operators/file.c syntax_error.c
 		
 OBJDIR = obj
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)

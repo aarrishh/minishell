@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:10:55 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/10 20:34:11 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:01:43 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ void	env_command(t_env *env, t_token *stack)
 {
 	if (stack->next && stack->next->type == WORD)
 	{
-		printf("env: '%s': No such file or directory\n", stack->next->string);
+		ft_putstr_fd("env: '", 2);
+		ft_putstr_fd(stack->next->string, 2);
+		ft_putstr_fd("': No such file or directory\n", 2);
 		g_exit_status = 127;
 		return ;
 	}
