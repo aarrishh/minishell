@@ -6,11 +6,12 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 03:26:27 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 11:13:39 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdio.h>
 
 void	child_fd_setup(t_pipe_fd *fds)
 {
@@ -32,6 +33,8 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	child_fd_setup(fds);
+	// if (tmp->type == PIPE)
+	// 	tmp = tmp->next;
 	if (tmp && (has_operator(tmp, REDIR_IN) || has_operator(tmp, REDIR_OUT)
 			|| has_operator(tmp, APPEND) || has_operator(tmp, HEREDOC)))
 	{
@@ -39,8 +42,10 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 			exit(1);
 		exit(0);
 	}
-	else if (cmd[0] && is_builtin_cmd(tmp->string))
+	else if (cmd[0] && is_builtin_cmd(cmd[0]))
 	{
+		printf("cmd[0]: %s\n", cmd[0]);
+		printf("tmp[0]: %s\n", tmp->string);
 		built_in_functions(data, &tmp, tmp->string);
 		exit(0);
 	}

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 03:34:11 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 11:43:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ static int	validate_cmd(t_token **tmp, char **f_cmd, int i, int num_cmds)
 	return (0);
 }
 
+void	loop_till_pipe(t_token **tmp)
+{
+	if (*tmp)
+	{
+		while ((*tmp) && (*tmp)->type != PIPE)
+			(*tmp) = (*tmp)->next;
+	}
+}
 char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 {
 	t_token	*tmp;
@@ -52,6 +60,8 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 	i = 0;
 	while (i < num_cmds)
 	{
+		if (tmp->type == PIPE && tmp->next)
+			tmp = tmp->next;
 		if (validate_cmd(&tmp, f_cmd, i, num_cmds) == -1)
 			return (free_array(f_cmd), NULL);
 		if (pipe(fds.pfd) == -1)
@@ -59,8 +69,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 		fds.last_cmd = (i == num_cmds - 1);
 		if (fork_and_get_cmd(data, &fds, &tmp) == -1)
 			return (free_array(f_cmd), NULL);
-		while (tmp && tmp->type != PIPE)
-			tmp = tmp->next;
+		loop_till_pipe(&tmp);
 		i++;
 	}
 	f_cmd[i] = NULL;
@@ -128,26 +137,20 @@ void	execute_pipe(t_data *data)
 
 	fds.prev_fd = 0;
 	num_cmds = count_segments(&data->stack, PIPE);
-	if (num_cmds >= 1024)
+	if (num_cmds >= 1024 || num_cmds == -1)
 		return ;
-	if (check_syntax(data->stack) == -1)
-	{
-		g_exit_status = 2;
-		return ;
-	}
 	failed_cmds = fork_for_pipe(data, num_cmds, fds);
 	if (!failed_cmds || !*failed_cmds)
 		return ;
 	wait_for_children(num_cmds, exit_codes);
-	i = 0;
-	while (i < num_cmds)
+	i = -1;
+	while (++i < num_cmds)
 	{
 		if (failed_cmds)
 		{
 			if (exit_codes[i] == 127)
 				error_msg(failed_cmds[i]);
 		}
-		i++;
 	}
 	free_array(failed_cmds);
 }

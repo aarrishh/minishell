@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 19:34:57 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 10:43:27 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_command
 
 // Operations functions
 char		*create_file(int i, int *fd);
+int			check_syntax(t_token *stack);
 void		execute_pipe(t_data *data);
 char		*get_first_word(t_token *tmp);
 int			fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp);

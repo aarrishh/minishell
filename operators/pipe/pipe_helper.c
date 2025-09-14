@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:50:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 19:44:07 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 10:46:43 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	two_dim_len(char **str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 		i++;
 	return (i);
@@ -72,6 +74,11 @@ int	count_segments(t_token **stack, t_token_type type)
 		if (tmp->type == type)
 			len++;
 		tmp = tmp->next;
+	}
+	if (check_syntax(*stack) == -1)
+	{
+		g_exit_status = 2;
+		return (-1);
 	}
 	return (len + 1);
 }
