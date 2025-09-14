@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 21:05:26 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 12:30:15 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 17:46:57 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ void	error_nl_or_type(t_command *cmd_s, t_token *tmp)
 		str = ft_strdup(">");
 	else if (tmp->type == APPEND)
 		str = ft_strdup(">>");
-	printf("minishell: syntax error near unexpected token `%s'\n", str);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("'\n", 2);
 	free(str);
 	g_exit_status = 2;
 	cmd_s->execute = -1;

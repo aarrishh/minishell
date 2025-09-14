@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 13:10:02 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 17:47:51 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ char	*open_dquote(t_quote_state state, char *line)
 		if (!next)
 		{
 			g_exit_status = 2;
-			return (printf("wrong EOF, close matching quote\n"), NULL);
+			ft_putstr_fd("wrong EOF, close matching quote\n", 2);
+			return (NULL);
 		}
 		tmp = ft_strjoin(line, "\n");
 		line = ft_strjoin(tmp, next);
