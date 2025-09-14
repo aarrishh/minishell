@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/11 19:32:20 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 19:29:19 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	cd_command(t_token *stack, t_env **env)
 	{
 		print_cd_error(target);
 		g_exit_status = 1;
-		return ;
+		return (free (target));
 	}
-	update_env_new_and_old_pwd(env, old_pwd);
+	update_env_new_and_old_pwd(env, old_pwd, &target);
 	g_exit_status = 0;
 	if (stack->next && stack->next->next)
 	{
