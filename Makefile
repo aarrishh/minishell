@@ -6,7 +6,7 @@
 #    By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/14 16:27:02 by arimanuk         ###   ########.fr        #
+#    Updated: 2025/09/14 18:22:25 by arimanuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,9 @@ SRCS = main.c list.c functions.c functions_utils.c path/path.c path/path_utils.c
 		operators/redirs/redir_helpers.c operators/heredoc.c \
 		operators/pipe/pipe.c operators/pipe/pipe_fork.c operators/pipe/pipe_helper.c \
 		operators/file.c operators/pipe/pipe_utils.c operators/redirs/redir_utils.c
-		
-OBJS = $(SRCS:.c=.o)
+
+OBJDIR = obj
+OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
 YELLOW = \033[0;33m
 PB := \033[38;2;255;204;213m
@@ -53,13 +54,14 @@ $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@echo "$(HOT_PINK) [OK]$(RESET) libft done."
 
-%.o: %.c minishell.h Makefile
+$(OBJDIR)/%.o: %.c minishell.h Makefile
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@echo "$(YELLOW)[CLEAN]$(RESET) Removing object files..."
 	@make --no-print-directory -C $(LIBFT_DIR) clean
-	@rm -f $(OBJS)
+	@rm -rf $(OBJDIR)
 	@echo "$(HOT_PINK) [OK]$(RESET) Clean done."
 
 fclean: clean
