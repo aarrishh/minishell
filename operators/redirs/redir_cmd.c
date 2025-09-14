@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 16:10:17 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/14 19:05:02 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_s)
 		tmp = tmp->next;
 	}
 }
+void	mer_verjin_huys(t_command *cmd_struct)
+{
+	if (cmd_struct->heredoc)
+	{
+		unlink(cmd_struct->heredoc);
+		free(cmd_struct->heredoc);
+	}
+}
 
 int	operators(t_data *data, t_token *stack)
 {
@@ -93,8 +101,7 @@ int	operators(t_data *data, t_token *stack)
 		return (-1);
 	}
 	execute_command(data, &cmd_struct);
-	unlink(cmd_struct.heredoc);
-	free(cmd_struct.heredoc);
+	mer_verjin_huys(&cmd_struct);
 	if (cmd_struct.input != 0)
 		close(cmd_struct.input);
 	if (cmd_struct.output != 1)

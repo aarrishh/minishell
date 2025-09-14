@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 16:20:12 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/14 18:55:12 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 				int i);
 void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
-char		*expand_heredoc(char *line, t_env **env);
+char		*expand_heredoc(char **line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);

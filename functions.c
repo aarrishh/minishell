@@ -6,7 +6,7 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 18:28:46 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/14 16:00:28 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/14 18:40:21 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return (-1);
 	while (s1[i] != '\0' || s2[i] != '\0')
 	{
 		if (s1[i] == s2[i])
