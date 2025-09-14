@@ -6,11 +6,24 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 15:23:27 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/11 19:48:43 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:13:38 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_wait_status(void)
+{
+	int	status;
+
+	waitpid(-1, &status, 0);
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+	// g_exit_status = 127;
+	// wait(NULL);
+}
 
 void	sigint_handler(int sig)
 {

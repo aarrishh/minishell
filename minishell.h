@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 09:54:14 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:35:54 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int			ft_atol(const char *str, long long *result);
 int			ft_strcmp(char *s1, char *s2);
 int			ft_strlen(const char *str);
 int			is_space(char *str);
+int			check_long_number(long long *res, int sign, char c);
 
 // Tokenization functions
 void		validation(char **line, t_token **stack, t_env **env);
@@ -159,11 +160,13 @@ void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
 void		parent_process_handling(pid_t pid, int *status, char **cmd);
 void		child_process_execution(t_env **env, char **cmd);
+void		handle_wait_status(void);
 
 // Path functions
 void		execve_case(char *cmd, char **path, char **envp);
 int			is_directory(const char *path);
 void		error_msg_dir(char *quote_line);
 void		dir_error(char **path, char **envp, char **cmd);
+int			in_set(char *s, char c);
 
 #endif

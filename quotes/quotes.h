@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 09:37:28 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:28:42 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void				error_msg(char *quote_line);
 int					check_valid_dollar(char chr);
 t_quote_state		quote_state(t_quote_state state, char c);
 int					is_quote_closed(char *line);
-void				keep_value(char *new_line, char *value, int *j);
+void				keep_value(char *new_line, char *value, int *j); // xia senc?
 void				exp_help_loop(t_quote_state state, t_new_line *line_st,
 						t_env **env);
 char				*find_var_value(char *str, t_env **env, int *key_len);
@@ -93,5 +93,7 @@ char				*expand_quotes(char *line, t_env **env_struct);
 int					start_dquotes(char **line, t_data *data);
 char				*open_dquote(t_quote_state state, char *line);
 char				*cut_quotes(char *line, t_quote_state state);
+void				expand_exit_status(t_new_line *line_st);
+
 
 #endif

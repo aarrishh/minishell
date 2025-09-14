@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 23:10:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 10:11:18 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 			if (!tmp->next || tmp->next->type == PIPE)
 			{
 				return (ft_putstr_fd("minishell: syntax error\n", 2),
-					free_array(f_cmd), NULL);
+					free_array(f_cmd), NULL); // es pahy petqa hanenq
 			}
 			tmp = tmp->next;
 		}

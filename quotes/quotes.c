@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 09:43:23 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:26:22 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	start_dquotes(char **line, t_data *data)
 		error_msg(quote_line);
 		g_exit_status = 127;
 		free(*line);
-		*line = NULL;
 		free(quote_line);
 		return (0);
 	}
@@ -80,8 +79,6 @@ int	start_dquotes(char **line, t_data *data)
 	{
 		data->split = split_for_quotes(*line, ' ');
 		free(*line);
-		*line = NULL;
-
 	}
 	return (1);
 }
@@ -103,7 +100,7 @@ char	*open_dquote(t_quote_state state, char *line)
 		if (!next)
 		{
 			g_exit_status = 2;
-			return (printf("wrong EOF, close matching quote\n"), NULL);
+			return (printf("wrong EOF, close matching quote\n"), NULL); // poxel ft_putstr_fd, u exit status
 		}
 		tmp = ft_strjoin(line, "\n");
 		line = ft_strjoin(tmp, next);

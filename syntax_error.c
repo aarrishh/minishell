@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 09:07:29 by arina             #+#    #+#             */
-/*   Updated: 2025/09/14 09:29:54 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:38:14 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ static int	check_redir(t_token *stack)
 
 int	check_syntax(t_token *stack)
 {
-    if (stack->type == PIPE)
-    {
-        syntax_error(stack->string);
-        return (2);
-    }
+	if (stack->type == PIPE)
+	{
+		syntax_error(stack->string);
+		return (2);
+	}
 	while (stack)
 	{
 		if (check_pipe(stack))

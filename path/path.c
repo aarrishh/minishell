@@ -6,7 +6,7 @@
 /*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 17:38:22 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:20:15 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,32 +106,32 @@ int	in_set(char *s, char c)
 	return (0);
 }
 
-void	parent_process_handling(pid_t pid, int *status, char **cmd)
-{
-	int	sig;
+// void	parent_process_handling(pid_t pid, int *status, char **cmd)
+// {
+// 	int	sig;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	if (waitpid(pid, status, 0) == -1)
-		perror("waitpid");
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
-	if (WIFEXITED(*status))
-		g_exit_status = WEXITSTATUS(*status);
-	else if (WIFSIGNALED(*status))
-	{
-		sig = WTERMSIG(*status);
-		g_exit_status = 128 + sig;
-		if (sig == SIGINT)
-			write(1, "\n", 1);
-		else if (sig == SIGQUIT)
-			write(1, "Quit: 3\n", 8);
-	}
-	if (g_exit_status == 127)
-	{
-		if (in_set(cmd[0], '/'))
-			error_msg_dir(cmd[0]);
-		else
-			error_msg(cmd[0]);
-	}
-}
+// 	signal(SIGINT, SIG_IGN);
+// 	signal(SIGQUIT, SIG_IGN);
+// 	if (waitpid(pid, status, 0) == -1)
+// 		perror("waitpid");
+// 	signal(SIGINT, sigint_handler);
+// 	signal(SIGQUIT, sigquit_handler);
+// 	if (WIFEXITED(*status))
+// 		g_exit_status = WEXITSTATUS(*status);
+// 	else if (WIFSIGNALED(*status))
+// 	{
+// 		sig = WTERMSIG(*status);
+// 		g_exit_status = 128 + sig;
+// 		if (sig == SIGINT)
+// 			write(1, "\n", 1);
+// 		else if (sig == SIGQUIT)
+// 			write(1, "Quit: 3\n", 8);
+// 	}
+// 	if (g_exit_status == 127)
+// 	{
+// 		if (in_set(cmd[0], '/'))
+// 			error_msg_dir(cmd[0]);
+// 		else
+// 			error_msg(cmd[0]);
+// 	}
+// }

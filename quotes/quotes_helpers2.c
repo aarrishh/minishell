@@ -3,41 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_helpers2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 18:13:22 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 10:32:48 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "quotes.h"
 
-void	expand_exit_status(t_new_line *line_st)
-{
-	char	*status_str;
-	int		a;
-
-	status_str = ft_itoa(g_exit_status);
-	if (!status_str)
-		return ;
-	a = 0;
-	while (status_str[a])
-	{
-		line_st->new[line_st->j] = status_str[a];
-		line_st->j++;
-		a++;
-	}
-	free(status_str);
-	line_st->i += 2;
-}
-
 void	handle_dollar(t_new_line *line_st, t_env **env)
 {
 	char	*value;
 	int		key_len;
 
-	if (line_st->line[line_st->i] == '$' && line_st->line[line_st->i
+	if (line_st->line[line_st->i] == '$' && line_st->line[line_st->i \
 		+ 1] == '?')
 	{
 		expand_exit_status(line_st);

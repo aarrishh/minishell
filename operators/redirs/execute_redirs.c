@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 16:58:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 10:13:32 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdlib.h>
-
-void	handle_wait_status(void)
-{
-	int	status;
-
-	waitpid(-1, &status, 0);
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		g_exit_status = 128 + WTERMSIG(status);
-	// g_exit_status = 127;
-	// wait(NULL);
-}
 
 void	execute_command(t_data *data, t_command *cmd_struct)
 {

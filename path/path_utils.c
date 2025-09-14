@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 18:23:55 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 15:41:44 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 10:17:56 by arina            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	is_directory(const char *path)
 		return (1);
 	return (0);
 }
+
 void	dir_error(char **path, char **envp, char **cmd)
 {
 	ft_putstr_fd(cmd[0], 2);
