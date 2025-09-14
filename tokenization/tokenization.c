@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/14 13:12:25 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:25:30 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,10 @@ int	check_string(char *str)
 		state = quote_state(state, str[i]);
 		if (state == NO_QUOTE)
 		{
-			if (str[i] == '>' && str[i + 1] == '>')
-				return (-2);
-			if (str[i] == '<' && str[i + 1] == '<')
-				return (-2);
-			if (str[i] == '>' || str[i] == '<' || str[i] == '|'
+			if ((str[i] == '<' && str[i + 1] == '<')
+				|| (str[i] == '>' && str[i + 1] == '>'))
+				return (i);
+			if (str[i] == '<' || str[i] == '>' || str[i] == '|'
 				|| str[i] == '&')
 				return (i);
 		}
@@ -112,14 +111,11 @@ void	validation(char **line, t_token **stack, t_env **env)
 			val.cur_ind = check_string(line[val.i] + val.j);
 			if (val.cur_ind == -1)
 			{
-				add_back(if_cur_ind_equal_minus_one(&val, line, env), stack);
+				flush_remainder(&val, line, env, stack);
 				break ;
 			}
-			if (val.cur_ind == -2)
-				val.cur_ind = 2;
-			else if (val.cur_ind == 0)
-				val.cur_ind = 1;
-			for_all_cases(&val, line, env, stack);
+			flush_word_before_op(&val, line, env, stack);
+			handle_operator(&val, line, stack);
 		}
 		val.i++;
 	}

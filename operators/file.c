@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 20:00:48 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 13:18:33 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:02:54 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,11 @@ int	find_and_open(char *filename, t_token_type type)
 
 void	handle_wait_status(void)
 {
-	int status;
+	int	status;
 
 	waitpid(-1, &status, 0);
 	if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		g_exit_status = 128 + WTERMSIG(status);
-	// g_exit_status = 127;
-	// wait(NULL);
 }

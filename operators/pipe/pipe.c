@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 12:11:55 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:09:09 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdio.h>
 
 static int	validate_cmd(t_token **tmp, char **f_cmd, int i, int num_cmds)
 {
@@ -48,7 +47,7 @@ static char	**malloc_help(int len)
 	return (f_cmd);
 }
 
-static void	wait_for_children(int num_cmds, int *exit_codes)
+void	wait_for_children(int num_cmds, int *exit_codes)
 {
 	int	i;
 	int	status;
@@ -98,60 +97,4 @@ char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 	}
 	f_cmd[i] = NULL;
 	return (f_cmd);
-}
-
-int	check_syntax(t_token *stack)
-{
-	if (!stack)
-		return (0);
-	if (stack->type == PIPE)
-	{
-		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-		return (-1);
-	}
-	while (stack)
-	{
-		if ((stack->type == REDIR_IN || stack->type == REDIR_OUT
-				|| stack->type == APPEND || stack->type == HEREDOC)
-			&& (!stack->next || stack->next->type != WORD))
-		{
-			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
-			return (-1);
-		}
-		if (stack->type == PIPE && (!stack->next || stack->next->type == PIPE))
-		{
-			ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-			return (-1);
-		}
-		stack = stack->next;
-	}
-	return (0);
-}
-
-void	execute_pipe(t_data *data)
-{
-	t_pipe_fd	fds;
-	char		**failed_cmds;
-	int			num_cmds;
-	int			exit_codes[4096];
-	int			i;
-
-	fds.prev_fd = 0;
-	num_cmds = count_segments(&data->stack, PIPE);
-	if (num_cmds >= 1024 || num_cmds == -1)
-		return ;
-	failed_cmds = fork_for_pipe(data, num_cmds, fds);
-	if (!failed_cmds || !*failed_cmds)
-		return ;
-	wait_for_children(num_cmds, exit_codes);
-	i = -1;
-	while (++i < num_cmds)
-	{
-		if (failed_cmds)
-		{
-			if (exit_codes[i] == 127)
-				error_msg(failed_cmds[i]);
-		}
-	}
-	free_array(failed_cmds);
 }

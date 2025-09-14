@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:50:18 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 13:04:44 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:12:26 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,6 @@ void	child_process_execution(t_env **env, char **cmd)
 		dir_error(&path, envp, cmd);
 	if (execve(path, cmd, envp) == -1)
 		execve_case(cmd[0], &path, envp);
-}
-
-int	in_set(char *s, char c)
-{
-	while (*s)
-	{
-		if (*s == c)
-			return (1);
-		s++;
-	}
-	return (0);
 }
 
 void	parent_process_handling(pid_t pid, int *status, char **cmd)

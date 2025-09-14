@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_fork.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 12:29:52 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:03:30 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdio.h>
-#include <unistd.h>
 
 void	child_fd_setup(t_pipe_fd *fds)
 {

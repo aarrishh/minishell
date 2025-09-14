@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:53:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 12:57:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:15:57 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,12 @@ void	error_msg_dir(char *quote_line)
 	ft_putstr_fd(tmp, 2);
 	free(tmp);
 	g_exit_status = 127;
+}
+
+int	get_operator_length(char *s)
+{
+	if ((s[0] == '<' && s[1] == '<')
+		|| (s[0] == '>' && s[1] == '>'))
+		return (2);
+	return (1);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/14 12:42:35 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/14 16:27:02 by arimanuk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,10 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c path/path.c path/path_utils.c tokenization/tokenization.c \
+SRCS = main.c list.c functions.c functions_utils.c path/path.c path/path_utils.c tokenization/tokenization.c \
 		tokenization/init_tokens_type.c quotes/quotes.c quotes/quotes_len.c \
 		quotes/quotes_helpers.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
 		quotes/quotes_split.c built-in/built_in.c built-in/exit.c built-in/cd_utils.c \
@@ -30,10 +30,9 @@ SRCS = main.c list.c functions.c path/path.c path/path_utils.c tokenization/toke
 		operators/redirs/redir_cmd.c operators/redirs/execute_redirs.c \
 		operators/redirs/redir_helpers.c operators/heredoc.c \
 		operators/pipe/pipe.c operators/pipe/pipe_fork.c operators/pipe/pipe_helper.c \
-		operators/file.c
+		operators/file.c operators/pipe/pipe_utils.c operators/redirs/redir_utils.c
 		
-OBJDIR = obj
-OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
+OBJS = $(SRCS:.c=.o)
 
 YELLOW = \033[0;33m
 PB := \033[38;2;255;204;213m
@@ -54,14 +53,13 @@ $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@echo "$(HOT_PINK) [OK]$(RESET) libft done."
 
-$(OBJDIR)/%.o: %.c minishell.h Makefile
-	@mkdir -p $(dir $@)
+%.o: %.c minishell.h Makefile
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@echo "$(YELLOW)[CLEAN]$(RESET) Removing object files..."
 	@make --no-print-directory -C $(LIBFT_DIR) clean
-	@rm -rf $(OBJDIR)
+	@rm -f $(OBJS)
 	@echo "$(HOT_PINK) [OK]$(RESET) Clean done."
 
 fclean: clean

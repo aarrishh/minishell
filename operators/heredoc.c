@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 13:21:01 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 15:54:04 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,6 @@ void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 	if (cmd_struct->input != 0)
 		close(cmd_struct->input);
 	cmd_struct->input = open(filename, O_RDONLY);
-	free(filename);
+	cmd_struct->heredoc = filename;
 	*tmp = (*tmp)->next;
 }
