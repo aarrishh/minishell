@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/14 19:29:19 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:43:37 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ char	*change_tsilda_to_home(char *str, t_env *env)
 	char	*result;
 
 	home = ft_strdup(ft_strchr(str, '/'));
-	target = get_env_value(env, "HOME");
+	target = ft_strdup(get_env_value(env, "HOME"));
 	if (home)
+	{
 		result = ft_strjoin(target, home);
+		free(target);
+	}
 	else
 		return (target);
 	free(home);
@@ -35,18 +38,18 @@ void	cd_command(t_token *stack, t_env **env)
 
 	old_pwd = get_env_value(*env, "PWD");
 	if (!stack->next)
-		target = get_env_value(*env, "HOME");
+		target = ft_strdup(get_env_value(*env, "HOME"));
 	else if (ft_strcmp(stack->next->string, "-") == 0)
-		target = get_env_value(*env, "OLDPWD");
+		target = ft_strdup(get_env_value(*env, "OLDPWD"));
 	else if (stack->next->string[0] == '~')
 		target = change_tsilda_to_home(stack->next->string, *env);
 	else
-		target = stack->next->string;
+		target = ft_strdup(stack->next->string);
 	if (!target || chdir(target) != 0)
 	{
 		print_cd_error(target);
 		g_exit_status = 1;
-		return (free (target));
+		return (free(target));
 	}
 	update_env_new_and_old_pwd(env, old_pwd, &target);
 	g_exit_status = 0;

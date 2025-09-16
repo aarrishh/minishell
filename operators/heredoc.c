@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 18:50:42 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:14:16 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,27 @@ void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 {
 	char	*delim;
 	char	*filename;
+	pid_t	pid;
+	int		status;
 
+	filename = NULL;
 	if (!(*tmp)->next || !(*tmp)->next->string || !*(*tmp)->next->string)
 		delim = "";
 	else
 		delim = (*tmp)->next->string;
-	filename = read_heredoc_loop(&data->env, delim, i);
-	if (cmd_struct->input != 0)
-		close(cmd_struct->input);
-	cmd_struct->input = open(filename, O_RDONLY);
-	cmd_struct->heredoc = filename;
-	*tmp = (*tmp)->next;
+	pid = fork();
+	if (pid < 0)
+		return ;
+	else if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		filename = read_heredoc_loop(&data->env, delim, i);
+		exit(0);
+	}
+	else
+	{
+		wait_sig_hd(pid, &status);
+		wait_hereoc(cmd_struct, filename, i);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 19:28:47 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:17:07 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ typedef struct s_command
 
 // Operations functions
 char		*create_file(int i, int *fd);
+void		mer_verjin_huys(t_command *cmd_struct);
+void		wait_hereoc(t_command *cmd_struct, char *filename, int i);
+void		wait_sig_hd(pid_t pid, int *status);
 int			check_syntax(t_token *stack);
 void		execute_pipe(t_data *data);
 char		*get_first_word(t_token *tmp);
@@ -108,10 +111,10 @@ void		check_type_red_in(char *str, t_token **stack);
 void		check_type_red_out(char *str, t_token **stack);
 void		check_type_heredoc(char *str, t_token **stack);
 void		check_type_append(char *str, t_token **stack);
-void		flush_word_before_op(t_val *val, char **line,
-				t_env **env, t_token **stack);
-void		flush_remainder(t_val *val, char **line,
-				t_env **env, t_token **stack);
+void		flush_word_before_op(t_val *val, char **line, t_env **env,
+				t_token **stack);
+void		flush_remainder(t_val *val, char **line, t_env **env,
+				t_token **stack);
 void		handle_operator(t_val *val, char **line, t_token **stack);
 t_token		*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env);
 void		for_all_cases(t_val *val, char **line, t_env **env,
@@ -126,7 +129,8 @@ void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
 void		*export_command(t_data *data, t_token *stack);
 void		cd_command(t_token *stack, t_env **env);
-void		update_env_new_and_old_pwd(t_env **env, char *old_pwd, char **target);
+void		update_env_new_and_old_pwd(t_env **env, char *old_pwd,
+				char **target);
 void		print_cd_error(char *target);
 void		built_in_functions(t_data *data, t_token **stack, char *string);
 void		unset_command(t_data *data);

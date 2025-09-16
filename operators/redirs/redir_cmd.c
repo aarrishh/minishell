@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 19:05:02 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:13:45 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ static int	handle_token(t_data *data, t_token **tmp, t_command *cmd_s, int *i)
 		return (handle_redir_out(cmd_s, tmp));
 	else if ((*tmp)->type == HEREDOC && (*tmp)->next
 		&& (*tmp)->next->type == WORD)
+	{
 		handle_heredoc(data, cmd_s, tmp, (*i)++);
+		*tmp = (*tmp)->next;
+	}
 	else
 	{
 		error_nl_or_type(cmd_s, (*tmp)->next);
@@ -73,14 +76,6 @@ void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_s)
 		if (handle_token(data, &tmp, cmd_s, &i) == -1)
 			return ;
 		tmp = tmp->next;
-	}
-}
-void	mer_verjin_huys(t_command *cmd_struct)
-{
-	if (cmd_struct->heredoc)
-	{
-		unlink(cmd_struct->heredoc);
-		free(cmd_struct->heredoc);
 	}
 }
 
