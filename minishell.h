@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 17:28:04 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:35:57 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void		wait_for_children(int num_cmds, int *exit_codes);
 // Path functions
 void		execve_case(char *cmd, char **path, char **envp);
 int			is_directory(const char *path);
-void		error_msg_dir(char *quote_line);
+void		error_msg_dir(char *str);
 void		dir_error(char **path, char **envp, char **cmd);
 
 #endif
