@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 20:00:48 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 16:02:54 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:11:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,13 @@ void	handle_wait_status(void)
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		g_exit_status = 128 + WTERMSIG(status);
+}
+
+void	mer_verjin_huys(t_command *cmd_struct)
+{
+	if (cmd_struct->heredoc)
+	{
+		unlink(cmd_struct->heredoc);
+		free(cmd_struct->heredoc);
+	}
 }

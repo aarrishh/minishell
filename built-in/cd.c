@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/14 19:29:19 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:06:26 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ void	cd_command(t_token *stack, t_env **env)
 
 	old_pwd = get_env_value(*env, "PWD");
 	if (!stack->next)
-		target = get_env_value(*env, "HOME");
+		target = ft_strdup(get_env_value(*env, "HOME"));
 	else if (ft_strcmp(stack->next->string, "-") == 0)
-		target = get_env_value(*env, "OLDPWD");
+		target = ft_strdup(get_env_value(*env, "OLDPWD"));
 	else if (stack->next->string[0] == '~')
-		target = change_tsilda_to_home(stack->next->string, *env);
+		target = ft_strdup(change_tsilda_to_home(stack->next->string, *env));
 	else
-		target = stack->next->string;
+		target = ft_strdup(stack->next->string);
 	if (!target || chdir(target) != 0)
 	{
 		print_cd_error(target);

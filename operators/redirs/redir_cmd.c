@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 19:05:02 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:11:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,6 @@ void	loop_over_execute(t_data *data, t_token *stack, t_command *cmd_s)
 		if (handle_token(data, &tmp, cmd_s, &i) == -1)
 			return ;
 		tmp = tmp->next;
-	}
-}
-void	mer_verjin_huys(t_command *cmd_struct)
-{
-	if (cmd_struct->heredoc)
-	{
-		unlink(cmd_struct->heredoc);
-		free(cmd_struct->heredoc);
 	}
 }
 
