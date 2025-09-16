@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:53:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 16:15:57 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:35:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	check_valid_dollar(char chr)
 			&& chr <= 'z'));
 }
 
-void	error_msg(char *quote_line)
+void	error_msg(char *str)
 {
 	char	*tmp;
 
-	tmp = ft_strjoin(quote_line, ": command not found\n");
+	tmp = ft_strjoin(str, ": command not found\n");
 	if (!tmp)
 		return ;
 	ft_putstr_fd(tmp, 2);
@@ -30,11 +30,11 @@ void	error_msg(char *quote_line)
 	g_exit_status = 127;
 }
 
-void	error_msg_dir(char *quote_line)
+void	error_msg_dir(char *str)
 {
 	char	*tmp;
 
-	tmp = ft_strjoin(quote_line, ": No such file or directory\n");
+	tmp = ft_strjoin(str, ": No such file or directory\n");
 	if (!tmp)
 		return ;
 	ft_putstr_fd(tmp, 2);

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 16:17:07 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:14:42 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_command
 
 // Operations functions
 char		*create_file(int i, int *fd);
-void		mer_verjin_huys(t_command *cmd_struct);
 void		wait_hereoc(t_command *cmd_struct, char *filename, int i);
 void		wait_sig_hd(pid_t pid, int *status);
 int			check_syntax(t_token *stack);
@@ -77,7 +76,8 @@ char		*expand_heredoc(char **line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
-char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
+void		read_heredoc_loop(t_env **env, char *delimiter, int i,
+				char **filename);
 int			operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_command *cmd_s, t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
@@ -90,6 +90,7 @@ int			open_rdirin(char *filename);
 char		**add_cmd(t_command *cmd_struct, t_token *tmp);
 char		**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds);
 void		init_cmd(t_command *cmd_struct);
+void		mer_verjin_huys(t_command *cmd_struct);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -149,7 +150,7 @@ void		change_shlvl_value(t_env **env, char **cmd);
 char		*get_env_value(t_env *env, char *key);
 t_env		*new_node(char *key, char *value);
 t_env		*add_env_to_list(char **envp);
-t_token		*create_node(char *res);
+t_token		*create_node(char **res);
 t_env		*copy_env_for_print(t_env *env);
 char		**env_to_envp(t_env *env);
 
@@ -182,7 +183,7 @@ void		wait_for_children(int num_cmds, int *exit_codes);
 // Path functions
 void		execve_case(char *cmd, char **path, char **envp);
 int			is_directory(const char *path);
-void		error_msg_dir(char *quote_line);
+void		error_msg_dir(char *str);
 void		dir_error(char **path, char **envp, char **cmd);
 
 #endif

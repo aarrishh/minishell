@@ -6,19 +6,18 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 16:14:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:14:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*read_heredoc_loop(t_env **env, char *delimiter, int i)
+void	read_heredoc_loop(t_env **env, char *delimiter, int i, char **filename)
 {
-	char	*filename;
 	char	*line;
 	int		fd;
 
-	filename = create_file(i, &fd);
+	*filename = create_file(i, &fd);
 	while (1)
 	{
 		line = readline("> ");
@@ -38,7 +37,6 @@ char	*read_heredoc_loop(t_env **env, char *delimiter, int i)
 		free(line);
 	}
 	close(fd);
-	return (filename);
 }
 
 int	heredoc_expand_len(char *line, t_env **env)
@@ -121,7 +119,7 @@ void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		filename = read_heredoc_loop(&data->env, delim, i);
+		read_heredoc_loop(&data->env, delim, i, &filename);
 		exit(0);
 	}
 	else

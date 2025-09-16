@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 17:47:51 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:25:36 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,10 @@ void	start_dquotes(char *line, t_data *data)
 			return ;
 		error_msg(quote_line);
 		g_exit_status = 127;
-		free(line);
 		free(quote_line);
 	}
 	else if (state == NO_QUOTE)
-	{
 		data->split = split_for_quotes(line, ' ');
-		free(line);
-	}
 }
 
 char	*open_dquote(t_quote_state state, char *line)
@@ -86,6 +82,7 @@ char	*open_dquote(t_quote_state state, char *line)
 	char	*next;
 	char	*without_quote_line;
 	char	*tmp;
+	char	*urish;
 
 	while (1)
 	{
@@ -97,13 +94,13 @@ char	*open_dquote(t_quote_state state, char *line)
 			return (NULL);
 		}
 		tmp = ft_strjoin(line, "\n");
-		line = ft_strjoin(tmp, next);
+		urish = ft_strjoin(tmp, next);
 		free(tmp);
 		free(next);
-		if (is_quote_closed(line))
+		if (is_quote_closed(urish))
 			break ;
 	}
-	without_quote_line = cut_quotes(line, state);
+	without_quote_line = cut_quotes(urish, state);
 	return (without_quote_line);
 }
 
