@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:10:26 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/14 16:14:45 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:28:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	handle_operator(t_val *val, char **line, t_token **stack)
 
 	oplen = get_operator_length(line[val->i] + val->j);
 	op = ft_substr(line[val->i], val->j, oplen);
-	node = create_node(op);
+	node = create_node(&op);
 	add_back(node, stack);
 	val->j += oplen;
 }

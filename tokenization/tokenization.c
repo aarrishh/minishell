@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/14 16:25:30 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:28:33 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 		return (NULL);
 	}
 	free(val->substr);
-	node = create_node(val->expanded);
+	node = create_node(&(val->expanded));
 	node->quote = 1;
 	return (node);
 }
@@ -91,7 +91,7 @@ void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
 		return ;
 	}
 	free(val->substr);
-	node = create_node(val->expanded);
+	node = create_node(&(val->expanded));
 	add_back(node, stack);
 	val->j += val->cur_ind;
 }

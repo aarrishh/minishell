@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 12:36:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 19:53:37 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:15:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,14 @@ void	free_stack(t_token **stack)
 	{
 		tmp = (*stack)->next;
 		if ((*stack)->string)
+		{
 			free((*stack)->string);
+			(*stack)->string = NULL;
+		}
 		free(*stack);
 		*stack = tmp;
 	}
+	*stack = NULL;
 }
 
 void	free_all(t_env **env, t_token **stack, char **split)

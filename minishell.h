@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 16:27:21 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 17:28:04 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void		change_shlvl_value(t_env **env, char **cmd);
 char		*get_env_value(t_env *env, char *key);
 t_env		*new_node(char *key, char *value);
 t_env		*add_env_to_list(char **envp);
-t_token		*create_node(char *res);
+t_token		*create_node(char **res);
 t_env		*copy_env_for_print(t_env *env);
 char		**env_to_envp(t_env *env);
 
