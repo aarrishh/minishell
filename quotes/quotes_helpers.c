@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:53:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:29:44 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 16:15:57 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,10 @@ void	error_msg_dir(char *quote_line)
 	g_exit_status = 127;
 }
 
-void	expand_exit_status(t_new_line *line_st)
+int	get_operator_length(char *s)
 {
-	char	*status_str;
-	int		a;
-
-	status_str = ft_itoa(g_exit_status);
-	if (!status_str)
-		return ;
-	a = 0;
-	while (status_str[a])
-	{
-		line_st->new[line_st->j] = status_str[a];
-		line_st->j++;
-		a++;
-	}
-	free(status_str);
-	line_st->i += 2;
+	if ((s[0] == '<' && s[1] == '<')
+		|| (s[0] == '>' && s[1] == '>'))
+		return (2);
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:26:22 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 17:47:51 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	return (new);
 }
 
-int	start_dquotes(char **line, t_data *data)
+void	start_dquotes(char *line, t_data *data)
 {
 	int				i;
 	t_quote_state	state;
@@ -62,25 +62,23 @@ int	start_dquotes(char **line, t_data *data)
 
 	i = 0;
 	state = NO_QUOTE;
-	while ((*line)[i])
-		state = quote_state(state, (*line)[i++]);
+	while (line[i])
+		state = quote_state(state, line[i++]);
 	if (state != NO_QUOTE)
 	{
-		quote_line = open_dquote(state, *line);
+		quote_line = open_dquote(state, line);
 		if (!quote_line)
-			return (0);
+			return ;
 		error_msg(quote_line);
 		g_exit_status = 127;
-		free(*line);
+		free(line);
 		free(quote_line);
-		return (0);
 	}
 	else if (state == NO_QUOTE)
 	{
-		data->split = split_for_quotes(*line, ' ');
-		free(*line);
+		data->split = split_for_quotes(line, ' ');
+		free(line);
 	}
-	return (1);
 }
 
 char	*open_dquote(t_quote_state state, char *line)
@@ -88,19 +86,15 @@ char	*open_dquote(t_quote_state state, char *line)
 	char	*next;
 	char	*without_quote_line;
 	char	*tmp;
-	char	*prompt;
 
-	if (state == IN_SINGLE)
-		prompt = "quote> ";
-	else if (state == IN_DOUBLE)
-		prompt = "dquote> ";
 	while (1)
 	{
-		next = readline(prompt);
+		next = readline("> ");
 		if (!next)
 		{
 			g_exit_status = 2;
-			return (printf("wrong EOF, close matching quote\n"), NULL); // poxel ft_putstr_fd, u exit status
+			ft_putstr_fd("wrong EOF, close matching quote\n", 2);
+			return (NULL);
 		}
 		tmp = ft_strjoin(line, "\n");
 		line = ft_strjoin(tmp, next);

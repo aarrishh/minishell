@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:31:18 by arina             #+#    #+#             */
-/*   Updated: 2025/09/13 17:52:40 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/16 13:07:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_cd_error(char *target)
 {
 	ft_putstr_fd("minishell: cd ", 2);
 	ft_putstr_fd(target, 2);
-	ft_putstr_fd("No such file or directory\n", 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 }
 
 char	*get_env_value(t_env *env, char *key)
@@ -47,10 +47,11 @@ void	update_env_value(t_env **env, char *key, char *update_value)
 	}
 }
 
-void	update_env_new_and_old_pwd(t_env **env, char *old_pwd)
+void	update_env_new_and_old_pwd(t_env **env, char *old_pwd, char **target)
 {
 	char	*new_pwd;
 
+	free (*target);
 	if (old_pwd)
 		update_env_value(env, "OLDPWD", old_pwd);
 	new_pwd = getcwd(NULL, 0);

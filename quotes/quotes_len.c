@@ -3,30 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:56:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:31:32 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 12:59:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "quotes.h"
 
-static int	length(int n)
+t_quote_state	handle_double_quote_len(char *line, int *i, int *len,
+		t_env **env)
 {
-	int	count;
-
-	count = 0;
-	if (n < 10)
-		return (1);
-	count = 1;
-	while (n > 0)
+	(*i)++;
+	while (line[*i] && line[*i] != '"')
 	{
-		n /= 10;
-		count++;
+		if (line[*i] == '$')
+			handle_len_dollar(line, i, len, env);
+		else
+		{
+			(*len)++;
+			(*i)++;
+		}
 	}
-	return (count);
+	if (line[*i] == '"')
+		(*i)++;
+	return (NO_QUOTE);
+}
+
+int	len_without_quote(char *line, t_quote_state state)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (line[i])
+	{
+		if (state == IN_SINGLE && line[i] == '\'')
+			i++;
+		else if (state == IN_DOUBLE && line[i] == '"')
+			i++;
+		else
+		{
+			len++;
+			i++;
+		}
+	}
+	return (len);
 }
 
 void	handle_len_dollar(char *line, int *i, int *len, t_env **env)

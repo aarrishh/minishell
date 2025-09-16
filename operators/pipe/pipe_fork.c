@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_fork.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/13 23:03:38 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:03:30 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,14 @@ void	child_fd_setup(t_pipe_fd *fds)
 	}
 }
 
-int	check_pipe(t_token **stack)
-{
-	t_token	*tmp;
-
-	tmp = *stack;
-	while (tmp)
-	{
-		if (tmp->type != WORD && tmp->next->type == PIPE)
-		{
-			ft_putstr_fd("minishell", 2);
-			ft_putstr_fd(": syntax error near unexpected token `|'\n", 2);
-			return (-1);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
 void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 {
+	int	i;
+
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	child_fd_setup(fds);
+	i = 0;
 	if (tmp && (has_operator(tmp, REDIR_IN) || has_operator(tmp, REDIR_OUT)
 			|| has_operator(tmp, APPEND) || has_operator(tmp, HEREDOC)))
 	{
@@ -57,7 +42,7 @@ void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 			exit(1);
 		exit(0);
 	}
-	else if (cmd[0] && is_builtin_cmd(tmp->string))
+	else if (cmd[0] && is_builtin_cmd(cmd[0]))
 	{
 		built_in_functions(data, &tmp, tmp->string);
 		exit(0);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arina <arina@student.42.fr>                +#+  +:+       +#+         #
+#    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/14 10:35:14 by arina            ###   ########.fr        #
+#    Updated: 2025/09/16 12:39:36 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,12 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c path/path.c path/path_utils.c tokenization/tokenization.c \
-		path/signal_for_path.c tokenization/init_tokens_type.c quotes/quotes.c quotes/quotes_len.c \
-		quotes/quotes_helpers.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c quotes/quotes_len1.c \
+SRCS = main.c list.c functions.c functions_utils.c path/path.c path/path_utils.c tokenization/tokenization.c \
+		tokenization/init_tokens_type.c quotes/quotes.c quotes/quotes_len.c \
+		quotes/quotes_helpers.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
 		quotes/quotes_split.c built-in/built_in.c built-in/exit.c built-in/cd_utils.c \
 		built-in/cd.c built-in/pwd.c built-in/echo.c built-in/unset.c \
 		built-in/env.c built-in/export/check.c built-in/export/find_and_return.c \
@@ -30,8 +30,8 @@ SRCS = main.c list.c functions.c path/path.c path/path_utils.c tokenization/toke
 		operators/redirs/redir_cmd.c operators/redirs/execute_redirs.c \
 		operators/redirs/redir_helpers.c operators/heredoc.c \
 		operators/pipe/pipe.c operators/pipe/pipe_fork.c operators/pipe/pipe_helper.c \
-		operators/file.c syntax_error.c functions_utils.c
-		
+		operators/file.c operators/pipe/pipe_utils.c operators/redirs/redir_utils.c
+
 OBJDIR = obj
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 19:19:45 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/14 18:50:42 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ char	*read_heredoc_loop(t_env **env, char *delimiter, int i)
 			break ;
 		}
 		if (check_dollar_hd(line))
-			line = expand_heredoc(line, env);
-		if (line && delimiter && ft_strcmp(line, delimiter) == 0)
+			line = expand_heredoc(&line, env);
+		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
@@ -61,17 +61,17 @@ int	heredoc_expand_len(char *line, t_env **env)
 	return (len);
 }
 
-char	*expand_heredoc(char *line, t_env **env)
+char	*expand_heredoc(char **line, t_env **env)
 {
 	char		*new;
 	t_new_line	line_st;
 	int			len;
 
-	len = heredoc_expand_len(line, env);
+	len = heredoc_expand_len(*line, env);
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
-	line_st.line = line;
+	line_st.line = *line;
 	line_st.new = new;
 	line_st.i = 0;
 	line_st.j = 0;
@@ -82,6 +82,8 @@ char	*expand_heredoc(char *line, t_env **env)
 		else
 			keep_char(&line_st);
 	}
+	line_st.new[line_st.j] = '\0';
+	free(*line);
 	return (new);
 }
 
@@ -102,13 +104,17 @@ int	check_dollar_hd(char *line)
 void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 		int i)
 {
+	char	*delim;
 	char	*filename;
 
-	filename = read_heredoc_loop(&data->env, (*tmp)->next->string, i);
+	if (!(*tmp)->next || !(*tmp)->next->string || !*(*tmp)->next->string)
+		delim = "";
+	else
+		delim = (*tmp)->next->string;
+	filename = read_heredoc_loop(&data->env, delim, i);
 	if (cmd_struct->input != 0)
 		close(cmd_struct->input);
 	cmd_struct->input = open(filename, O_RDONLY);
-	// delete after shell exits
-	free(filename);
+	cmd_struct->heredoc = filename;
 	*tmp = (*tmp)->next;
 }

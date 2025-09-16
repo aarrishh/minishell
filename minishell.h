@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:35:54 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/16 13:22:41 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,12 @@ typedef struct s_command
 	int		execute;
 	int		input;
 	int		output;
+	char	*heredoc;
 }			t_command;
 
 // Operations functions
 char		*create_file(int i, int *fd);
+int			check_syntax(t_token *stack);
 void		execute_pipe(t_data *data);
 char		*get_first_word(t_token *tmp);
 int			fork_and_get_cmd(t_data *data, t_pipe_fd *fds, t_token **tmp);
@@ -68,7 +70,7 @@ void		handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 				int i);
 void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
-char		*expand_heredoc(char *line, t_env **env);
+char		*expand_heredoc(char **line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
@@ -83,6 +85,9 @@ void		dup_for_redirs(t_command *cmd_struct);
 void		exec_external_command(t_data *data, char **cmd);
 int			open_rdirin(char *filename);
 char		**add_cmd(t_command *cmd_struct, t_token *tmp);
+char		**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds);
+void		init_cmd(t_command *cmd_struct);
+void		mer_verjin_huys(t_command *cmd_struct);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -93,18 +98,26 @@ void		add_back(t_token *node, t_token **a);
 int			ft_atol(const char *str, long long *result);
 int			ft_strcmp(char *s1, char *s2);
 int			ft_strlen(const char *str);
-int			is_space(char *str);
-int			check_long_number(long long *res, int sign, char c);
+int			length(int n);
+int			in_set(char *s, char c);
 
 // Tokenization functions
 void		validation(char **line, t_token **stack, t_env **env);
-int			init_tokens_type(t_token **stack, char **split);
+void		init_tokens_type(t_token **stack);
 void		check_type_pipe(char *str, t_token **stack);
 void		check_type_red_in(char *str, t_token **stack);
 void		check_type_red_out(char *str, t_token **stack);
 void		check_type_heredoc(char *str, t_token **stack);
 void		check_type_append(char *str, t_token **stack);
-int			check_syntax(t_token *stack);
+void		flush_word_before_op(t_val *val, char **line, t_env **env,
+				t_token **stack);
+void		flush_remainder(t_val *val, char **line, t_env **env,
+				t_token **stack);
+void		handle_operator(t_val *val, char **line, t_token **stack);
+t_token		*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env);
+void		for_all_cases(t_val *val, char **line, t_env **env,
+				t_token **stack);
+int			get_operator_length(char *s);
 
 // Built-in functions
 void		exit_command(t_token **stack, t_env **env, char **split);
@@ -114,7 +127,8 @@ void		env_command(t_env *env, t_token *stack);
 void		*echo_command(t_token **stack);
 void		*export_command(t_data *data, t_token *stack);
 void		cd_command(t_token *stack, t_env **env);
-void		update_env_new_and_old_pwd(t_env **env, char *old_pwd);
+void		update_env_new_and_old_pwd(t_env **env, char *old_pwd,
+				char **target);
 void		print_cd_error(char *target);
 void		built_in_functions(t_data *data, t_token **stack, char *string);
 void		unset_command(t_data *data);
@@ -161,12 +175,12 @@ void		sigquit_handler(int sig);
 void		parent_process_handling(pid_t pid, int *status, char **cmd);
 void		child_process_execution(t_env **env, char **cmd);
 void		handle_wait_status(void);
+void		wait_for_children(int num_cmds, int *exit_codes);
 
 // Path functions
 void		execve_case(char *cmd, char **path, char **envp);
 int			is_directory(const char *path);
 void		error_msg_dir(char *quote_line);
 void		dir_error(char **path, char **envp, char **cmd);
-int			in_set(char *s, char c);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 21:05:26 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:16:59 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 17:46:57 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ char	**add_arg_to_cmd(char **cmd_arg, char *str)
 	i = -1;
 	if (!str)
 		return (cmd_arg);
-	if (cmd_arg)
-		while (cmd_arg[len])
-			len++; //leni funkcia kanchenq
+	len = two_dim_len(cmd_arg);
 	new = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new)
 		return (NULL);

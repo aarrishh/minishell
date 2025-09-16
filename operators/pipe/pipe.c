@@ -3,15 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 19:33:43 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:11:18 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 16:09:09 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdio.h>
+
+static int	validate_cmd(t_token **tmp, char **f_cmd, int i, int num_cmds)
+{
+	if (!*tmp)
+		return (0);
+	f_cmd[i] = ft_strdup(get_first_word(*tmp));
+	if (!f_cmd[i])
+		return (-1);
+	if (i == num_cmds - 1)
+		return (1);
+	return (0);
+}
+
+void	loop_till_pipe(t_token **tmp)
+{
+	if (*tmp)
+	{
+		while ((*tmp) && (*tmp)->type != PIPE)
+			(*tmp) = (*tmp)->next;
+	}
+}
 
 static char	**malloc_help(int len)
 {
@@ -27,47 +47,7 @@ static char	**malloc_help(int len)
 	return (f_cmd);
 }
 
-char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
-{
-	t_token	*tmp;
-	char	**f_cmd;
-	int		i;
-
-	i = 0;
-	tmp = data->stack;
-	f_cmd = malloc_help(num_cmds);
-	if (!f_cmd)
-		return (NULL);
-	while (i < num_cmds)
-	{
-		if (tmp->type == PIPE)
-		{
-			if (!tmp->next || tmp->next->type == PIPE)
-			{
-				return (ft_putstr_fd("minishell: syntax error\n", 2),
-					free_array(f_cmd), NULL); // es pahy petqa hanenq
-			}
-			tmp = tmp->next;
-		}
-		f_cmd[i] = ft_strdup(get_first_word(tmp));
-		if (i < num_cmds - 1)
-			pipe(fds.pfd);
-		fds.last_cmd = (i == num_cmds - 1);
-		if (fork_and_get_cmd(data, &fds, &tmp) == -1)
-		{
-			if (f_cmd)
-				free_array(f_cmd);
-			return (NULL);
-		}
-		while (tmp && tmp->type != PIPE)
-			tmp = tmp->next;
-		i++;
-	}
-	f_cmd[i] = NULL;
-	return (f_cmd);
-}
-
-static void	wait_for_children(int num_cmds, int *exit_codes)
+void	wait_for_children(int num_cmds, int *exit_codes)
 {
 	int	i;
 	int	status;
@@ -90,29 +70,31 @@ static void	wait_for_children(int num_cmds, int *exit_codes)
 	}
 }
 
-void	execute_pipe(t_data *data)
+char	**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds)
 {
-	t_pipe_fd	fds;
-	char		**failed_cmds;
-	int			num_cmds;
-	int			exit_codes[4096];
-	int			i;
+	t_token	*tmp;
+	char	**f_cmd;
+	int		i;
 
-	fds.prev_fd = 0;
-	num_cmds = count_segments(&data->stack, PIPE);
-	failed_cmds = fork_for_pipe(data, num_cmds, fds);
-	if (!failed_cmds || !*failed_cmds)
-		return ;
-	wait_for_children(num_cmds, exit_codes);
+	tmp = data->stack;
+	f_cmd = malloc_help(num_cmds);
+	if (!f_cmd)
+		return (NULL);
 	i = 0;
 	while (i < num_cmds)
 	{
-		if (failed_cmds)
-		{
-			if (exit_codes[i] == 127)
-				error_msg(failed_cmds[i]);
-		}
+		if (tmp->type == PIPE && tmp->next)
+			tmp = tmp->next;
+		if (validate_cmd(&tmp, f_cmd, i, num_cmds) == -1)
+			return (free_array(f_cmd), NULL);
+		if (i < num_cmds - 1)
+			pipe(fds.pfd);
+		fds.last_cmd = (i == num_cmds - 1);
+		if (fork_and_get_cmd(data, &fds, &tmp) == -1)
+			return (free_array(f_cmd), NULL);
+		loop_till_pipe(&tmp);
 		i++;
 	}
-	free_array(failed_cmds);
+	f_cmd[i] = NULL;
+	return (f_cmd);
 }

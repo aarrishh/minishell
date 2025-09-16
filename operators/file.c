@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 20:00:48 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/12 23:09:07 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:11:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	read_from_file(t_env **env, char *filename, char **cmd)
 	fd = open(filename, O_RDONLY);
 	if (dup2(fd, 0) == -1)
 	{
-		// perror("minishell: dup2");
+		perror("minishell: dup2");
 		exit(127);
 	}
 	close(fd);
@@ -60,4 +60,24 @@ int	find_and_open(char *filename, t_token_type type)
 		return (-1);
 	}
 	return (fd);
+}
+
+void	handle_wait_status(void)
+{
+	int	status;
+
+	waitpid(-1, &status, 0);
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+}
+
+void	mer_verjin_huys(t_command *cmd_struct)
+{
+	if (cmd_struct->heredoc)
+	{
+		unlink(cmd_struct->heredoc);
+		free(cmd_struct->heredoc);
+	}
 }

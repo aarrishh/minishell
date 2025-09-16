@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/09/10 21:03:43 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/14 17:49:38 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	exit_command_print_function(t_token *tmp, long long num)
 	}
 	else
 	{
-		printf("exit\n"),
+		ft_putendl_fd("exit", 1);
 		g_exit_status = num % 256;
 		rl_clear_history();
 		exit(num % 256);

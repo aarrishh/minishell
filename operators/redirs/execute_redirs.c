@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arina <arina@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 10:13:32 by arina            ###   ########.fr       */
+/*   Updated: 2025/09/16 13:10:47 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	execute_command(t_data *data, t_command *cmd_struct)
 	saved_out = -1;
 	if (cmd_struct->execute == -1)
 		return ;
-	if (cmd_struct->cmd[0] && is_builtin_cmd(cmd_struct->cmd[0]))
+	if (cmd_struct->cmd && cmd_struct->cmd[0]
+		&& is_builtin_cmd(cmd_struct->cmd[0]))
 	{
 		builtin_redirs(cmd_struct, &saved_in, &saved_out);
 		built_in_functions(data, &data->stack, cmd_struct->cmd[0]);
@@ -57,8 +58,10 @@ void	redirs_child(t_data *data, t_command *cmd_struct)
 	char	*path;
 	char	**envp;
 
+	path = NULL;
 	dup_for_redirs(cmd_struct);
-	path = split_path(&data->env, cmd_struct->cmd[0]);
+	if (cmd_struct->cmd)
+		path = split_path(&data->env, cmd_struct->cmd[0]);
 	if (!path)
 		exit(127);
 	envp = env_to_envp(data->env);
@@ -102,7 +105,7 @@ void	dup_for_redirs(t_command *cmd_struct)
 	{
 		if (dup2(cmd_struct->input, 0) == -1)
 		{
-			// do we need error check?
+			perror("dup2 output");
 			close(cmd_struct->input);
 			return ;
 		}
@@ -111,7 +114,7 @@ void	dup_for_redirs(t_command *cmd_struct)
 	{
 		if (dup2(cmd_struct->output, 1) == -1)
 		{
-			// do we need error check?
+			perror("dup2 output");
 			close(cmd_struct->output);
 			return ;
 		}
