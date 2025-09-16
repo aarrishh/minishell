@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 18:18:22 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:30:51 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ char		*expand_heredoc(char **line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
-char		*read_heredoc_loop(t_env **env, char *delimiter, int i);
+void		read_heredoc_loop(t_env **env, char *delimiter, int i,
+				char **filename);
 int			operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_command *cmd_s, t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
