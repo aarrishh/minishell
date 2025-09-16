@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 17:35:57 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:18:22 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void		for_all_cases(t_val *val, char **line, t_env **env,
 int			get_operator_length(char *s);
 
 // Built-in functions
-void		exit_command(t_token **stack, t_env **env, char **split);
+void		exit_command(t_token **stack, t_env **env, char **split, t_data **data);
 int			find_equal(char *str);
 void		pwd_command(void);
 void		env_command(t_env *env, t_token *stack);

@@ -6,13 +6,13 @@
 /*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:23:54 by arina             #+#    #+#             */
-/*   Updated: 2025/09/14 17:49:38 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:18:40 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exit_command_print_function(t_token *tmp, long long num)
+int	exit_command_print_function(t_token *tmp, long long num, t_data **data)
 {
 	if (tmp->next)
 	{
@@ -26,12 +26,13 @@ int	exit_command_print_function(t_token *tmp, long long num)
 		ft_putendl_fd("exit", 1);
 		g_exit_status = num % 256;
 		rl_clear_history();
+		free_all(&(*data)->env, &(*data)->stack, (*data)->split);
 		exit(num % 256);
 	}
 	return (0);
 }
 
-void	exit_command(t_token **stack, t_env **env, char **split)
+void	exit_command(t_token **stack, t_env **env, char **split, t_data **data)
 {
 	t_token		*tmp;
 	long long	num;
@@ -54,6 +55,6 @@ void	exit_command(t_token **stack, t_env **env, char **split)
 			exit(2);
 		}
 	}
-	if (exit_command_print_function(tmp, num) == 1)
+	if (exit_command_print_function(tmp, num, data) == 1)
 		g_exit_status = 1;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 18:36:26 by arina             #+#    #+#             */
-/*   Updated: 2025/09/13 13:59:57 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:14:34 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	built_in_functions(t_data *data, t_token **stack, char *string)
 	if (ft_strcmp(string, "echo") == 0)
 		echo_command(stack);
 	else if (ft_strcmp(string, "exit") == 0)
-		exit_command(stack, &data->env, data->split);
+		exit_command(stack, &data->env, data->split, &data);
 	else if (ft_strcmp(string, "pwd") == 0)
 		pwd_command();
 	else if (ft_strcmp(string, "env") == 0)
