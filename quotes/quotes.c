@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 17:25:36 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 19:38:42 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,10 @@ char	*open_dquote(t_quote_state state, char *line)
 		free(next);
 		if (is_quote_closed(urish))
 			break ;
+		free(urish);
 	}
 	without_quote_line = cut_quotes(urish, state);
+	free(urish);
 	return (without_quote_line);
 }
 

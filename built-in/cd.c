@@ -3,27 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/16 16:27:49 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 22:15:14 by arimanuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*change_tsilda_to_home(char *str, t_env *env)
+char	*change_tsilda_to_home(char *str, t_env *env, int *flag)
 {
 	char	*home;
 	char	*target;
 	char	*result;
 
 	home = ft_strdup(ft_strchr(str, '/'));
-	target = ft_strdup(get_env_value(env, "HOME"));
+	target = get_env_value(env, "HOME");
 	if (home)
 	{
+		(*flag) = 1;
 		result = ft_strjoin(target, home);
-		free(target);
+		
 	}
 	else
 		return (target);
@@ -35,23 +36,27 @@ void	cd_command(t_token *stack, t_env **env)
 {
 	char	*old_pwd;
 	char	*target;
+	int		flag;
 
+	flag = 0;
 	old_pwd = get_env_value(*env, "PWD");
 	if (!stack->next)
-		target = ft_strdup(get_env_value(*env, "HOME"));
+		target = (get_env_value(*env, "HOME"));
 	else if (ft_strcmp(stack->next->string, "-") == 0)
-		target = ft_strdup(get_env_value(*env, "OLDPWD"));
+		target = (get_env_value(*env, "OLDPWD"));
 	else if (stack->next->string[0] == '~')
-		target = ft_strdup(change_tsilda_to_home(stack->next->string, *env));
+		target = (change_tsilda_to_home(stack->next->string, *env, &flag));
 	else
-		target = ft_strdup(stack->next->string);
-	if (!target || chdir(target) != 0)
+		target = (stack->next->string);
+	if (!target || chdir(target) != 0 )
 	{
 		print_cd_error(target);
+		if (flag == 1)
+			free(target);
 		g_exit_status = 1;
-		return (free(target));
-	}
-	update_env_new_and_old_pwd(env, old_pwd, &target);
+		return ;
+	}//mtacumem es hatvacy arandznacnel normi hamar,kam ifi taki masy
+	update_env_new_and_old_pwd(env, old_pwd, &target, flag);
 	g_exit_status = 0;
 	if (stack->next && stack->next->next)
 	{
