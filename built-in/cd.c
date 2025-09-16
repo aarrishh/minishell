@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/16 15:43:37 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:27:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	cd_command(t_token *stack, t_env **env)
 	else if (ft_strcmp(stack->next->string, "-") == 0)
 		target = ft_strdup(get_env_value(*env, "OLDPWD"));
 	else if (stack->next->string[0] == '~')
-		target = change_tsilda_to_home(stack->next->string, *env);
+		target = ft_strdup(change_tsilda_to_home(stack->next->string, *env));
 	else
 		target = ft_strdup(stack->next->string);
 	if (!target || chdir(target) != 0)

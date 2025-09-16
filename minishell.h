@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 16:17:07 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:27:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_command
 
 // Operations functions
 char		*create_file(int i, int *fd);
-void		mer_verjin_huys(t_command *cmd_struct);
 void		wait_hereoc(t_command *cmd_struct, char *filename, int i);
 void		wait_sig_hd(pid_t pid, int *status);
 int			check_syntax(t_token *stack);
@@ -90,6 +89,7 @@ int			open_rdirin(char *filename);
 char		**add_cmd(t_command *cmd_struct, t_token *tmp);
 char		**fork_for_pipe(t_data *data, int num_cmds, t_pipe_fd fds);
 void		init_cmd(t_command *cmd_struct);
+void		mer_verjin_huys(t_command *cmd_struct);
 
 // Libft functions
 char		*ft_substr(char const *s, unsigned int start, size_t len);
