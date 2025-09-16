@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 20:00:48 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 13:11:46 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:26:50 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char	*create_file(int i, int *fd)
 	filename = ft_strjoin("/tmp/arish_manan_heredoc_", num);
 	free(num);
 	fd_0 = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	*fd = fd_0;
+	if (fd && *fd)
+		*fd = fd_0;
 	return (filename);
 }
 
@@ -73,11 +74,9 @@ void	handle_wait_status(void)
 		g_exit_status = 128 + WTERMSIG(status);
 }
 
-void	mer_verjin_huys(t_command *cmd_struct)
+void	wait_sig_hd(pid_t pid, int *status)
 {
-	if (cmd_struct->heredoc)
-	{
-		unlink(cmd_struct->heredoc);
-		free(cmd_struct->heredoc);
-	}
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, status, 0);
+	signal(SIGINT, SIG_DFL);
 }

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 13:22:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:27:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ typedef struct s_command
 
 // Operations functions
 char		*create_file(int i, int *fd);
+void		wait_hereoc(t_command *cmd_struct, char *filename, int i);
+void		wait_sig_hd(pid_t pid, int *status);
 int			check_syntax(t_token *stack);
 void		execute_pipe(t_data *data);
 char		*get_first_word(t_token *tmp);

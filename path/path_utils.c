@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 18:23:55 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 13:05:21 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:16:54 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,22 @@ void	dir_error(char **path, char **envp, char **cmd)
 	free(*path);
 	free_array(envp);
 	exit(126);
+}
+
+void	wait_hereoc(t_command *cmd_struct, char *filename, int i)
+{
+	filename = create_file(i, NULL);
+	if (cmd_struct->input != 0)
+		close(cmd_struct->input);
+	cmd_struct->input = open(filename, O_RDONLY);
+	cmd_struct->heredoc = filename;
+}
+
+void	mer_verjin_huys(t_command *cmd_struct)
+{
+	if (cmd_struct->heredoc)
+	{
+		unlink(cmd_struct->heredoc);
+		free(cmd_struct->heredoc);
+	}
 }

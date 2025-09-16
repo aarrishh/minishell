@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 13:11:22 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:26:33 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ static int	handle_token(t_data *data, t_token **tmp, t_command *cmd_s, int *i)
 		return (handle_redir_out(cmd_s, tmp));
 	else if ((*tmp)->type == HEREDOC && (*tmp)->next
 		&& (*tmp)->next->type == WORD)
+	{
 		handle_heredoc(data, cmd_s, tmp, (*i)++);
+		*tmp = (*tmp)->next;
+	}
 	else
 	{
 		error_nl_or_type(cmd_s, (*tmp)->next);

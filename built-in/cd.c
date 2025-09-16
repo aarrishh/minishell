@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/16 13:06:26 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:27:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ char	*change_tsilda_to_home(char *str, t_env *env)
 	char	*result;
 
 	home = ft_strdup(ft_strchr(str, '/'));
-	target = get_env_value(env, "HOME");
+	target = ft_strdup(get_env_value(env, "HOME"));
 	if (home)
+	{
 		result = ft_strjoin(target, home);
+		free(target);
+	}
 	else
 		return (target);
 	free(home);
@@ -46,7 +49,7 @@ void	cd_command(t_token *stack, t_env **env)
 	{
 		print_cd_error(target);
 		g_exit_status = 1;
-		return (free (target));
+		return (free(target));
 	}
 	update_env_new_and_old_pwd(env, old_pwd, &target);
 	g_exit_status = 0;
