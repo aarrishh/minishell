@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 18:14:42 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:48:17 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void		execute_command(t_data *data, t_command *cmd_struct);
 int			two_dim_len(char **str);
 void		handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 				int i);
-void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
 char		*expand_heredoc(char **line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
@@ -123,7 +122,7 @@ void		for_all_cases(t_val *val, char **line, t_env **env,
 int			get_operator_length(char *s);
 
 // Built-in functions
-void		exit_command(t_token **stack, t_env **env, char **split);
+void		exit_command(t_token **stack, t_env **env, char **split, t_data **data);
 int			find_equal(char *str);
 void		pwd_command(void);
 void		env_command(t_env *env, t_token *stack);

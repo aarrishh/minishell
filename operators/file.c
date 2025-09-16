@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 20:00:48 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 16:26:50 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/16 18:48:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,6 @@ char	*create_file(int i, int *fd)
 	if (fd && *fd)
 		*fd = fd_0;
 	return (filename);
-}
-
-void	read_from_file(t_env **env, char *filename, char **cmd)
-{
-	int	fd;
-
-	fd = open(filename, O_RDONLY);
-	if (dup2(fd, 0) == -1)
-	{
-		perror("minishell: dup2");
-		exit(127);
-	}
-	close(fd);
-	child_process_execution(env, cmd);
-	exit(0);
 }
 
 int	find_and_open(char *filename, t_token_type type)
