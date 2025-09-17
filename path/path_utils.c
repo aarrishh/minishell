@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 18:23:55 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 16:16:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 19:08:11 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,14 @@ void	dir_error(char **path, char **envp, char **cmd)
 	exit(126);
 }
 
-void	wait_hereoc(t_command *cmd_struct, char *filename, int i)
+void	wait_hereoc(t_command *cmd_struct, int i)
 {
-	filename = create_file(i, NULL);
+	char *filename;
+	char	*num;
+
+	num = ft_itoa(i);
+	filename = ft_strjoin("/tmp/arish_manan_heredoc_", num);
+	free(num);
 	if (cmd_struct->input != 0)
 		close(cmd_struct->input);
 	cmd_struct->input = open(filename, O_RDONLY);

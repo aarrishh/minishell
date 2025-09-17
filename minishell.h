@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 18:48:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 19:14:48 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_command
 
 // Operations functions
 char		*create_file(int i, int *fd);
-void		wait_hereoc(t_command *cmd_struct, char *filename, int i);
+void		wait_hereoc(t_command *cmd_struct, int i);
 void		wait_sig_hd(pid_t pid, int *status);
 int			check_syntax(t_token *stack);
 void		execute_pipe(t_data *data);
@@ -75,8 +75,7 @@ char		*expand_heredoc(char **line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
-void		read_heredoc_loop(t_env **env, char *delimiter, int i,
-				char **filename);
+void		read_heredoc_loop(t_env **env, char *delimiter, int i);
 int			operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_command *cmd_s, t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
@@ -122,7 +121,8 @@ void		for_all_cases(t_val *val, char **line, t_env **env,
 int			get_operator_length(char *s);
 
 // Built-in functions
-void		exit_command(t_token **stack, t_env **env, char **split, t_data **data);
+void		exit_command(t_token **stack, t_env **env, char **split,
+				t_data **data);
 int			find_equal(char *str);
 void		pwd_command(void);
 void		env_command(t_env *env, t_token *stack);
