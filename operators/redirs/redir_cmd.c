@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 23:34:13 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/18 00:22:33 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	handle_redir_in(t_command *cmd_s, t_token **tmp)
 
 int	handle_redir_out(t_command *cmd_s, t_token **tmp)
 {
+	if (cmd_s->output != 1 && cmd_s->output != -1)
+		close(cmd_s->output);
 	cmd_s->output = find_and_open((*tmp)->next->string, (*tmp)->type);
 	if (cmd_s->output == -1)
 	{
