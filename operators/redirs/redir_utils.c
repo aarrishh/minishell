@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:10:26 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/16 17:28:10 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 21:11:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,21 @@ void	handle_operator(t_val *val, char **line, t_token **stack)
 
 	oplen = get_operator_length(line[val->i] + val->j);
 	op = ft_substr(line[val->i], val->j, oplen);
+	if (is_str_in_str(op, "<<"))
+		val->expand = 0;
 	node = create_node(&op);
 	add_back(node, stack);
 	val->j += oplen;
 }
 
-void	flush_word_before_op(t_val *val, char **line,
-				t_env **env, t_token **stack)
+void	flush_word_before_op(t_val *val, char **line, t_env **env,
+		t_token **stack)
 {
 	if (val->cur_ind > 0)
 		for_all_cases(val, line, env, stack);
 }
 
-void	flush_remainder(t_val *val, char **line,
-				t_env **env, t_token **stack)
+void	flush_remainder(t_val *val, char **line, t_env **env, t_token **stack)
 {
 	add_back(if_cur_ind_equal_minus_one(val, line, env), stack);
 }

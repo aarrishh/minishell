@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:49:51 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 19:16:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 18:33:05 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ void	child_fd_setup(t_pipe_fd *fds)
 
 void	child(t_data *data, t_pipe_fd *fds, t_token *tmp, char **cmd)
 {
-	int	i;
-
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	child_fd_setup(fds);

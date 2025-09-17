@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 19:10:44 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 21:31:15 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	read_heredoc_loop(t_env **env, char *delimiter, int i)
 {
 	char	*line;
-	char	*filename;
 	int		fd;
 
-	filename = create_file(i, &fd);
-	(void)filename;
+	fd = create_file(i);
+	if (fd == -1)
+		return ;
 	while (1)
 	{
 		line = readline("> ");

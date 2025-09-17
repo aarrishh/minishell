@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:13:10 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 16:26:23 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 20:32:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ void	redirs_child(t_data *data, t_command *cmd_struct)
 	if (cmd_struct->cmd)
 		path = split_path(&data->env, cmd_struct->cmd[0]);
 	if (!path)
+	{
+		error_msg(cmd_struct->cmd[0]);
 		exit(127);
+	}
 	envp = env_to_envp(data->env);
 	if (execve(path, cmd_struct->cmd, envp) == -1)
 	{

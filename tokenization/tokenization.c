@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/17 19:11:30 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 21:32:28 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 
 	val->substr = ft_substr(line[val->i], val->j, ft_strlen(line[val->i])
 			- val->j);
+	if (!val->expand)
+	{
+		node = create_node(&(val->substr));
+		val->j += val->cur_ind;
+		return (node);
+	}
 	val->expanded = expand_quotes(val->substr, env);
 	if (ft_strcmp(val->expanded, "") == 0)
 	{
@@ -77,18 +83,35 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 	return (node);
 }
 
+int	is_str_in_str(char *str1, char *str2)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str1[i])
+	{
+		if (str1[i] == str2[j])
+		{
+			while (str1[i] && str2[j] && (str2[j] == str1[i]))
+			{
+				i++;
+				j++;
+			}
+			if (str2[j] == '\0')
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
 {
 	t_token	*node;
 
 	val->substr = ft_substr(line[val->i], val->j, val->cur_ind);
-	if (ft_strcmp(line[val->i], "<<") > 0)
-	{
-		node = create_node(&(val->substr));
-		free(val->substr);
-		val->j += val->cur_ind;
-		return ;
-	}
 	val->expanded = expand_quotes(val->substr, env);
 	if (ft_strcmp(val->expanded, "") == 0)
 	{
@@ -108,6 +131,7 @@ void	validation(char **line, t_token **stack, t_env **env)
 	t_val	val;
 
 	val.i = 0;
+	val.expand = 1;
 	if (!line || !(*line))
 		return ;
 	while (line[val.i])

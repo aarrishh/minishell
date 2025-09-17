@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:31:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 19:14:48 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 21:32:01 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_val
 {
 	char	*substr;
 	char	*expanded;
+	int		expand;
 	int		cur_ind;
 	int		i;
 	int		j;
@@ -56,7 +57,7 @@ typedef struct s_command
 }			t_command;
 
 // Operations functions
-char		*create_file(int i, int *fd);
+int			create_file(int i);
 void		wait_hereoc(t_command *cmd_struct, int i);
 void		wait_sig_hd(pid_t pid, int *status);
 int			check_syntax(t_token *stack);
@@ -70,12 +71,14 @@ void		execute_command(t_data *data, t_command *cmd_struct);
 int			two_dim_len(char **str);
 void		handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 				int i);
+void		read_from_file(t_env **env, char *filename, char **cmd);
 int			check_dollar_hd(char *line);
 char		*expand_heredoc(char **line, t_env **env);
 int			count_segments(t_token **stack, t_token_type type);
 char		**add_arg_to_cmd(char **cmd_arg, char *str);
 int			find_and_open(char *filename, t_token_type type);
 void		read_heredoc_loop(t_env **env, char *delimiter, int i);
+int			is_str_in_str(char *str1, char *str2);
 int			operators(t_data *data, t_token *stack);
 void		error_nl_or_type(t_command *cmd_s, t_token *tmp);
 void		redirs_child(t_data *data, t_command *cmd_struct);
