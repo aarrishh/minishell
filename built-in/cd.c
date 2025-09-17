@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/16 22:15:14 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:57:13 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*change_tsilda_to_home(char *str, t_env *env, int *flag)
 	{
 		(*flag) = 1;
 		result = ft_strjoin(target, home);
-		
 	}
 	else
 		return (target);
@@ -48,14 +47,14 @@ void	cd_command(t_token *stack, t_env **env)
 		target = (change_tsilda_to_home(stack->next->string, *env, &flag));
 	else
 		target = (stack->next->string);
-	if (!target || chdir(target) != 0 )
+	if (!target || chdir(target) != 0)
 	{
 		print_cd_error(target);
 		if (flag == 1)
 			free(target);
 		g_exit_status = 1;
 		return ;
-	}//mtacumem es hatvacy arandznacnel normi hamar,kam ifi taki masy
+	} // mtacumem es hatvacy arandznacnel normi hamar,kam ifi taki masy
 	update_env_new_and_old_pwd(env, old_pwd, &target, flag);
 	g_exit_status = 0;
 	if (stack->next && stack->next->next)

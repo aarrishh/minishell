@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 18:23:55 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 19:08:11 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:58:43 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	dir_error(char **path, char **envp, char **cmd)
 
 void	wait_hereoc(t_command *cmd_struct, int i)
 {
-	char *filename;
+	char	*filename;
 	char	*num;
 
 	num = ft_itoa(i);

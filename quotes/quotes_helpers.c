@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:53:41 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 17:35:21 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:02:31 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,15 @@ void	error_msg_dir(char *str)
 
 int	get_operator_length(char *s)
 {
-	if ((s[0] == '<' && s[1] == '<')
-		|| (s[0] == '>' && s[1] == '>'))
+	if ((s[0] == '<' && s[1] == '<') || (s[0] == '>' && s[1] == '>'))
 		return (2);
 	return (1);
+}
+
+void	heredoc_error_msg(char *delimiter)
+{
+	ft_putstr_fd("minishell: warning: ", 2);
+	ft_putstr_fd("here-document delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(delimiter, 2);
+	ft_putstr_fd("')\n", 2);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:31:18 by arina             #+#    #+#             */
-/*   Updated: 2025/09/16 19:31:01 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:57:22 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	update_env_value(t_env **env, char *key, char *update_value)
 	}
 }
 
-void	update_env_new_and_old_pwd(t_env **env, char *old_pwd, char **target, int flag)
+void	update_env_new_and_old_pwd(t_env **env, char *old_pwd, char **target,
+		int flag)
 {
 	char	*new_pwd;
 

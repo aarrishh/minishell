@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/17 21:40:13 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:00:46 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	check_string(char *str)
 		if (state == NO_QUOTE)
 		{
 			if ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i
-					+ 1] == '>'))
+						+ 1] == '>'))
 				return (i);
 			if (str[i] == '<' || str[i] == '>' || str[i] == '|'
 				|| str[i] == '&')
@@ -81,30 +81,6 @@ t_token	*if_cur_ind_equal_minus_one(t_val *val, char **line, t_env **env)
 	node = create_node(&(val->expanded));
 	node->quote = 1;
 	return (node);
-}
-
-int	is_str_in_str(char *str1, char *str2)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (str1[i])
-	{
-		if (str1[i] == str2[j])
-		{
-			while (str1[i] && str2[j] && (str2[j] == str1[i]))
-			{
-				i++;
-				j++;
-			}
-			if (str2[j] == '\0')
-				return (1);
-		}
-		i++;
-	}
-	return (0);
 }
 
 void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)

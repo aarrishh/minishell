@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/17 22:00:47 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/17 23:05:37 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS = main.c list.c functions.c functions_utils.c path/path.c path/path_utils.c
 		built-in/export/export_utils.c built-in/export/export.c \
 		built-in/export/print.c free.c signal.c built-in/create_env.c  \
 		operators/redirs/redir_cmd.c operators/redirs/execute_redirs.c \
-		operators/redirs/redir_helpers.c operators/heredoc.c \
+		operators/redirs/redir_helpers.c operators/heredoc.c tokenization/tokenization_utils.c\
 		operators/pipe/pipe.c operators/pipe/pipe_fork.c operators/pipe/pipe_helper.c \
 		operators/file.c operators/pipe/pipe_utils.c operators/redirs/redir_utils.c
 

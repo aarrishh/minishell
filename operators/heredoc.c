@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 22:31:41 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:01:33 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,6 @@ void	read_heredoc_loop(t_env **env, char *delimiter, int i)
 		free(line);
 	}
 	close(fd);
-}
-void	heredoc_error_msg(char *delimiter)
-{
-	ft_putstr_fd("minishell: warning: ", 2);
-	ft_putstr_fd("here-document delimited by end-of-file (wanted `", 2);
-	ft_putstr_fd(delimiter, 2);
-	ft_putstr_fd("')\n", 2);
 }
 
 int	heredoc_expand_len(char *line, t_env **env)
