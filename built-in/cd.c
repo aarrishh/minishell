@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 15:26:03 by arina             #+#    #+#             */
-/*   Updated: 2025/09/17 22:57:13 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:45:50 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ char	*change_tsilda_to_home(char *str, t_env *env, int *flag)
 		return (target);
 	free(home);
 	return (result);
+}
+
+void	cd_error_check(t_token *stack)
+{
+	g_exit_status = 0;
+	if (stack->next && stack->next->next)
+	{
+		ft_putendl_fd("minishell: cd: too many arguments", 2);
+		g_exit_status = 1;
+	}
 }
 
 void	cd_command(t_token *stack, t_env **env)
@@ -54,12 +64,7 @@ void	cd_command(t_token *stack, t_env **env)
 			free(target);
 		g_exit_status = 1;
 		return ;
-	} // mtacumem es hatvacy arandznacnel normi hamar,kam ifi taki masy
-	update_env_new_and_old_pwd(env, old_pwd, &target, flag);
-	g_exit_status = 0;
-	if (stack->next && stack->next->next)
-	{
-		ft_putendl_fd("minishell: cd: too many arguments", 2);
-		g_exit_status = 1;
 	}
+	update_env_new_and_old_pwd(env, old_pwd, &target, flag);
+	cd_error_check(stack);
 }

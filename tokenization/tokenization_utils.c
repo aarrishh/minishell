@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 23:00:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 23:05:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 23:35:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,22 @@ int	is_str_in_str(char *str1, char *str2)
 	int	i;
 	int	j;
 
+	if (!str1 || !str2)
+		return (0);
 	i = 0;
-	j = 0;
 	while (str1[i])
 	{
+		j = 0;
 		if (str1[i] == str2[j])
 		{
-			while (str1[i] && str2[j] && (str2[j] == str1[i]))
+			while (str1[i] && str2[j] && str1[i] == str2[j])
 			{
 				i++;
 				j++;
 			}
 			if (str2[j] == '\0')
 				return (1);
+			i -= j;
 		}
 		i++;
 	}
