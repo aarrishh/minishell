@@ -6,18 +6,20 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 18:14:30 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 19:10:44 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	read_heredoc_loop(t_env **env, char *delimiter, int i, char **filename)
+void	read_heredoc_loop(t_env **env, char *delimiter, int i)
 {
 	char	*line;
+	char	*filename;
 	int		fd;
 
-	*filename = create_file(i, &fd);
+	filename = create_file(i, &fd);
+	(void)filename;
 	while (1)
 	{
 		line = readline("> ");
@@ -103,11 +105,9 @@ void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 		int i)
 {
 	char	*delim;
-	char	*filename;
 	pid_t	pid;
 	int		status;
 
-	filename = NULL;
 	if (!(*tmp)->next || !(*tmp)->next->string || !*(*tmp)->next->string)
 		delim = "";
 	else
@@ -119,12 +119,12 @@ void	handle_heredoc(t_data *data, t_command *cmd_struct, t_token **tmp,
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		read_heredoc_loop(&data->env, delim, i, &filename);
+		read_heredoc_loop(&data->env, delim, i);
 		exit(0);
 	}
 	else
 	{
 		wait_sig_hd(pid, &status);
-		wait_hereoc(cmd_struct, filename, i);
+		wait_hereoc(cmd_struct, i);
 	}
 }

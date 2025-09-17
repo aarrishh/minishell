@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:59:39 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/16 17:28:33 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 19:11:30 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	check_string(char *str)
 		state = quote_state(state, str[i]);
 		if (state == NO_QUOTE)
 		{
-			if ((str[i] == '<' && str[i + 1] == '<')
-				|| (str[i] == '>' && str[i + 1] == '>'))
+			if ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i
+					+ 1] == '>'))
 				return (i);
 			if (str[i] == '<' || str[i] == '>' || str[i] == '|'
 				|| str[i] == '&')
@@ -82,6 +82,13 @@ void	for_all_cases(t_val *val, char **line, t_env **env, t_token **stack)
 	t_token	*node;
 
 	val->substr = ft_substr(line[val->i], val->j, val->cur_ind);
+	if (ft_strcmp(line[val->i], "<<") > 0)
+	{
+		node = create_node(&(val->substr));
+		free(val->substr);
+		val->j += val->cur_ind;
+		return ;
+	}
 	val->expanded = expand_quotes(val->substr, env);
 	if (ft_strcmp(val->expanded, "") == 0)
 	{
