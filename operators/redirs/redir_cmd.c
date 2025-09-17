@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 18:30:16 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 22:53:28 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	handle_redir_in(t_command *cmd_s, t_token **tmp)
 {
-	if (cmd_s->input != 0)
+	if (cmd_s->input != 0 && cmd_s->input != -1)
 		close(cmd_s->input);
 	cmd_s->input = open_rdirin((*tmp)->next->string);
 	if (cmd_s->input == -1)
@@ -29,8 +29,6 @@ int	handle_redir_in(t_command *cmd_s, t_token **tmp)
 
 int	handle_redir_out(t_command *cmd_s, t_token **tmp)
 {
-	if (cmd_s->output != 0)
-		close(cmd_s->output);
 	cmd_s->output = find_and_open((*tmp)->next->string, (*tmp)->type);
 	if (cmd_s->output == -1)
 	{
@@ -99,9 +97,9 @@ int	operators(t_data *data, t_token *stack)
 	}
 	execute_command(data, &cmd_struct);
 	mer_verjin_huys(&cmd_struct);
-	if (cmd_struct.input != 0)
+	if (cmd_struct.input != 0 && cmd_struct.input != -1)
 		close(cmd_struct.input);
-	if (cmd_struct.output != 1)
+	if (cmd_struct.output != 1 && cmd_struct.output != -1)
 		close(cmd_struct.output);
 	if (cmd_struct.cmd)
 		free_array(cmd_struct.cmd);
