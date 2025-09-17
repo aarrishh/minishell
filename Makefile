@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/18 00:23:38 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/18 00:27:20 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,14 +19,14 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 LDFLAGS = -lreadline
 
-SRCS = main.c list.c functions.c functions_utils.c path/path.c path/path_utils.c tokenization/tokenization.c \
+SRCS = main.c helper_functions/list.c helper_functions/functions.c helper_functions/functions_utils.c path/path.c path/path_utils.c tokenization/tokenization.c \
 		tokenization/init_tokens_type.c quotes/quotes.c quotes/quotes_len.c \
 		quotes/quotes_helpers.c quotes/quotes_helpers1.c quotes/quotes_helpers2.c \
 		quotes/quotes_split.c built-in/built_in.c built-in/exit.c built-in/cd_utils.c \
 		built-in/cd.c built-in/pwd.c built-in/echo.c built-in/unset.c \
 		built-in/env.c built-in/export/check.c built-in/export/find_and_return.c \
 		built-in/export/export_utils.c built-in/export/export.c \
-		built-in/export/print.c free.c signal.c built-in/create_env.c  \
+		built-in/export/print.c helper_functions/free.c helper_functions/signal.c built-in/create_env.c  \
 		operators/redirs/redir_cmd.c operators/redirs/execute_redirs.c \
 		operators/redirs/redir_helpers.c operators/heredoc.c tokenization/tokenization_utils.c\
 		operators/pipe/pipe.c operators/pipe/pipe_fork.c operators/pipe/pipe_helper.c \

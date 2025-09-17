@@ -6,13 +6,11 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:18:44 by arina             #+#    #+#             */
-/*   Updated: 2025/09/16 17:27:54 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/18 00:27:49 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "minishell.h"
-#include <stdlib.h>
+#include "../minishell.h"
 
 void	add_back(t_token *node, t_token **a)
 {

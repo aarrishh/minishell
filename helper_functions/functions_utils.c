@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   functions_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 15:59:52 by arimanuk          #+#    #+#             */
-/*   Updated: 2025/09/14 16:00:31 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/18 00:28:08 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_strlen(const char *str)
 {
