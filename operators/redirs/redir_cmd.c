@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 11:26:23 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 19:07:17 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/17 18:22:53 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ int	operators(t_data *data, t_token *stack)
 	}
 	execute_command(data, &cmd_struct);
 	mer_verjin_huys(&cmd_struct);
-	if (cmd_struct.input != 0)
+	if (cmd_struct.input != 0 && cmd_struct.input != -1)
 		close(cmd_struct.input);
-	if (cmd_struct.output != 1)
+	if (cmd_struct.output != 1 && cmd_struct.output != -1))
 		close(cmd_struct.output);
 	if (cmd_struct.cmd)
 		free_array(cmd_struct.cmd);
