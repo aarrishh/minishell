@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:31:18 by arina             #+#    #+#             */
-/*   Updated: 2025/09/17 22:57:22 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:34:00 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_cd_error(char *target)
 {
-	ft_putstr_fd("minishell: cd ", 2);
+	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(target, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
 }

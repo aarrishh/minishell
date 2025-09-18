@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:16:09 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/14 12:59:11 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:28:10 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,19 @@ void	expand_exit_status(t_new_line *line_st)
 	line_st->i += 2;
 }
 
-void	handle_dollar(t_new_line *line_st, t_env **env)
+void	handle_dollar(t_new_line *line_st, t_quote_state state, t_env **env)
 {
 	char	*value;
 	int		key_len;
 
-	if (line_st->line[line_st->i] == '$' && line_st->line[line_st->i
-			+ 1] == '?')
-	{
-		expand_exit_status(line_st);
-		return ;
-	}
-	value = find_var_value(line_st->line + line_st->i, env, &key_len);
+	value = find_var_value(line_st->line + line_st->i, env, &key_len, state);
 	if (key_len == 1)
 		keep_char(line_st);
+	if (key_len == -1)
+	{
+		line_st->i++;
+		return ;
+	}
 	if (value)
 	{
 		keep_value(line_st->new, value, &line_st->j);
@@ -75,7 +74,7 @@ void	exp_help_loop(t_quote_state state, t_new_line *line_st, t_env **env)
 			&& line_st->line[line_st->i] != '"')
 		{
 			if (line_st->line[line_st->i] == '$')
-				handle_dollar(line_st, env);
+				handle_dollar(line_st, state, env);
 			else
 				keep_char(line_st);
 		}
@@ -98,7 +97,8 @@ char	*search_env_for_key(char *str, int len, t_env *env)
 	return (NULL);
 }
 
-char	*find_var_value(char *str, t_env **env, int *key_length)
+char	*find_var_value(char *str, t_env **env, int *key_length,
+		t_quote_state state)
 {
 	int		len;
 	char	*value;
@@ -109,6 +109,11 @@ char	*find_var_value(char *str, t_env **env, int *key_length)
 		return (NULL);
 	}
 	str++;
+	if (*str == '"' && state == NO_QUOTE)
+	{
+		*key_length = -1;
+		return (NULL);
+	}
 	if (!*str || !check_valid_dollar(*str))
 	{
 		*key_length = 1;

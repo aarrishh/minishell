@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:26:30 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 17:35:51 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:32:21 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,30 +63,34 @@ typedef struct s_data
 typedef struct s_new_line
 {
 	char			*line;
+	int				len;
 	char			*new;
 	int				i;
 	int				j;
 }					t_new_line;
 
 char				**split_for_quotes(char const *s, char c);
-void				handle_dollar(t_new_line *line_st, t_env **env);
+void				handle_dollar(t_new_line *line_st, t_quote_state state,
+						t_env **env);
 void				keep_char(t_new_line *line_st);
 int					key_len(char *str);
 void				error_msg(char *str);
 int					check_valid_dollar(char chr);
 t_quote_state		quote_state(t_quote_state state, char c);
 int					is_quote_closed(char *line);
+int					check_dl(t_new_line *line_st, int *key_len, char *value);
 void				keep_value(char *new_line, char *value, int *j);
 void				exp_help_loop(t_quote_state state, t_new_line *line_st,
 						t_env **env);
-char				*find_var_value(char *str, t_env **env, int *key_len);
-t_quote_state		handle_double_quote_len(char *line, int *i, int *len,
-						t_env **env);
+char				*find_var_value(char *str, t_env **env, int *key_len,
+						t_quote_state state);
+t_quote_state		handle_double_quote_len(t_new_line *line_st,
+						t_quote_state state, t_env **env);
 int					len_without_quote(char *line, t_quote_state state);
-void				handle_len_dollar(char *line, int *i, int *len,
+void				handle_len_dollar(t_new_line *line_st, t_quote_state state,
 						t_env **env);
-t_quote_state		handle_single_quote_len(char *line, int *i, int *len);
-int					len_for_malloc(char *line, t_env **env);
+t_quote_state		handle_single_quote_len(t_new_line *line_st);
+int					len_for_malloc(t_new_line *line_st, t_env **env);
 void				loop(t_new_line *line_st, t_quote_state state,
 						t_env **env_struct);
 char				*expand_quotes(char *line, t_env **env_struct);

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 21:08:04 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 23:01:33 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:26:29 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	read_heredoc_loop(t_env **env, char *delimiter, int i)
 	close(fd);
 }
 
-int	heredoc_expand_len(char *line, t_env **env)
+int	heredoc_expand_len(t_new_line *line_st, char *line, t_env **env)
 {
 	int	i;
 	int	len;
@@ -51,7 +51,7 @@ int	heredoc_expand_len(char *line, t_env **env)
 	while (line[i])
 	{
 		if (line[i] == '$')
-			handle_len_dollar(line, &i, &len, env);
+			handle_len_dollar(line_st, NO_QUOTE, env);
 		else
 		{
 			len++;
@@ -67,18 +67,18 @@ char	*expand_heredoc(char **line, t_env **env)
 	t_new_line	line_st;
 	int			len;
 
-	len = heredoc_expand_len(*line, env);
+	line_st.line = *line;
+	line_st.new = NULL;
+	line_st.i = 0;
+	line_st.j = 0;
+	len = heredoc_expand_len(&line_st, line_st.line, env);
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
-	line_st.line = *line;
-	line_st.new = new;
-	line_st.i = 0;
-	line_st.j = 0;
 	while (line_st.line[line_st.i])
 	{
 		if (line_st.line[line_st.i] == '$')
-			handle_dollar(&line_st, env);
+			handle_dollar(&line_st, NO_QUOTE, env);
 		else
 			keep_char(&line_st);
 	}

@@ -6,7 +6,7 @@
 /*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 23:00:11 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/17 23:35:00 by mabaghda         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:51:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,26 @@ void	flush_word_before_op(t_val *val, char **line, t_env **env,
 void	flush_remainder(t_val *val, char **line, t_env **env, t_token **stack)
 {
 	add_back(if_cur_ind_equal_minus_one(val, line, env), stack);
+}
+
+int	check_dl(t_new_line *line_st, int *key_len, char *value)
+{
+	if (*key_len == 0)
+	{
+		line_st->len++;
+		line_st->i++;
+		return (0);
+	}
+	if (*key_len == -1)
+	{
+		line_st->i++;
+		return (0);
+	}
+	if (value == NULL)
+	{
+		line_st->len++;
+		line_st->i++;
+		return (0);
+	}
+	return (1);
 }

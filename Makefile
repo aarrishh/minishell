@@ -6,7 +6,7 @@
 #    By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/18 12:10:58 by arina             #+#    #+#              #
-#    Updated: 2025/09/18 00:27:20 by mabaghda         ###   ########.fr        #
+#    Updated: 2025/09/18 11:39:18 by mabaghda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 LDFLAGS = -lreadline
 
 SRCS = main.c helper_functions/list.c helper_functions/functions.c helper_functions/functions_utils.c path/path.c path/path_utils.c tokenization/tokenization.c \

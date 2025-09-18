@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arimanuk <arimanuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabaghda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:53:05 by mabaghda          #+#    #+#             */
-/*   Updated: 2025/09/16 19:38:42 by arimanuk         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:33:06 by mabaghda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	loop(t_new_line *line_st, t_quote_state state, t_env **env_struct)
 		else
 		{
 			if (line_st->line[line_st->i] == '$')
-				handle_dollar(line_st, env_struct);
+				handle_dollar(line_st, state, env_struct);
 			else
 				keep_char(line_st);
 		}
@@ -42,7 +42,10 @@ char	*expand_quotes(char *line, t_env **env_struct)
 	t_quote_state	state;
 
 	state = NO_QUOTE;
-	len = len_for_malloc(line, env_struct);
+	line_st.line = line;
+	line_st.i = 0;
+	line_st.len = 0;
+	len = len_for_malloc(&line_st, env_struct);
 	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
